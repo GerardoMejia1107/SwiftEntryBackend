@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoleResponseSTO {
+public class RoleResponseDTO {
     private Integer id;
     private String name;
     private String description;

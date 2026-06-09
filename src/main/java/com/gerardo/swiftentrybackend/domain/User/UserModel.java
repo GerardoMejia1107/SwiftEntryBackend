@@ -1,7 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.User;
 
 import com.gerardo.swiftentrybackend.domain.Address.AddressModel;
-import com.gerardo.swiftentrybackend.domain.Role.RoleModel;
+import com.gerardo.swiftentrybackend.domain.Role.models.RoleModel;
 import jakarta.persistence.*;
 import lombok.*;
 

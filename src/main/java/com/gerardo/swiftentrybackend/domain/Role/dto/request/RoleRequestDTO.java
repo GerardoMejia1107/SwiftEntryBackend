@@ -1,6 +1,5 @@
 package com.gerardo.swiftentrybackend.domain.Role.dto.request;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -10,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateRoleRequestDTO {
+public class RoleRequestDTO {
     @NotBlank(message = "Role name is required")
     @Size(max = 50, message = "Role name cannot exceed 50 characters")
     private String name;
