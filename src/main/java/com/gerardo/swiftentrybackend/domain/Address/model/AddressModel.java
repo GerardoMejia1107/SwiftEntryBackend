@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.domain.Address;
+package com.gerardo.swiftentrybackend.domain.Address.model;
 
 import jakarta.persistence.*;
 import lombok.*;

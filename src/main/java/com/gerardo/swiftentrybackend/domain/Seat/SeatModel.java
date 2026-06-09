@@ -1,7 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Seat;
 
 import com.gerardo.swiftentrybackend.domain.Locality.LocalityModel;
-import com.gerardo.swiftentrybackend.domain.User.UserModel;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,7 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Event;
 
-import com.gerardo.swiftentrybackend.domain.Address.AddressModel;
-import com.gerardo.swiftentrybackend.domain.User.UserModel;
+import com.gerardo.swiftentrybackend.domain.Address.model.AddressModel;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 

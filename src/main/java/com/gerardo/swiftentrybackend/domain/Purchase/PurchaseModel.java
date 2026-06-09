@@ -1,6 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Purchase;
 
-import com.gerardo.swiftentrybackend.domain.User.UserModel;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 

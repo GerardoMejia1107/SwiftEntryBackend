@@ -1,7 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Validation;
 
 import com.gerardo.swiftentrybackend.domain.Ticket.TicketModel;
-import com.gerardo.swiftentrybackend.domain.User.UserModel;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 

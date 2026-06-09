@@ -1,6 +1,6 @@
-package com.gerardo.swiftentrybackend.domain.User;
+package com.gerardo.swiftentrybackend.domain.User.models;
 
-import com.gerardo.swiftentrybackend.domain.Address.AddressModel;
+import com.gerardo.swiftentrybackend.domain.Address.model.AddressModel;
 import com.gerardo.swiftentrybackend.domain.Role.models.RoleModel;
 import jakarta.persistence.*;
 import lombok.*;
@@ -53,9 +53,14 @@ public class UserModel{
     @Column(name = "email_verified", nullable = false)
     private Boolean emailVerified = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private AddressModel address;
+   @OneToOne(
+           fetch = FetchType.LAZY,
+           cascade = CascadeType.ALL,
+           orphanRemoval = true
+   )
+
+   @JoinColumn(name = "address_id", unique = true)
+   private AddressModel addressModel;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
