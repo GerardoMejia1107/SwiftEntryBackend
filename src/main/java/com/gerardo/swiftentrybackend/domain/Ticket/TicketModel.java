@@ -1,6 +1,8 @@
 package com.gerardo.swiftentrybackend.domain.Ticket;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
+import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,15 +30,22 @@ public class TicketModel {
     @Column(name = "qr_code", nullable = false, unique = true, length = 500)
     private String qrCode;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private TicketStatusModel status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TicketStatus status;
 
     @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt;
 
     @Column(name = "used_at")
     private LocalDateTime usedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "validated_by", nullable = false)
+    private UserModel validatedBy;
+
+    @Column(name = "validated_at", nullable = false)
+    private LocalDateTime validatedAt;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

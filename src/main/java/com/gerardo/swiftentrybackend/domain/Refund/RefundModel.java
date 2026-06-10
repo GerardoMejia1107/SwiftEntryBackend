@@ -1,6 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Refund;
 
 import com.gerardo.swiftentrybackend.domain.Payment.PaymentModel;
+import com.gerardo.swiftentrybackend.domain.Refund.enums.RefundStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,9 +31,9 @@ public class RefundModel {
     @Column(length = 255)
     private String reason;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private RefundStatusModel status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private RefundStatus status;
 
     @Column(name = "refunded_at")
     private LocalDateTime refundedAt;
