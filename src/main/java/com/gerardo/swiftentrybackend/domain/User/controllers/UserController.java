@@ -40,4 +40,14 @@ public class UserController {
         );
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneralResponse> getUserById(@Valid @PathVariable Integer id) {
+        UserResponseDTO response = userService.getUserById(id);
+        return responseBuilder.buildResponse(
+                "User found successfully",
+                HttpStatus.OK,
+                response
+        );
+    }
+
 }

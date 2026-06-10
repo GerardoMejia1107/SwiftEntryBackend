@@ -8,12 +8,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
+
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -38,10 +38,14 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/swift_entry/users")
+                        .requestMatchers(HttpMethod.POST, SecurityRoutes.PUBLIC_POST_ENDPOINTS)
                         .permitAll()
-                        .requestMatchers("/swift_entry/auth/**")
+                        .requestMatchers(SecurityRoutes.PUBLIC_ENDPOINTS)
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, SecurityRoutes.ADMIN_GET_ENDPOINTS)
+                        .hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, SecurityRoutes.AUTHENTICATED_GET_ENDPOINTS)
+                        .authenticated()
                         .anyRequest()
                         .authenticated()
                 );

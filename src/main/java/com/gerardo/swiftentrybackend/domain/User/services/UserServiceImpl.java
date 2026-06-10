@@ -13,9 +13,12 @@ import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
 import com.gerardo.swiftentrybackend.domain.User.utils.UserMapper;
 import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -57,9 +60,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO getUserById(Integer id) {
+        Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication();
+
+        String authenticatedEmail = authentication.getName();
+
+        UserModel authenticatedUser = userRepository.findByEmail(authenticatedEmail)
+                .orElseThrow(
+                        () -> new RuntimeException("Authenticated email not found")
+                );
+
+        boolean isAdmin = authenticatedUser.getRole()
+                .getName()
+                .equals("ADMINISTRATOR");
+        boolean isSameUser = authenticatedUser.getId()
+                .equals(id);
+
+        if (!isAdmin && !isSameUser) {
+            throw new RuntimeException("You do not have permission to access this user");
+        }
+
         UserModel userModel = userRepository.findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("User with id " + id + " not found")
+                        () -> new RuntimeException("User not found")
                 );
         return userMapper.toResponse(userModel);
     }
