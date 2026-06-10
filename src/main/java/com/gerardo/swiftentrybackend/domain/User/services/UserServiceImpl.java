@@ -13,6 +13,7 @@ import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
 import com.gerardo.swiftentrybackend.domain.User.utils.UserMapper;
 import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserService {
     private final AddressMapper addressMapper;
     private final RoleMapper roleMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public UserResponseDTO createUser(UserRequestDTO request) {
 
@@ -40,11 +43,13 @@ public class UserServiceImpl implements UserService {
 
         AddressModel address = addressMapper.toModel(request.getAddress());
 
+        String passwordHash = passwordEncoder.encode(request.getPassword());
+
         UserModel user = userMapper.toModel(
                 request,
                 address,
                 role,
-                request.getPassword()
+                passwordHash
         );
 
         return userMapper.toResponse(userRepository.save(user));
