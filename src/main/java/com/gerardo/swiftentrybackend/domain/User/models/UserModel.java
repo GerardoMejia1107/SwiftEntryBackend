@@ -2,11 +2,14 @@ package com.gerardo.swiftentrybackend.domain.User.models;
 
 import com.gerardo.swiftentrybackend.domain.Address.model.AddressModel;
 import com.gerardo.swiftentrybackend.domain.Role.models.RoleModel;
+import com.gerardo.swiftentrybackend.security.auth.models.RefreshTokenModel;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -64,6 +67,10 @@ public class UserModel{
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
     private RoleModel role;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RefreshTokenModel> refreshTokens = new ArrayList<>();
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

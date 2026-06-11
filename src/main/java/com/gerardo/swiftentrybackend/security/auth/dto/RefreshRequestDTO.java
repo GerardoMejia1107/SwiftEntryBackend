@@ -1,5 +1,6 @@
 package com.gerardo.swiftentrybackend.security.auth.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -7,9 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthResponseDTO {
-    private String accessToken;
+public class RefreshRequestDTO {
+    @NotBlank
     private String refreshToken;
-    private String tokenType;
-    private String role;
 }

@@ -1,6 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Ticket;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
+import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
@@ -20,9 +21,13 @@ public class TicketModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "reservation_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "reservation_id", nullable = false)
     private ReservationModel reservation;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "seat_id", nullable = false)
+    private SeatModel seat;
 
     @Column(name = "ticket_code", nullable = false, unique = true, length = 100)
     private String ticketCode;
@@ -40,11 +45,11 @@ public class TicketModel {
     @Column(name = "used_at")
     private LocalDateTime usedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "validated_by", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "validated_by", nullable = true)
     private UserModel validatedBy;
 
-    @Column(name = "validated_at", nullable = false)
+    @Column(name = "validated_at")
     private LocalDateTime validatedAt;
 
     @Column(name = "created_at", nullable = false, updatable = false)
