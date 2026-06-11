@@ -10,9 +10,10 @@ import com.gerardo.swiftentrybackend.domain.Event.repositories.EventRepository;
 import com.gerardo.swiftentrybackend.domain.Event.utils.EventMapper;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.events.EventException;
 
 import java.util.List;
 
@@ -28,10 +29,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventResponseDTO createEvent(EventRequestDTO eventRequestDTO) {
         if (eventRepository.existsByName(eventRequestDTO.getName())) {
-            throw new RuntimeException("Event already exists");
+            throw new ResourceConflictException("Event already exists");
         }
         UserModel userModel = userRepository.findById(eventRequestDTO.getOrganizerId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         AddressModel addressModel = null;
 

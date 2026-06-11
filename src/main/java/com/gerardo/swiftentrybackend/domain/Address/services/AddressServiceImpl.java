@@ -5,6 +5,7 @@ import com.gerardo.swiftentrybackend.domain.Address.dto.response.AddressResponse
 import com.gerardo.swiftentrybackend.domain.Address.model.AddressModel;
 import com.gerardo.swiftentrybackend.domain.Address.repositories.AddressRepository;
 import com.gerardo.swiftentrybackend.domain.Address.utils.AddressMapper;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class AddressServiceImpl implements AddressService {
 
         AddressModel address = addressRepository.findById(addressId)
                 .orElseThrow(
-                        () -> new RuntimeException(
+                        () -> new ResourceNotFoundException(
                                 "Address with id " + addressId + " not found"
                         )
                 );

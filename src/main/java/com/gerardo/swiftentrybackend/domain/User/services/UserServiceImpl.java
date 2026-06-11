@@ -11,14 +11,15 @@ import com.gerardo.swiftentrybackend.domain.User.dto.response.UserResponseDTO;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
 import com.gerardo.swiftentrybackend.domain.User.utils.UserMapper;
-import jdk.jshell.spi.ExecutionControl;
+import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -38,11 +39,11 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO createUser(UserRequestDTO request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("User with this email already exists");
+            throw new ResourceConflictException("User with this email already exists");
         }
 
         RoleModel role = roleRepository.findById(request.getRoleId())
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 
         AddressModel address = addressMapper.toModel(request.getAddress());
 
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
         UserModel authenticatedUser = userRepository.findByEmail(authenticatedEmail)
                 .orElseThrow(
-                        () -> new RuntimeException("Authenticated email not found")
+                        () -> new ResourceNotFoundException("Authenticated user not found")
                 );
 
         boolean isAdmin = authenticatedUser.getRole()
@@ -77,12 +78,12 @@ public class UserServiceImpl implements UserService {
                 .equals(id);
 
         if (!isAdmin && !isSameUser) {
-            throw new RuntimeException("You do not have permission to access this user");
+            throw new ForbiddenOperationException("You do not have permission to access this user");
         }
 
         UserModel userModel = userRepository.findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("User not found")
+                        () -> new ResourceNotFoundException("User not found")
                 );
         return userMapper.toResponse(userModel);
     }

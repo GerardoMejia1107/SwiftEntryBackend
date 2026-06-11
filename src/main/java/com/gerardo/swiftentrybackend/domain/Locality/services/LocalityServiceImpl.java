@@ -8,6 +8,8 @@ import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityUpdateD
 import com.gerardo.swiftentrybackend.domain.Locality.dto.response.LocalityResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.repositories.LocalityRepository;
 import com.gerardo.swiftentrybackend.domain.Locality.utils.LocalityMapper;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,10 @@ public class LocalityServiceImpl implements LocalityService {
     @Override
     public LocalityResponseDTO createLocality(LocalityRequestDTO request) {
         EventModel event = eventRepository.findById(request.getEventId())
-                .orElseThrow(() -> new RuntimeException("Event with id " + request.getEventId() + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event with id " + request.getEventId() + " not found"));
 
         if (localityRepository.existsByNameAndEvent_Id(request.getName(), request.getEventId())) {
-            throw new RuntimeException("Locality '" + request.getName() + "' already exists for this event");
+            throw new ResourceConflictException("Locality '" + request.getName() + "' already exists for this event");
         }
 
         LocalityModel locality = localityMapper.toModel(request, event);
@@ -45,14 +47,14 @@ public class LocalityServiceImpl implements LocalityService {
     @Override
     public LocalityResponseDTO getLocalityById(Long id) {
         LocalityModel locality = localityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Locality with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Locality with id " + id + " not found"));
         return localityMapper.toResponse(locality);
     }
 
     @Override
     public List<LocalityResponseDTO> getLocalitiesByEventId(Integer eventId) {
         if (!eventRepository.existsById(eventId)) {
-            throw new RuntimeException("Event with id " + eventId + " not found");
+            throw new ResourceNotFoundException("Event with id " + eventId + " not found");
         }
         return localityRepository.findAllByEvent_Id(eventId)
                 .stream()
@@ -63,7 +65,7 @@ public class LocalityServiceImpl implements LocalityService {
     @Override
     public LocalityResponseDTO updateLocality(Long id, LocalityUpdateDTO request) {
         LocalityModel locality = localityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Locality with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Locality with id " + id + " not found"));
 
         localityMapper.updateModel(locality, request);
         return localityMapper.toResponse(localityRepository.save(locality));
@@ -72,7 +74,7 @@ public class LocalityServiceImpl implements LocalityService {
     @Override
     public void deleteLocality(Long id) {
         if (!localityRepository.existsById(id)) {
-            throw new RuntimeException("Locality with id " + id + " not found");
+            throw new ResourceNotFoundException("Locality with id " + id + " not found");
         }
         localityRepository.deleteById(id);
     }
