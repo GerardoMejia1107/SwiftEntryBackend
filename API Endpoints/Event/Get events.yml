@@ -1,0 +1,37 @@
+info:
+  name: Get events
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{swift_entry_base_uri}}/events"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Rock Night Festival",
+        "description": "Live rock concert with local bands and special guests.",
+        "category": "CONCERT",
+        "organizerId": 13,
+        "address": {
+          "streetAddress": "Calle Los Sisimiles #123",
+          "neighborhood": "Colonia Escalón",
+          "municipality": "San Salvador",
+          "department": "San Salvador",
+          "country": "El Salvador",
+          "referencePoint": "Near Galerías Escalón"
+        },
+        "startDate": "2026-08-15T19:00:00",
+        "endDate": "2026-08-15T23:30:00",
+        "venueName": "Auditorio Principal",
+        "status": "DRAFT",
+        "imageUrl": "https://example.com/images/rock-night-festival.jpg"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

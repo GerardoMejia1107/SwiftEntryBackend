@@ -1,0 +1,36 @@
+info:
+  name: Create user
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/users"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Dwight",
+        "lastName": "Schrute",
+        "email": "dwight@test.com",
+        "phoneNumber": "7777-2222",
+        "dui": "55667788-9",
+        "nit": "0614-556677-108-9",
+        "birthDate": "1978-01-20",
+        "password": "angela_and_dwight",
+        "roleId": 2,
+        "address": {
+          "streetAddress": "Schrute Farms #1",
+          "neighborhood": "Beet Farm",
+          "municipality": "San Salvador",
+          "department": "San Salvador",
+          "country": "El Salvador",
+          "referencePoint": "Cerca de la granja"
+        }
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

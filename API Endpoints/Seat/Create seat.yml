@@ -1,0 +1,25 @@
+info:
+  name: Create seat
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/seats"
+  body:
+    type: json
+    data: |-
+      {
+        "localityId": 1,
+        "seatNumber": "A-01",
+        "rowLabel": "A",
+        "status": "AVAILABLE",
+        "qrHash": "seat-a01-locality-1"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
