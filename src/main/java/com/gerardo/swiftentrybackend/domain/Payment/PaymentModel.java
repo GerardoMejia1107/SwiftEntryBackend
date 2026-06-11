@@ -1,5 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Payment;
 
+import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentMethod;
+import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;
 import com.gerardo.swiftentrybackend.domain.Purchase.PurchaseModel;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,13 +29,13 @@ public class PaymentModel {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "payment_method_id", nullable = false)
-    private PaymentMethodModel paymentMethod;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method", nullable = false)
+    private PaymentMethod paymentMethod;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private PaymentStatusModel status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentStatus status;
 
     @Column(name = "transaction_reference", length = 150)
     private String transactionReference;

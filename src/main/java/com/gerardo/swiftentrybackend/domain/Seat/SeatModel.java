@@ -1,7 +1,8 @@
 package com.gerardo.swiftentrybackend.domain.Seat;
 
 import com.gerardo.swiftentrybackend.domain.Locality.LocalityModel;
-import com.gerardo.swiftentrybackend.domain.User.UserModel;
+import com.gerardo.swiftentrybackend.domain.Seat.enums.SeatStatus;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,8 +32,9 @@ public class SeatModel {
     private String rowLabel;
 
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private String status = "AVAILABLE";
+    private SeatStatus status = SeatStatus.AVAILABLE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reserved_by_user_id")

@@ -1,7 +1,9 @@
 package com.gerardo.swiftentrybackend.domain.Event;
 
-import com.gerardo.swiftentrybackend.domain.Address.AddressModel;
-import com.gerardo.swiftentrybackend.domain.User.UserModel;
+import com.gerardo.swiftentrybackend.domain.Address.model.AddressModel;
+import com.gerardo.swiftentrybackend.domain.Event.enums.EventCategory;
+import com.gerardo.swiftentrybackend.domain.Event.enums.EventStatus;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class EventModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,9 +27,9 @@ public class EventModel {
     @Column(length = 1000)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    private EventCategoryModel category;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EventCategory category;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organizer_id", nullable = false)
@@ -47,9 +48,9 @@ public class EventModel {
     @Column(name = "venue_name", length = 150)
     private String venueName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private EventStatusModel status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EventStatus status;
 
     @Column(name = "image_url", length = 500)
     private String imageUrl;

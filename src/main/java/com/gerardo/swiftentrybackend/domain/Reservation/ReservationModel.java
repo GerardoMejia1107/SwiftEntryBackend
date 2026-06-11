@@ -1,8 +1,9 @@
 package com.gerardo.swiftentrybackend.domain.Reservation;
 
 import com.gerardo.swiftentrybackend.domain.Purchase.PurchaseModel;
+import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
-import com.gerardo.swiftentrybackend.domain.User.UserModel;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,9 +34,9 @@ public class ReservationModel {
     @JoinColumn(name = "purchase_id")
     private PurchaseModel purchase;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private ReservationStatusModel status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private ReservationStatus status;
 
     @Column(name = "price_at_reservation", nullable = false, precision = 10, scale = 2)
     private BigDecimal priceAtReservation;

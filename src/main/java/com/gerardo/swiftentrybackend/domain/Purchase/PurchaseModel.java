@@ -1,6 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Purchase;
 
-import com.gerardo.swiftentrybackend.domain.User.UserModel;
+import com.gerardo.swiftentrybackend.domain.Purchase.enums.PurchaseStatus;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,9 +25,9 @@ public class PurchaseModel {
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private PurchaseStatusModel status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private PurchaseStatus status;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotal;
