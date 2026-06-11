@@ -5,6 +5,7 @@ import com.gerardo.swiftentrybackend.domain.Role.dto.response.RoleResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Role.models.RoleModel;
 import com.gerardo.swiftentrybackend.domain.Role.repositories.RoleRepository;
 import com.gerardo.swiftentrybackend.domain.Role.utils.RoleMapper;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class RoleServiceImpl implements RoleService{
     public RoleResponseDTO createRole(RoleRequestDTO roleRequestDTO) {
 
         if (roleRepository.existsByName(roleRequestDTO.getName())) {
-            throw new RuntimeException("Role already exists");
+            throw new ResourceConflictException("Role already exists");
         }
 
         RoleModel role = roleMapper.toModel(roleRequestDTO);

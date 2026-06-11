@@ -9,6 +9,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "reservation")
@@ -26,9 +28,13 @@ public class ReservationModel {
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "seat_id", nullable = false)
-    private SeatModel seat;
+    @OneToMany(
+            mappedBy = "reservation",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<ReservationSeatModel> reservationSeats = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id")
@@ -38,8 +44,8 @@ public class ReservationModel {
     @Column(nullable = false, length = 30)
     private ReservationStatus status;
 
-    @Column(name = "price_at_reservation", nullable = false, precision = 10, scale = 2)
-    private BigDecimal priceAtReservation;
+    @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalAmount;
 
     @Column(name = "reserved_at", nullable = false)
     private LocalDateTime reservedAt;

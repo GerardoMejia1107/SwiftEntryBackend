@@ -58,7 +58,6 @@ public class UserModel{
            cascade = CascadeType.ALL,
            orphanRemoval = true
    )
-
    @JoinColumn(name = "address_id", unique = true)
    private AddressModel addressModel;
 
