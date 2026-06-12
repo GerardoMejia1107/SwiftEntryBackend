@@ -1,10 +1,12 @@
 package com.gerardo.swiftentrybackend.dto.reservation;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
+import com.gerardo.swiftentrybackend.dto.reservationseat.ReservationSeatResponseDTO;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,7 +32,7 @@ public class ReservationResponseDTO {
     private LocalDateTime purchasedAt;
     private LocalDateTime expiresAt;
 
-//    private List<ReservationSeatResponseDTO> reservationSeats;
+    private List<ReservationSeatResponseDTO> reservationSeats;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
