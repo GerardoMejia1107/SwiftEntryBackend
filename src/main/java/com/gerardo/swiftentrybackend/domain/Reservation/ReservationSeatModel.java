@@ -20,6 +20,7 @@ public class ReservationSeatModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    //Relations
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "reservation_id", nullable = false)
     private ReservationModel reservation;
@@ -28,9 +29,11 @@ public class ReservationSeatModel {
     @JoinColumn(name = "seat_id", nullable = false)
     private SeatModel seat;
 
+    //Features
     @Column(name = "price_at_reservation", nullable = false, precision = 10, scale = 2)
     private BigDecimal priceAtReservation;
 
+    //Dates
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

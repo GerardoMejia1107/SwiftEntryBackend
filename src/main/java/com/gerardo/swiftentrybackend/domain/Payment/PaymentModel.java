@@ -2,7 +2,7 @@ package com.gerardo.swiftentrybackend.domain.Payment;
 
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentMethod;
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;
-import com.gerardo.swiftentrybackend.domain.Purchase.PurchaseModel;
+import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,13 +22,16 @@ public class PaymentModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    //Relations
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "purchase_id", nullable = false)
-    private PurchaseModel purchase;
+    @JoinColumn(name = "reservation_id", nullable = false)
+    private ReservationModel reservation;
 
+    //Transactional fields
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
+    //Features
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method", nullable = false)
     private PaymentMethod paymentMethod;

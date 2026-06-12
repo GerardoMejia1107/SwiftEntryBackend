@@ -3,6 +3,7 @@ package com.gerardo.swiftentrybackend.common.handler;
 import com.gerardo.swiftentrybackend.common.components.ResponseBuilder;
 import com.gerardo.swiftentrybackend.common.dto.GeneralResponse;
 import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
+import com.gerardo.swiftentrybackend.common.exceptions.InvalidTokenException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<GeneralResponse> handleNotReadable(HttpMessageNotReadableException ex) {
         return responseBuilder.buildResponse("Malformed or missing request body", HttpStatus.BAD_REQUEST, null);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<GeneralResponse> handleInvalidToken(InvalidTokenException ex) {
+        return responseBuilder.buildResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED, null);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
