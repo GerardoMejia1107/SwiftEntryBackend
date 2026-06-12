@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.repository;
+package com.gerardo.swiftentrybackend.domain.Refund.repositories;
 
 import com.gerardo.swiftentrybackend.domain.Refund.RefundModel;
 import com.gerardo.swiftentrybackend.domain.Refund.enums.RefundStatus;

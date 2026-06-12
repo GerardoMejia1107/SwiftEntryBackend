@@ -1,11 +1,11 @@
-package com.gerardo.swiftentrybackend.mapper;
+package com.gerardo.swiftentrybackend.domain.Refund.utils;
 
 import com.gerardo.swiftentrybackend.domain.Payment.PaymentModel;
 import com.gerardo.swiftentrybackend.domain.Refund.RefundModel;
 import com.gerardo.swiftentrybackend.domain.Refund.enums.RefundStatus;
-import com.gerardo.swiftentrybackend.dto.refund.RefundRequestDTO;
-import com.gerardo.swiftentrybackend.dto.refund.RefundResponseDTO;
-import com.gerardo.swiftentrybackend.dto.refund.RefundUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Refund.dto.request.RefundRequestDTO;
+import com.gerardo.swiftentrybackend.domain.Refund.dto.response.RefundResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Refund.dto.request.RefundUpdateDTO;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

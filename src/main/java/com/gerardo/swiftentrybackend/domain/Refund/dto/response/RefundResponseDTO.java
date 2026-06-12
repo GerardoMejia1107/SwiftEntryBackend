@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.dto.refund;
+package com.gerardo.swiftentrybackend.domain.Refund.dto.response;
 
 import com.gerardo.swiftentrybackend.domain.Refund.enums.RefundStatus;
 import lombok.*;

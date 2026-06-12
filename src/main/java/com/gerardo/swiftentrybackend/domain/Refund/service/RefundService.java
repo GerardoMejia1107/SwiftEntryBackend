@@ -1,9 +1,9 @@
-package com.gerardo.swiftentrybackend.service;
+package com.gerardo.swiftentrybackend.domain.Refund.service;
 
 import com.gerardo.swiftentrybackend.domain.Refund.enums.RefundStatus;
-import com.gerardo.swiftentrybackend.dto.refund.RefundRequestDTO;
-import com.gerardo.swiftentrybackend.dto.refund.RefundResponseDTO;
-import com.gerardo.swiftentrybackend.dto.refund.RefundUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Refund.dto.request.RefundRequestDTO;
+import com.gerardo.swiftentrybackend.domain.Refund.dto.response.RefundResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Refund.dto.request.RefundUpdateDTO;
 
 import java.util.List;
 

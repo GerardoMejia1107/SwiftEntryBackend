@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.dto.refund;
+package com.gerardo.swiftentrybackend.domain.Refund.dto.request;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
