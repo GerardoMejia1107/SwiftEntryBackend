@@ -1,9 +1,9 @@
-package com.gerardo.swiftentrybackend.service;
+package com.gerardo.swiftentrybackend.domain.Ticket.service;
 
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
-import com.gerardo.swiftentrybackend.dto.ticket.TicketRequestDTO;
-import com.gerardo.swiftentrybackend.dto.ticket.TicketResponseDTO;
-import com.gerardo.swiftentrybackend.dto.ticket.TicketUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.request.TicketRequestDTO;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.request.TicketUpdateDTO;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.dto.ticket;
+package com.gerardo.swiftentrybackend.domain.Ticket.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

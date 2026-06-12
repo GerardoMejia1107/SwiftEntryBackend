@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.repository;
+package com.gerardo.swiftentrybackend.domain.Ticket.repositories;
 
 import com.gerardo.swiftentrybackend.domain.Ticket.TicketModel;
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;

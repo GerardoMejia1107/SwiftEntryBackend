@@ -1,12 +1,12 @@
-package com.gerardo.swiftentrybackend.mapper;
+package com.gerardo.swiftentrybackend.domain.Ticket.utils;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
 import com.gerardo.swiftentrybackend.domain.Ticket.TicketModel;
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
-import com.gerardo.swiftentrybackend.dto.ticket.TicketResponseDTO;
-import com.gerardo.swiftentrybackend.dto.ticket.TicketUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.request.TicketUpdateDTO;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
