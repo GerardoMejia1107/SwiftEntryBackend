@@ -1,10 +1,10 @@
-package com.gerardo.swiftentrybackend.mapper;
+package com.gerardo.swiftentrybackend.domain.Reservation.utils;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
-import com.gerardo.swiftentrybackend.dto.reservation.ReservationResponseDTO;
-import com.gerardo.swiftentrybackend.dto.reservation.ReservationUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Reservation.dto.response.ReservationResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Reservation.dto.request.ReservationUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

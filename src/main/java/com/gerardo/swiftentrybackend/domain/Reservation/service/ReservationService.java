@@ -1,8 +1,8 @@
-package com.gerardo.swiftentrybackend.service;
+package com.gerardo.swiftentrybackend.domain.Reservation.service;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
-import com.gerardo.swiftentrybackend.dto.reservation.ReservationResponseDTO;
-import com.gerardo.swiftentrybackend.dto.reservation.ReservationUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Reservation.dto.response.ReservationResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Reservation.dto.request.ReservationUpdateDTO;
 
 import java.util.List;
 

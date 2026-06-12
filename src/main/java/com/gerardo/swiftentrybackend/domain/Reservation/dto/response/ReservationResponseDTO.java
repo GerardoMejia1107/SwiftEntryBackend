@@ -1,7 +1,6 @@
-package com.gerardo.swiftentrybackend.dto.reservation;
+package com.gerardo.swiftentrybackend.domain.Reservation.dto.response;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
-import com.gerardo.swiftentrybackend.dto.reservationseat.ReservationSeatResponseDTO;
 import lombok.*;
 
 import java.math.BigDecimal;

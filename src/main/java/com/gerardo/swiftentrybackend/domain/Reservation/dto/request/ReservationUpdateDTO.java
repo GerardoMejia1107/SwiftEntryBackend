@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.dto.reservation;
+package com.gerardo.swiftentrybackend.domain.Reservation.dto.request;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import jakarta.validation.constraints.DecimalMin;

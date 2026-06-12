@@ -1,9 +1,9 @@
-package com.gerardo.swiftentrybackend.mapper;
+package com.gerardo.swiftentrybackend.domain.Reservation.utils;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationSeatModel;
 import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
-import com.gerardo.swiftentrybackend.dto.reservationseat.ReservationSeatResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Reservation.dto.response.ReservationSeatResponseDTO;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

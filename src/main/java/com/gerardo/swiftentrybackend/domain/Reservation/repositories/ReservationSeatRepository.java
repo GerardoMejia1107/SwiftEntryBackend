@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.repository;
+package com.gerardo.swiftentrybackend.domain.Reservation.repositories;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationSeatModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;

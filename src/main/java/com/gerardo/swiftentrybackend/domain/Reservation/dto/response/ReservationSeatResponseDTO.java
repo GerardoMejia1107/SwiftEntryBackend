@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.dto.reservationseat;
+package com.gerardo.swiftentrybackend.domain.Reservation.dto.response;
 
 import lombok.*;
 

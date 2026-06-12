@@ -1,7 +1,7 @@
-package com.gerardo.swiftentrybackend.service;
+package com.gerardo.swiftentrybackend.domain.Reservation.service;
 
-import com.gerardo.swiftentrybackend.dto.reservationseat.ReservationSeatResponseDTO;
-import com.gerardo.swiftentrybackend.dto.reservationseat.ReservationSeatUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Reservation.dto.response.ReservationSeatResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Reservation.dto.request.ReservationSeatUpdateDTO;
 
 import java.util.List;
 
