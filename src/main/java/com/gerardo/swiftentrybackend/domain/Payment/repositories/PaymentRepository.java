@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.repository;
+package com.gerardo.swiftentrybackend.domain.Payment.repositories;
 
 import com.gerardo.swiftentrybackend.domain.Payment.PaymentModel;
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;

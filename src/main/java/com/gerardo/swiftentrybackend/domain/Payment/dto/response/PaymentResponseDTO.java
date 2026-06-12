@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.dto.payment;
+package com.gerardo.swiftentrybackend.domain.Payment.dto.response;
 
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentMethod;
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;

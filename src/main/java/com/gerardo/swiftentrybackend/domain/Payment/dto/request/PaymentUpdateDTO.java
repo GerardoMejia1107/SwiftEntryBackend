@@ -1,4 +1,4 @@
-package com.gerardo.swiftentrybackend.dto.payment;
+package com.gerardo.swiftentrybackend.domain.Payment.dto.request;
 
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;
 import jakarta.validation.constraints.Size;

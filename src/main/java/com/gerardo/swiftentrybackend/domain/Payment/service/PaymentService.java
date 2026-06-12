@@ -1,9 +1,9 @@
-package com.gerardo.swiftentrybackend.service;
+package com.gerardo.swiftentrybackend.domain.Payment.service;
 
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;
-import com.gerardo.swiftentrybackend.dto.payment.PaymentRequestDTO;
-import com.gerardo.swiftentrybackend.dto.payment.PaymentResponseDTO;
-import com.gerardo.swiftentrybackend.dto.payment.PaymentUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentRequestDTO;
+import com.gerardo.swiftentrybackend.domain.Payment.dto.response.PaymentResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentUpdateDTO;
 
 import java.util.List;
 
