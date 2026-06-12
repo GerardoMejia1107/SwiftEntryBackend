@@ -37,7 +37,7 @@ public class TicketMapper {
         return TicketResponseDTO.builder()
                 .id(model.getId())
                 .reservationId(model.getReservation().getId())
-                .seatId(Math.toIntExact(model.getSeat().getId())) // TODO: fix long to int
+                .seatId(model.getSeat().getId())
                 .seatNumber(model.getSeat().getSeatNumber())
                 .rowLabel(model.getSeat().getRowLabel())
                 .ticketCode(model.getTicketCode())

@@ -29,10 +29,10 @@ public class ReservationSeatMapper {
         return ReservationSeatResponseDTO.builder()
                 .id(model.getId())
                 .reservationId(model.getReservation().getId())
-                .seatId(Math.toIntExact(seat.getId())) // TODO: fix long to int
+                .seatId(seat.getId())
                 .seatNumber(seat.getSeatNumber())
                 .rowLabel(seat.getRowLabel())
-                .localityId(Math.toIntExact(seat.getLocality().getId())) // TODO: fix long to int
+                .localityId(seat.getLocality().getId())
                 .localityName(seat.getLocality().getName())
                 .priceAtReservation(model.getPriceAtReservation())
                 .createdAt(model.getCreatedAt())

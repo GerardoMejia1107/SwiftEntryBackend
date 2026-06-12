@@ -16,11 +16,11 @@ public class ReservationSeatResponseDTO {
 
     private Integer reservationId;
 
-    private Integer seatId;
+    private Long seatId;
     private String seatNumber;
     private String rowLabel;
 
-    private Integer localityId;
+    private Long localityId;
     private String localityName;
 
     private BigDecimal priceAtReservation;

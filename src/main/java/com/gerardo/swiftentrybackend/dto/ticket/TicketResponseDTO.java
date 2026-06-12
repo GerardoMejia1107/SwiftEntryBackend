@@ -16,7 +16,7 @@ public class TicketResponseDTO {
 
     private Integer reservationId;
 
-    private Integer seatId;
+    private Long seatId;
     private String seatNumber;
     private String rowLabel;
 
