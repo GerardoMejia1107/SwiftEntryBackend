@@ -1,0 +1,27 @@
+package com.gerardo.swiftentrybackend.repository;
+
+import com.gerardo.swiftentrybackend.domain.Ticket.TicketModel;
+import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface TicketRepository extends JpaRepository<TicketModel, Integer> {
+
+    List<TicketModel> findByReservationId(Integer reservationId);
+
+    List<TicketModel> findBySeatId(Integer seatId);
+
+    List<TicketModel> findByStatus(TicketStatus status);
+
+    Optional<TicketModel> findByTicketCode(String ticketCode);
+
+    Optional<TicketModel> findByQrCode(String qrCode);
+
+    boolean existsByTicketCode(String ticketCode);
+
+    boolean existsByQrCode(String qrCode);
+
+    boolean existsBySeatIdAndStatus(Integer seatId, TicketStatus status);
+}
