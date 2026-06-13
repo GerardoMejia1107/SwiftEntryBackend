@@ -26,14 +26,22 @@ public class LocalityServiceImpl implements LocalityService {
     @Override
     public LocalityResponseDTO createLocality(LocalityRequestDTO request) {
         EventModel event = eventRepository.findById(request.getEventId())
-                .orElseThrow(() -> new ResourceNotFoundException("Event with id " + request.getEventId() + " not found"));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Event with id " + request.getEventId() + " not found"));
 
         if (localityRepository.existsByNameAndEvent_Id(request.getName(), request.getEventId())) {
             throw new ResourceConflictException("Locality '" + request.getName() + "' already exists for this event");
         }
 
-        LocalityModel locality = localityMapper.toModel(request, event);
-        return localityMapper.toResponse(localityRepository.save(locality));
+        LocalityModel newLocality = LocalityModel.builder()
+                .event(event)
+                .name(request.getName())
+                .description(request.getDescription())
+                .price(request.getPrice())
+                .capacity(request.getCapacity())
+                .build();
+
+        return localityMapper.toResponse(localityRepository.save(newLocality));
     }
 
     @Override

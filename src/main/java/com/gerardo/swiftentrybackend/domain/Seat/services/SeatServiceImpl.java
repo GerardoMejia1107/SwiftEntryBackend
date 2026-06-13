@@ -6,14 +6,18 @@ import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
 import com.gerardo.swiftentrybackend.domain.Seat.dto.request.SeatRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Seat.dto.request.SeatUpdateDTO;
 import com.gerardo.swiftentrybackend.domain.Seat.dto.response.SeatResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Seat.enums.SeatStatus;
 import com.gerardo.swiftentrybackend.domain.Seat.repositories.SeatRepository;
 import com.gerardo.swiftentrybackend.domain.Seat.utils.SeatMapper;
-import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,25 +28,44 @@ public class SeatServiceImpl implements SeatService {
     private final SeatMapper seatMapper;
 
     @Override
-    public SeatResponseDTO createSeat(SeatRequestDTO request) {
+    @Transactional
+    public List<SeatResponseDTO> createSeats(SeatRequestDTO request) {
         LocalityModel locality = localityRepository.findById(request.getLocalityId())
-                .orElseThrow(() -> new ResourceNotFoundException("Locality with id " + request.getLocalityId() + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Locality with id " + request.getLocalityId() + " not found"));
 
-        if (seatRepository.existsBySeatNumberAndLocality_Id(request.getSeatNumber(), request.getLocalityId())) {
-            throw new ResourceConflictException("Seat '" + request.getSeatNumber() + "' already exists in this locality");
-        }
+        List<SeatModel> newSeats = new ArrayList<>();
 
-        SeatModel seat = seatMapper.toModel(request, locality);
-        return seatMapper.toResponse(seatRepository.save(seat));
+        request.getRowLabels()
+                .forEach(rowLabel -> {
+                    for (int seatNumber = 1; seatNumber <= request.getSeatsPerRow(); seatNumber++) {
+                        newSeats.add(
+                                SeatModel.builder()
+                                        .locality(locality)
+                                        .rowLabel(rowLabel)
+                                        .seatNumber(String.valueOf(seatNumber))
+                                        .status(SeatStatus.AVAILABLE)
+                                        .isActive(true)
+                                        .build()
+                        );
+                    }
+                });
+
+        List<SeatModel> savedSeats = seatRepository.saveAll(newSeats);
+
+        locality.setCapacity(savedSeats.size());
+        localityRepository.save(locality);
+
+        return savedSeats.stream()
+                .map(seatMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<SeatResponseDTO> getAllSeats() {
-        return seatRepository.findAll()
-                .stream()
-                .map(seatMapper::toResponse)
-                .toList();
+        return List.of();
     }
+
 
     @Override
     public SeatResponseDTO getSeatById(Long id) {
@@ -62,14 +85,7 @@ public class SeatServiceImpl implements SeatService {
                 .toList();
     }
 
-    @Override
-    public SeatResponseDTO updateSeat(Long id, SeatUpdateDTO request) {
-        SeatModel seat = seatRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Seat with id " + id + " not found"));
 
-        seatMapper.updateModel(seat, request);
-        return seatMapper.toResponse(seatRepository.save(seat));
-    }
 
     @Override
     public void deleteSeat(Long id) {

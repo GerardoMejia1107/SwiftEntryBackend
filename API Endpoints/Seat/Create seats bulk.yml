@@ -1,5 +1,5 @@
 info:
-  name: Create seat
+  name: Create seats bulk
   type: http
   seq: 1
 

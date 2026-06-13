@@ -1,5 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Reservation.service;
 
+import com.gerardo.swiftentrybackend.domain.Reservation.dto.request.ReservationRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import com.gerardo.swiftentrybackend.domain.Reservation.dto.response.ReservationResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Reservation.dto.request.ReservationUpdateDTO;
@@ -7,8 +8,7 @@ import com.gerardo.swiftentrybackend.domain.Reservation.dto.request.ReservationU
 import java.util.List;
 
 public interface ReservationService {
-// TODO: fix ReservationRequestDTO
-//    ReservationResponseDTO createReservation(ReservationRequestDTO requestDTO);
+    ReservationResponseDTO createReservation(ReservationRequestDTO requestDTO);
 
     List<ReservationResponseDTO> getAllReservations();
 

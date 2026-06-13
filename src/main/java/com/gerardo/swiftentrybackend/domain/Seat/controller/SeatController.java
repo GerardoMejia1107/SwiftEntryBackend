@@ -22,10 +22,12 @@ public class SeatController {
     private final SeatService seatService;
     private final ResponseBuilder responseBuilder;
 
-    @PostMapping
-    public ResponseEntity<GeneralResponse> createSeat(@Valid @RequestBody SeatRequestDTO request) {
-        SeatResponseDTO response = seatService.createSeat(request);
-        return responseBuilder.buildResponse("Seat created successfully", HttpStatus.CREATED, response);
+    @PostMapping("/bulk")
+    public ResponseEntity<List<SeatResponseDTO>> createSeats(
+            @Valid @RequestBody SeatRequestDTO request) {
+        List<SeatResponseDTO> response = seatService.createSeats(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @GetMapping
@@ -45,7 +47,8 @@ public class SeatController {
         List<SeatResponseDTO> response = seatService.getSeatsByLocalityId(localityId);
         return responseBuilder.buildResponse("Seats retrieved successfully", HttpStatus.OK, response);
     }
-
+/*
+*
     @PutMapping("/{id}")
     public ResponseEntity<GeneralResponse> updateSeat(
             @PathVariable Long id,
@@ -54,6 +57,7 @@ public class SeatController {
         SeatResponseDTO response = seatService.updateSeat(id, request);
         return responseBuilder.buildResponse("Seat updated successfully", HttpStatus.OK, response);
     }
+* */
 
     @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse> deleteSeat(@PathVariable Long id) {
