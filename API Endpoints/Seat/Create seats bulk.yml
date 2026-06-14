@@ -5,16 +5,14 @@ info:
 
 http:
   method: POST
-  url: "{{swift_entry_base_uri}}/seats"
+  url: "{{swift_entry_base_uri}}/seats/bulk"
   body:
     type: json
     data: |-
       {
         "localityId": 1,
-        "seatNumber": "A-01",
-        "rowLabel": "A",
-        "status": "AVAILABLE",
-        "qrHash": "seat-a01-locality-1"
+        "seatsPerRow": 10,
+        "rowLabels": ["A", "B", "C"]
       }
   auth: inherit
 

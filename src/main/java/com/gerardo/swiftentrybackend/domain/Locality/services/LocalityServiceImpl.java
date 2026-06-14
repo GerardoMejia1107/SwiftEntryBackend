@@ -25,7 +25,7 @@ public class LocalityServiceImpl implements LocalityService {
 
     @Override
     public LocalityResponseDTO createLocality(LocalityRequestDTO request) {
-        EventModel event = eventRepository.findById(request.getEventId())
+        /*EventModel event = eventRepository.findById(request.getEventId())
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Event with id " + request.getEventId() + " not found"));
 
@@ -39,9 +39,9 @@ public class LocalityServiceImpl implements LocalityService {
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .capacity(request.getCapacity())
-                .build();
+                .build();*/
 
-        return localityMapper.toResponse(localityRepository.save(newLocality));
+        return null;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.gerardo.swiftentrybackend.domain.Address.dto.request.AddressRequestDT
 import com.gerardo.swiftentrybackend.domain.Address.model.AddressModel;
 import com.gerardo.swiftentrybackend.domain.Event.enums.EventCategory;
 import com.gerardo.swiftentrybackend.domain.Event.enums.EventStatus;
+import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityRequestDTO;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -52,4 +54,8 @@ public class EventRequestDTO {
 
     @Size(max = 500, message = "Image URL cannot exceed 500 characters")
     private String imageUrl;
+
+    @NotNull(message = "At least one locality is required")
+    @Size(min = 1, message = "At least one locality is required")
+    private List<LocalityRequestDTO> localities;
 }

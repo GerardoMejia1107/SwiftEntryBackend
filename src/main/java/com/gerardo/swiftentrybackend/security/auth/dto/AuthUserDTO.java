@@ -7,10 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthResponseDTO {
-    private String accessToken;
-    private String refreshToken;
-    private String tokenType;
+public class AuthUserDTO {
+    private Integer id;
+    private String name;
+    private String lastName;
+    private String email;
     private String role;
-    private AuthUserDTO user;
 }

@@ -1,0 +1,49 @@
+info:
+  name: Create a new event
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/events"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Concierto de Rock",
+        "description": "Una noche épica de rock en vivo",
+        "category": "CONCERT",
+        "organizerId": 1,
+        "status": "PUBLISHED",
+        "startDate": "2026-08-15T20:00:00",
+        "endDate": "2026-08-15T23:00:00",
+        "venueName": "Estadio Nacional",
+        "imageUrl": "https://example.com/image.jpg",
+        "address": {
+          "streetAddress": "Calle Principal #123",
+          "neighborhood": "Colonia Escalón",
+          "municipality": "San Salvador",
+          "department": "San Salvador",
+          "country": "El Salvador",
+          "referencePoint": "Frente al parque central"
+        },
+        "localities": [
+          {
+            "name": "VIP",
+            "description": "Zona frontal con mejor vista",
+            "price": 150.00
+          },
+          {
+            "name": "General",
+            "description": "Zona general",
+            "price": 50.00
+          }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

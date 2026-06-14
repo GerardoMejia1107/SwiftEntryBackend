@@ -16,16 +16,14 @@ public class LocalityMapper {
                 .name(request.getName())
                 .description(request.getDescription())
                 .price(request.getPrice())
-                .capacity(request.getCapacity())
-                .availableSlots(request.getAvailableSlots())
+                .capacity(0)
+                .availableSlots(0)
                 .build();
     }
 
     public LocalityResponseDTO toResponse(LocalityModel locality) {
         return LocalityResponseDTO.builder()
                 .id(locality.getId())
-                .eventId(locality.getEvent() != null ? locality.getEvent().getId() : null)
-                .eventName(locality.getEvent() != null ? locality.getEvent().getName() : null)
                 .name(locality.getName())
                 .description(locality.getDescription())
                 .price(locality.getPrice())

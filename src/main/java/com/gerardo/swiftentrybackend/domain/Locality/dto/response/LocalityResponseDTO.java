@@ -11,24 +11,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class LocalityResponseDTO {
-
     private Long id;
-
-    private Integer eventId;
-
-    private String eventName;
-
     private String name;
-
     private String description;
-
     private BigDecimal price;
-
     private Integer capacity;
-
     private Integer availableSlots;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 }

@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 @Builder
 public class LocalityRequestDTO {
 
-    @NotNull(message = "Event id is required")
-    private Integer eventId;
+    /*@NotNull(message = "Event id is required")
+    private Integer eventId;*/
 
     @NotBlank(message = "Locality name is required")
     @Size(max = 100, message = "Locality name cannot exceed 100 characters")
@@ -25,11 +25,11 @@ public class LocalityRequestDTO {
     @DecimalMin(value = "0.00", message = "Price must be zero or greater")
     private BigDecimal price;
 
-    @NotNull(message = "Capacity is required")
+    /*@NotNull(message = "Capacity is required")
     @Min(value = 1, message = "Capacity must be at least 1")
-    private Integer capacity;
+    private Integer capacity;*/
 
-    @NotNull(message = "Available slots is required")
+   /* @NotNull(message = "Available slots is required")
     @Min(value = 0, message = "Available slots cannot be negative")
-    private Integer availableSlots;
+    private Integer availableSlots;*/
 }
