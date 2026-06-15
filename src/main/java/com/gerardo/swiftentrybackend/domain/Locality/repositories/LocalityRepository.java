@@ -8,4 +8,8 @@ import java.util.List;
 public interface LocalityRepository extends JpaRepository<LocalityModel, Long> {
     boolean existsByNameAndEvent_Id(String name, Integer eventId);
     List<LocalityModel> findAllByEvent_Id(Integer eventId);
+
+    LocalityModel findByName(String name);
+
+    LocalityModel findByNameAndEvent_Id(String name, Integer eventId);
 }

@@ -12,6 +12,8 @@ import java.util.List;
 public interface SeatRepository extends JpaRepository<SeatModel, Long> {
     boolean existsBySeatNumberAndLocality_Id(String seatNumber, Long localityId);
 
+    boolean existsByLocality_Id(Long localityId);
+
     List<SeatModel> findAllByLocality_Id(Long localityId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

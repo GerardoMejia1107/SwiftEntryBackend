@@ -20,7 +20,7 @@ public class EventResponseDTO {
     private EventCategory category;
     private Integer organizerId;
     private String organizerName;
-    private Integer addressId;
+    //private Integer addressId;
     private EventStatus status;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

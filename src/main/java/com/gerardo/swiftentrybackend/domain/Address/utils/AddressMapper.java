@@ -19,6 +19,15 @@ public class AddressMapper {
                 .build();
     }
 
+    public void updateModel(AddressModel address, AddressRequestDTO request) {
+        if (request.getStreetAddress() != null) address.setStreetAddress(request.getStreetAddress());
+        if (request.getNeighborhood() != null) address.setNeighborhood(request.getNeighborhood());
+        if (request.getMunicipality() != null) address.setMunicipality(request.getMunicipality());
+        if (request.getDepartment() != null) address.setDepartment(request.getDepartment());
+        if (request.getCountry() != null) address.setCountry(request.getCountry());
+        if (request.getReferencePoint() != null) address.setReferencePoint(request.getReferencePoint());
+    }
+
     public AddressResponseDTO toResponse(AddressModel address) {
         return AddressResponseDTO.builder()
                 .id(address.getId())

@@ -5,21 +5,30 @@ import com.gerardo.swiftentrybackend.domain.Address.repositories.AddressReposito
 import com.gerardo.swiftentrybackend.domain.Address.utils.AddressMapper;
 import com.gerardo.swiftentrybackend.domain.Event.EventModel;
 import com.gerardo.swiftentrybackend.domain.Event.dto.request.EventRequestDTO;
+import com.gerardo.swiftentrybackend.domain.Event.dto.request.EventUpdateDTO;
 import com.gerardo.swiftentrybackend.domain.Event.dto.response.EventResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Event.repositories.EventRepository;
 import com.gerardo.swiftentrybackend.domain.Event.utils.EventMapper;
 import com.gerardo.swiftentrybackend.domain.Locality.LocalityModel;
+import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityUpdateDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.repositories.LocalityRepository;
 import com.gerardo.swiftentrybackend.domain.Locality.utils.LocalityMapper;
+import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationSeatRepository;
+import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
+import com.gerardo.swiftentrybackend.domain.Seat.repositories.SeatRepository;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
+import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +40,8 @@ public class EventServiceImpl implements EventService {
     private final AddressMapper addressMapper;
     private final LocalityMapper localityMapper;
     private final LocalityRepository localityRepository;
+    private final SeatRepository seatRepository;
+    private final ReservationSeatRepository reservationSeatRepository;
 
     @Override
     public EventResponseDTO createEvent(EventRequestDTO eventRequestDTO) {
@@ -77,21 +88,125 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventResponseDTO> getAllEvents() {
-        return null;
+
+        return eventRepository.findAll()
+                .stream()
+                .map(event -> {
+                    List<LocalityModel> localities = localityRepository.findAllByEvent_Id(event.getId());
+                    return eventMapper.toResponse(event, localities);
+                })
+                .toList();
     }
 
     @Override
     public EventResponseDTO getEventById(Integer id) {
-        return null;
+        EventModel event = eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
+        List<LocalityModel> localities = localityRepository.findAllByEvent_Id(id);
+        return eventMapper.toResponse(event, localities);
     }
 
     @Override
-    public EventResponseDTO updateEvent(Integer id, EventRequestDTO request) {
-        return null;
+    @Transactional
+    public EventResponseDTO updateEvent(Integer id, EventUpdateDTO request) {
+        EventModel event = eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
+
+        if (request.getName() != null) event.setName(request.getName());
+        if (request.getDescription() != null) event.setDescription(request.getDescription());
+        if (request.getCategory() != null) event.setCategory(request.getCategory());
+        if (request.getStatus() != null) event.setStatus(request.getStatus());
+        if (request.getStartDate() != null) event.setStartDate(request.getStartDate());
+        if (request.getEndDate() != null) event.setEndDate(request.getEndDate());
+        if (request.getVenueName() != null) event.setVenueName(request.getVenueName());
+        if (request.getImageUrl() != null) event.setImageUrl(request.getImageUrl());
+
+        if (request.getAddress() != null) {
+            AddressModel address = event.getAddress();
+            if (address == null) {
+                address = addressMapper.toModel(request.getAddress());
+                AddressModel savedAddress = addressRepository.save(address);
+                event.setAddress(savedAddress);
+            } else {
+                addressMapper.updateModel(address, request.getAddress());
+                addressRepository.save(address);
+            }
+        }
+
+        EventModel savedEvent = eventRepository.save(event);
+
+        List<LocalityModel> finalLocalities;
+        if (request.getLocalities() != null) {
+            finalLocalities = processLocalityUpdates(savedEvent, request.getLocalities());
+        } else {
+            finalLocalities = localityRepository.findAllByEvent_Id(id);
+        }
+
+        return eventMapper.toResponse(savedEvent, finalLocalities);
     }
 
     @Override
+    @Transactional
     public void deleteEvent(Integer id) {
+        EventModel event = eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
 
+        if (reservationSeatRepository.existsBySeat_Locality_Event_Id(id)) {
+            throw new ForbiddenOperationException(
+                    "Cannot delete event with id " + id + " because it has existing reservations. " +
+                    "Cancel the event instead by setting its status to CANCELLED."
+            );
+        }
+
+        List<LocalityModel> localities = localityRepository.findAllByEvent_Id(id);
+        for (LocalityModel locality : localities) {
+            List<SeatModel> seats = seatRepository.findAllByLocality_Id(locality.getId());
+            seatRepository.deleteAll(seats);
+        }
+        localityRepository.deleteAll(localities);
+
+        AddressModel address = event.getAddress();
+        eventRepository.delete(event);
+        if (address != null) {
+            addressRepository.delete(address);
+        }
+    }
+
+    private List<LocalityModel> processLocalityUpdates(EventModel event, List<LocalityUpdateDTO> requestLocalities) {
+        List<LocalityModel> existingLocalities = localityRepository.findAllByEvent_Id(event.getId());
+        Set<Long> incomingIds = requestLocalities.stream()
+                .filter(dto -> dto.getId() != null)
+                .map(LocalityUpdateDTO::getId)
+                .collect(Collectors.toSet());
+
+        for (LocalityModel existing : existingLocalities) {
+            if (!incomingIds.contains(existing.getId())) {
+                if (seatRepository.existsByLocality_Id(existing.getId())) {
+                    throw new ForbiddenOperationException(
+                            "Cannot remove locality '" + existing.getName() + "' because it has associated seats."
+                    );
+                }
+                localityRepository.delete(existing);
+            }
+        }
+
+        List<LocalityModel> result = new ArrayList<>();
+        for (LocalityUpdateDTO dto : requestLocalities) {
+            if (dto.getId() != null) {
+                LocalityModel existing = existingLocalities.stream()
+                        .filter(l -> l.getId().equals(dto.getId()))
+                        .findFirst()
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Locality not found with id: " + dto.getId()));
+                localityMapper.updateModel(existing, dto);
+                result.add(localityRepository.save(existing));
+            } else {
+                if (dto.getName() == null || dto.getPrice() == null) {
+                    throw new ResourceConflictException("New localities require at least 'name' and 'price'.");
+                }
+                result.add(localityRepository.save(localityMapper.toModel(dto, event)));
+            }
+        }
+        return result;
     }
 }

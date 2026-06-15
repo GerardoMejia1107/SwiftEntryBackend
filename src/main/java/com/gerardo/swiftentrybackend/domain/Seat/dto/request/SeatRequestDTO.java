@@ -12,8 +12,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class SeatRequestDTO {
-    @NotNull(message = "Locality id is required")
-    private Long localityId;
+    private String localityName;
+    private Integer eventId;
 
     @NotNull(message = "Seats per row are required")
     private Integer seatsPerRow;

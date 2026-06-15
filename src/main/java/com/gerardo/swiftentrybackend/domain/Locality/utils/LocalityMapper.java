@@ -21,6 +21,17 @@ public class LocalityMapper {
                 .build();
     }
 
+    public LocalityModel toModel(LocalityUpdateDTO dto, EventModel event) {
+        return LocalityModel.builder()
+                .event(event)
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .price(dto.getPrice())
+                .capacity(0)
+                .availableSlots(0)
+                .build();
+    }
+
     public LocalityResponseDTO toResponse(LocalityModel locality) {
         return LocalityResponseDTO.builder()
                 .id(locality.getId())

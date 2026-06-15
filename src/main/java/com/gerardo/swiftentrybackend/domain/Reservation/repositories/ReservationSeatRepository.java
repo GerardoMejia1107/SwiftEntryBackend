@@ -18,6 +18,8 @@ public interface ReservationSeatRepository extends JpaRepository<ReservationSeat
             ReservationStatus status
     );
 
+    boolean existsBySeat_Locality_Event_Id(Integer eventId);
+
     Optional<ReservationSeatModel> findByReservationIdAndSeatId(
             Integer reservationId,
             Integer seatId

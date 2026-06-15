@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 @Builder
 public class LocalityUpdateDTO {
 
+    private Long id;
+
     @Size(max = 100, message = "Locality name cannot exceed 100 characters")
     private String name;
 

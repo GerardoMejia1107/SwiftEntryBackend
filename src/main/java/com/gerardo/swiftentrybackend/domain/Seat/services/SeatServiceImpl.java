@@ -1,5 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Seat.services;
 
+import com.gerardo.swiftentrybackend.domain.Event.EventModel;
+import com.gerardo.swiftentrybackend.domain.Event.repositories.EventRepository;
 import com.gerardo.swiftentrybackend.domain.Locality.LocalityModel;
 import com.gerardo.swiftentrybackend.domain.Locality.repositories.LocalityRepository;
 import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
@@ -26,13 +28,15 @@ public class SeatServiceImpl implements SeatService {
     private final SeatRepository seatRepository;
     private final LocalityRepository localityRepository;
     private final SeatMapper seatMapper;
+    private final EventRepository eventRepository;
 
     @Override
     @Transactional
     public List<SeatResponseDTO> createSeats(SeatRequestDTO request) {
-        LocalityModel locality = localityRepository.findById(request.getLocalityId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Locality with id " + request.getLocalityId() + " not found"));
+        EventModel eventOfLocality = eventRepository.findById(request.getEventId())
+                .orElseThrow();
+        LocalityModel localityToFill = localityRepository.findByNameAndEvent_Id(request.getLocalityName(),
+                eventOfLocality.getId());
 
         List<SeatModel> newSeats = new ArrayList<>();
 
@@ -41,7 +45,7 @@ public class SeatServiceImpl implements SeatService {
                     for (int seatNumber = 1; seatNumber <= request.getSeatsPerRow(); seatNumber++) {
                         newSeats.add(
                                 SeatModel.builder()
-                                        .locality(locality)
+                                        .locality(localityToFill)
                                         .rowLabel(rowLabel)
                                         .seatNumber(String.valueOf(seatNumber))
                                         .status(SeatStatus.AVAILABLE)
@@ -53,8 +57,8 @@ public class SeatServiceImpl implements SeatService {
 
         List<SeatModel> savedSeats = seatRepository.saveAll(newSeats);
 
-        locality.setCapacity(savedSeats.size());
-        localityRepository.save(locality);
+        localityToFill.setCapacity(savedSeats.size());
+        localityRepository.save(localityToFill);
 
         return savedSeats.stream()
                 .map(seatMapper::toResponse)
@@ -84,7 +88,6 @@ public class SeatServiceImpl implements SeatService {
                 .map(seatMapper::toResponse)
                 .toList();
     }
-
 
 
     @Override

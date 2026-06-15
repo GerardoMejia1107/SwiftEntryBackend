@@ -3,6 +3,7 @@ package com.gerardo.swiftentrybackend.domain.Event.controller;
 import com.gerardo.swiftentrybackend.common.components.ResponseBuilder;
 import com.gerardo.swiftentrybackend.common.dto.GeneralResponse;
 import com.gerardo.swiftentrybackend.domain.Event.dto.request.EventRequestDTO;
+import com.gerardo.swiftentrybackend.domain.Event.dto.request.EventUpdateDTO;
 import com.gerardo.swiftentrybackend.domain.Event.dto.response.EventResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Event.services.EventService;
 import jakarta.validation.Valid;
@@ -37,6 +38,39 @@ public class EventController {
                 "Events retrieved successfully",
                 HttpStatus.OK,
                 response
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneralResponse> getEventById(@PathVariable Integer id) {
+        EventResponseDTO response = eventService.getEventById(id);
+        return responseBuilder.buildResponse(
+                "Event retrieved successfully",
+                HttpStatus.OK,
+                response
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<GeneralResponse> updateEvent(
+            @PathVariable Integer id,
+            @Valid @RequestBody EventUpdateDTO request
+    ) {
+        EventResponseDTO response = eventService.updateEvent(id, request);
+        return responseBuilder.buildResponse(
+                "Event updated successfully",
+                HttpStatus.OK,
+                response
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<GeneralResponse> deleteEvent(@PathVariable Integer id) {
+        eventService.deleteEvent(id);
+        return responseBuilder.buildResponse(
+                "Event deleted successfully",
+                HttpStatus.OK,
+                null
         );
     }
 }
