@@ -27,8 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -174,23 +172,7 @@ public class EventServiceImpl implements EventService {
 
     private List<LocalityModel> processLocalityUpdates(EventModel event, List<LocalityUpdateDTO> requestLocalities) {
         List<LocalityModel> existingLocalities = localityRepository.findAllByEvent_Id(event.getId());
-        Set<Long> incomingIds = requestLocalities.stream()
-                .filter(dto -> dto.getId() != null)
-                .map(LocalityUpdateDTO::getId)
-                .collect(Collectors.toSet());
 
-        for (LocalityModel existing : existingLocalities) {
-            if (!incomingIds.contains(existing.getId())) {
-                if (seatRepository.existsByLocality_Id(existing.getId())) {
-                    throw new ForbiddenOperationException(
-                            "Cannot remove locality '" + existing.getName() + "' because it has associated seats."
-                    );
-                }
-                localityRepository.delete(existing);
-            }
-        }
-
-        List<LocalityModel> result = new ArrayList<>();
         for (LocalityUpdateDTO dto : requestLocalities) {
             if (dto.getId() != null) {
                 LocalityModel existing = existingLocalities.stream()
@@ -199,14 +181,15 @@ public class EventServiceImpl implements EventService {
                         .orElseThrow(() -> new ResourceNotFoundException(
                                 "Locality not found with id: " + dto.getId()));
                 localityMapper.updateModel(existing, dto);
-                result.add(localityRepository.save(existing));
+                localityRepository.save(existing);
             } else {
                 if (dto.getName() == null || dto.getPrice() == null) {
                     throw new ResourceConflictException("New localities require at least 'name' and 'price'.");
                 }
-                result.add(localityRepository.save(localityMapper.toModel(dto, event)));
+                localityRepository.save(localityMapper.toModel(dto, event));
             }
         }
-        return result;
+
+        return localityRepository.findAllByEvent_Id(event.getId());
     }
 }

@@ -6,6 +6,12 @@ info:
 http:
   method: POST
   url: "{{swift_entry_base_uri}}/login"
+  body:
+    type: json
+    data: |-
+      {
+        
+      }
   auth: inherit
 
 settings:
