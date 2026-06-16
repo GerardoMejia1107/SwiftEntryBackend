@@ -41,6 +41,16 @@ public class EventController {
         );
     }
 
+    @GetMapping("/organizer/{id}")
+    public ResponseEntity<GeneralResponse> getAllEventsByOrganizerId(@PathVariable Integer id) {
+        List<EventResponseDTO> response = eventService.getEventsByOrganizerId(id);
+        return responseBuilder.buildResponse(
+                "Events retrieved successfully",
+                HttpStatus.OK,
+                response
+        );
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GeneralResponse> getEventById(@PathVariable Integer id) {
         EventResponseDTO response = eventService.getEventById(id);

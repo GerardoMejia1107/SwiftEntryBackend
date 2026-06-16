@@ -11,6 +11,8 @@ public interface EventService {
 
     List<EventResponseDTO> getAllEvents();
 
+    List<EventResponseDTO> getEventsByOrganizerId(Integer userId);
+
     EventResponseDTO getEventById(Integer id);
 
     EventResponseDTO updateEvent(Integer id, EventUpdateDTO request);

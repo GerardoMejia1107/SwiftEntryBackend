@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
                 role,
                 passwordHash
         );
-
+    
         return userMapper.toResponse(userRepository.save(user));
     }
 

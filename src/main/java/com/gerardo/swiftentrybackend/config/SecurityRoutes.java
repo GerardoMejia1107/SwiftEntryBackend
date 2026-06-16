@@ -15,10 +15,11 @@ public final class SecurityRoutes {
     };
 
     public static final String[] ADMIN_GET_ENDPOINTS = {
-            "/swift_entry/users", "/swift_entry/events", "/swift_entry/roles"
+            "/swift_entry/users", "/swift_entry/events", "/swift_entry/roles",
     };
 
     public static final String[] AUTHENTICATED_GET_ENDPOINTS = {
-            "/swift_entry/users/**"
+            "/swift_entry/users/**",
+            "/swift_entry/events/*"
     };
 }

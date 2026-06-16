@@ -97,6 +97,20 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<EventResponseDTO> getEventsByOrganizerId(Integer userId) {
+        UserModel organizer = userRepository.findById(userId)
+                .orElseThrow();
+
+        return eventRepository.findAllByOrganizer_Id(userId)
+                .stream()
+                .map(event -> {
+                    List<LocalityModel> localities = localityRepository.findAllByEvent_Id(event.getId());
+                    return eventMapper.toResponse(event, localities);
+                })
+                .toList();
+    }
+
+    @Override
     public EventResponseDTO getEventById(Integer id) {
         EventModel event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
@@ -152,7 +166,7 @@ public class EventServiceImpl implements EventService {
         if (reservationSeatRepository.existsBySeat_Locality_Event_Id(id)) {
             throw new ForbiddenOperationException(
                     "Cannot delete event with id " + id + " because it has existing reservations. " +
-                    "Cancel the event instead by setting its status to CANCELLED."
+                            "Cancel the event instead by setting its status to CANCELLED."
             );
         }
 
@@ -176,7 +190,8 @@ public class EventServiceImpl implements EventService {
         for (LocalityUpdateDTO dto : requestLocalities) {
             if (dto.getId() != null) {
                 LocalityModel existing = existingLocalities.stream()
-                        .filter(l -> l.getId().equals(dto.getId()))
+                        .filter(l -> l.getId()
+                                .equals(dto.getId()))
                         .findFirst()
                         .orElseThrow(() -> new ResourceNotFoundException(
                                 "Locality not found with id: " + dto.getId()));
