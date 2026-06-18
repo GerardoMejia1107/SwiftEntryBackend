@@ -14,8 +14,7 @@ import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityUpdateD
 import com.gerardo.swiftentrybackend.domain.Locality.repositories.LocalityRepository;
 import com.gerardo.swiftentrybackend.domain.Locality.utils.LocalityMapper;
 import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationSeatRepository;
-import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
-import com.gerardo.swiftentrybackend.domain.Seat.repositories.SeatRepository;
+import com.gerardo.swiftentrybackend.domain.Seat.repositories.LocalitySeatRepository;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
 import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
@@ -27,6 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class EventServiceImpl implements EventService {
     private final AddressMapper addressMapper;
     private final LocalityMapper localityMapper;
     private final LocalityRepository localityRepository;
-    private final SeatRepository seatRepository;
+    private final LocalitySeatRepository localitySeatRepository;
     private final ReservationSeatRepository reservationSeatRepository;
 
     @Override
@@ -46,18 +48,12 @@ public class EventServiceImpl implements EventService {
         UserModel organizer = userRepository.findById(eventRequestDTO.getOrganizerId())
                 .orElseThrow();
         AddressModel eventAddress = AddressModel.builder()
-                .streetAddress(eventRequestDTO.getAddress()
-                        .getStreetAddress())
-                .neighborhood(eventRequestDTO.getAddress()
-                        .getNeighborhood())
-                .municipality(eventRequestDTO.getAddress()
-                        .getMunicipality())
-                .department(eventRequestDTO.getAddress()
-                        .getDepartment())
-                .country(eventRequestDTO.getAddress()
-                        .getCountry())
-                .referencePoint(eventRequestDTO.getAddress()
-                        .getReferencePoint())
+                .streetAddress(eventRequestDTO.getAddress().getStreetAddress())
+                .neighborhood(eventRequestDTO.getAddress().getNeighborhood())
+                .municipality(eventRequestDTO.getAddress().getMunicipality())
+                .department(eventRequestDTO.getAddress().getDepartment())
+                .country(eventRequestDTO.getAddress().getCountry())
+                .referencePoint(eventRequestDTO.getAddress().getReferencePoint())
                 .build();
         AddressModel savedAddress = addressRepository.save(eventAddress);
         EventModel event = EventModel.builder()
@@ -75,18 +71,16 @@ public class EventServiceImpl implements EventService {
         EventModel savedEvent = eventRepository.save(event);
         List<LocalityModel> savedLocalities = new ArrayList<>();
 
-        eventRequestDTO.getLocalities()
-                .forEach(localityRequestDTO -> {
-                    LocalityModel newLocality = localityMapper.toModel(localityRequestDTO, savedEvent);
-                    savedLocalities.add(localityRepository.save(newLocality));
-                });
+        eventRequestDTO.getLocalities().forEach(localityRequestDTO -> {
+            LocalityModel newLocality = localityMapper.toModel(localityRequestDTO, savedEvent);
+            savedLocalities.add(localityRepository.save(newLocality));
+        });
 
         return eventMapper.toResponse(savedEvent, savedLocalities);
     }
 
     @Override
     public List<EventResponseDTO> getAllEvents() {
-
         return eventRepository.findAll()
                 .stream()
                 .map(event -> {
@@ -98,8 +92,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventResponseDTO> getEventsByOrganizerId(Integer userId) {
-        UserModel organizer = userRepository.findById(userId)
-                .orElseThrow();
+        userRepository.findById(userId).orElseThrow();
 
         return eventRepository.findAllByOrganizer_Id(userId)
                 .stream()
@@ -136,8 +129,7 @@ public class EventServiceImpl implements EventService {
         if (request.getAddress() != null) {
             AddressModel address = event.getAddress();
             if (address == null) {
-                address = addressMapper.toModel(request.getAddress());
-                AddressModel savedAddress = addressRepository.save(address);
+                AddressModel savedAddress = addressRepository.save(addressMapper.toModel(request.getAddress()));
                 event.setAddress(savedAddress);
             } else {
                 addressMapper.updateModel(address, request.getAddress());
@@ -163,7 +155,7 @@ public class EventServiceImpl implements EventService {
         EventModel event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
 
-        if (reservationSeatRepository.existsBySeat_Locality_Event_Id(id)) {
+        if (reservationSeatRepository.existsByLocalitySeat_Locality_Event_Id(id)) {
             throw new ForbiddenOperationException(
                     "Cannot delete event with id " + id + " because it has existing reservations. " +
                             "Cancel the event instead by setting its status to CANCELLED."
@@ -172,8 +164,7 @@ public class EventServiceImpl implements EventService {
 
         List<LocalityModel> localities = localityRepository.findAllByEvent_Id(id);
         for (LocalityModel locality : localities) {
-            List<SeatModel> seats = seatRepository.findAllByLocality_Id(locality.getId());
-            seatRepository.deleteAll(seats);
+            localitySeatRepository.deleteAllByLocality_Id(locality.getId());
         }
         localityRepository.deleteAll(localities);
 
@@ -187,11 +178,26 @@ public class EventServiceImpl implements EventService {
     private List<LocalityModel> processLocalityUpdates(EventModel event, List<LocalityUpdateDTO> requestLocalities) {
         List<LocalityModel> existingLocalities = localityRepository.findAllByEvent_Id(event.getId());
 
+        Set<Long> incomingIds = requestLocalities.stream()
+                .map(LocalityUpdateDTO::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        for (LocalityModel existing : existingLocalities) {
+            if (!incomingIds.contains(existing.getId())) {
+                if (reservationSeatRepository.existsByLocalitySeat_Locality_Id(existing.getId())) {
+                    throw new ForbiddenOperationException(
+                            "Cannot remove locality '" + existing.getName() + "' because it has existing reservations.");
+                }
+                localitySeatRepository.deleteAllByLocality_Id(existing.getId());
+                localityRepository.delete(existing);
+            }
+        }
+
         for (LocalityUpdateDTO dto : requestLocalities) {
             if (dto.getId() != null) {
                 LocalityModel existing = existingLocalities.stream()
-                        .filter(l -> l.getId()
-                                .equals(dto.getId()))
+                        .filter(l -> l.getId().equals(dto.getId()))
                         .findFirst()
                         .orElseThrow(() -> new ResourceNotFoundException(
                                 "Locality not found with id: " + dto.getId()));

@@ -9,19 +9,17 @@ import java.util.Optional;
 
 public interface ReservationSeatRepository extends JpaRepository<ReservationSeatModel, Integer> {
 
-    List<ReservationSeatModel> findByReservationId(Integer reservationId);
+    List<ReservationSeatModel> findByReservation_Id(Integer reservationId);
 
-    List<ReservationSeatModel> findBySeatId(Integer seatId);
+    List<ReservationSeatModel> findByLocalitySeat_Id(Long localitySeatId);
 
-    boolean existsBySeatIdAndReservationStatus(
-            Integer seatId,
-            ReservationStatus status
-    );
+    boolean existsByLocalitySeat_IdAndReservation_Status(Long localitySeatId, ReservationStatus status);
 
-    boolean existsBySeat_Locality_Event_Id(Integer eventId);
+    boolean existsByLocalitySeat_Locality_Event_Id(Integer eventId);
 
-    Optional<ReservationSeatModel> findByReservationIdAndSeatId(
-            Integer reservationId,
-            Integer seatId
-    );
+    boolean existsByLocalitySeat_Locality_Id(Long localityId);
+
+    boolean existsByLocalitySeat_Seat_Id(Long seatId);
+
+    Optional<ReservationSeatModel> findByReservation_IdAndLocalitySeat_Id(Integer reservationId, Long localitySeatId);
 }

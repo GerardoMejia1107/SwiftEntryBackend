@@ -2,7 +2,7 @@ package com.gerardo.swiftentrybackend.domain.Reservation.utils;
 
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationSeatModel;
-import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
+import com.gerardo.swiftentrybackend.domain.Seat.LocalitySeatModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.dto.response.ReservationSeatResponseDTO;
 import org.springframework.stereotype.Component;
 
@@ -13,27 +13,27 @@ public class ReservationSeatMapper {
 
     public ReservationSeatModel toModel(
             ReservationModel reservation,
-            SeatModel seat,
+            LocalitySeatModel localitySeat,
             BigDecimal priceAtReservation
     ) {
         return ReservationSeatModel.builder()
                 .reservation(reservation)
-                .seat(seat)
+                .localitySeat(localitySeat)
                 .priceAtReservation(priceAtReservation)
                 .build();
     }
 
     public ReservationSeatResponseDTO toResponse(ReservationSeatModel model) {
-        SeatModel seat = model.getSeat();
+        LocalitySeatModel localitySeat = model.getLocalitySeat();
 
         return ReservationSeatResponseDTO.builder()
                 .id(model.getId())
                 .reservationId(model.getReservation().getId())
-                .seatId(seat.getId())
-                .seatNumber(seat.getSeatNumber())
-                .rowLabel(seat.getRowLabel())
-                .localityId(seat.getLocality().getId())
-                .localityName(seat.getLocality().getName())
+                .seatId(localitySeat.getSeat().getId())
+                .seatNumber(localitySeat.getSeat().getSeatNumber())
+                .rowLabel(localitySeat.getSeat().getRowLabel())
+                .localityId(localitySeat.getLocality().getId())
+                .localityName(localitySeat.getLocality().getName())
                 .priceAtReservation(model.getPriceAtReservation())
                 .createdAt(model.getCreatedAt())
                 .updatedAt(model.getUpdatedAt())

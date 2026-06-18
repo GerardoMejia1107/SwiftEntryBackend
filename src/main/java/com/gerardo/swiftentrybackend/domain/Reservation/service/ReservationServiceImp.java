@@ -10,9 +10,9 @@ import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationRepository;
 import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationSeatRepository;
 import com.gerardo.swiftentrybackend.domain.Reservation.utils.ReservationMapper;
-import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
+import com.gerardo.swiftentrybackend.domain.Seat.LocalitySeatModel;
 import com.gerardo.swiftentrybackend.domain.Seat.enums.SeatStatus;
-import com.gerardo.swiftentrybackend.domain.Seat.repositories.SeatRepository;
+import com.gerardo.swiftentrybackend.domain.Seat.repositories.LocalitySeatRepository;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,39 +27,33 @@ import java.util.List;
 public class ReservationServiceImp implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationSeatRepository reservationSeatRepository;
-    private final SeatRepository seatRepository;
+    private final LocalitySeatRepository localitySeatRepository;
     private final UserRepository userRepository;
-
     private final ReservationMapper reservationMapper;
-
 
     @Override
     public ReservationResponseDTO createReservation(ReservationRequestDTO requestDTO) {
         UserModel userMakingReservation = userRepository.findById(requestDTO.getUserId())
                 .orElseThrow();
 
-        List<SeatModel> seatsListReserved = seatRepository.findAllByIdWithLock(requestDTO.getSeatIds());
+        List<LocalitySeatModel> seatsReserved = localitySeatRepository.findAllByIdWithLock(requestDTO.getSeatIds());
 
-        if (seatsListReserved.size() != requestDTO.getSeatIds()
-                .size()) {
+        if (seatsReserved.size() != requestDTO.getSeatIds().size()) {
             throw new ResourceNotFoundException("One or more seats not found");
         }
 
-        seatsListReserved.forEach(seatModel -> {
-            if (!seatModel.getStatus()
-                    .equals(SeatStatus.AVAILABLE)) {
+        seatsReserved.forEach(localitySeat -> {
+            if (!localitySeat.getStatus().equals(SeatStatus.AVAILABLE)) {
                 throw new ResourceNotFoundException("One or more seats are not available");
             }
         });
 
-        BigDecimal subtotal = seatsListReserved.stream()
-                .map(seatModel -> seatModel.getLocality()
-                        .getPrice())
+        BigDecimal subtotal = seatsReserved.stream()
+                .map(localitySeat -> localitySeat.getLocality().getPrice())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal taxAmount = subtotal.multiply(BigDecimal.valueOf(0.13));
         BigDecimal discountAmount = BigDecimal.valueOf(0.00);
-        BigDecimal totalAmount = subtotal.add(taxAmount)
-                .subtract(discountAmount);
+        BigDecimal totalAmount = subtotal.add(taxAmount).subtract(discountAmount);
 
         ReservationModel reservationMade = reservationMapper.toModel(
                 userMakingReservation,
@@ -69,25 +63,24 @@ public class ReservationServiceImp implements ReservationService {
                 discountAmount,
                 totalAmount,
                 LocalDateTime.now(),
-                LocalDateTime.now()
-                        .plusMinutes(15)
+                LocalDateTime.now().plusMinutes(15)
         );
 
-        seatsListReserved.forEach(seatReserved -> {
-            ReservationSeatModel reservationSeatModel = ReservationSeatModel.builder()
-                    .reservation(reservationMade)
-                    .seat(seatReserved)
-                    .priceAtReservation(seatReserved.getLocality()
-                            .getPrice())
-                    .build();
+        seatsReserved.forEach(localitySeat -> {
+            reservationMade.getReservationSeats().add(
+                    ReservationSeatModel.builder()
+                            .reservation(reservationMade)
+                            .localitySeat(localitySeat)
+                            .priceAtReservation(localitySeat.getLocality().getPrice())
+                            .build()
+            );
+            localitySeat.setStatus(SeatStatus.RESERVED);
         });
 
-        seatsListReserved
-                .forEach(seatReserved -> seatReserved.setStatus(SeatStatus.RESERVED));
+        localitySeatRepository.saveAll(seatsReserved);
+        ReservationModel saved = reservationRepository.save(reservationMade);
 
-        seatRepository.saveAll(seatsListReserved);
-
-        return reservationMapper.toResponse(reservationRepository.save(reservationMade));
+        return reservationMapper.toResponse(saved);
     }
 
     @Override

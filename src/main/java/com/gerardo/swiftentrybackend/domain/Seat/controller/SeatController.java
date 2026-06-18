@@ -2,8 +2,9 @@ package com.gerardo.swiftentrybackend.domain.Seat.controller;
 
 import com.gerardo.swiftentrybackend.common.components.ResponseBuilder;
 import com.gerardo.swiftentrybackend.common.dto.GeneralResponse;
-import com.gerardo.swiftentrybackend.domain.Seat.dto.request.SeatRequestDTO;
-import com.gerardo.swiftentrybackend.domain.Seat.dto.request.SeatUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Seat.dto.request.SeatAssignmentRequestDTO;
+import com.gerardo.swiftentrybackend.domain.Seat.dto.response.LocalitySeatResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Seat.dto.response.SeatMapResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Seat.dto.response.SeatResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Seat.services.SeatService;
 import jakarta.validation.Valid;
@@ -22,12 +23,22 @@ public class SeatController {
     private final SeatService seatService;
     private final ResponseBuilder responseBuilder;
 
-    @PostMapping("/bulk")
-    public ResponseEntity<List<SeatResponseDTO>> createSeats(
-            @Valid @RequestBody SeatRequestDTO request) {
-        List<SeatResponseDTO> response = seatService.createSeats(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(response);
+    @PostMapping("/initialize")
+    public ResponseEntity<GeneralResponse> initializeSeats() {
+        seatService.initializeSeats();
+        return responseBuilder.buildResponse("Seat grid initialized successfully", HttpStatus.CREATED, null);
+    }
+
+    @PostMapping("/assign")
+    public ResponseEntity<GeneralResponse> assignSeats(@Valid @RequestBody SeatAssignmentRequestDTO request) {
+        List<LocalitySeatResponseDTO> response = seatService.assignSeats(request);
+        return responseBuilder.buildResponse("Seats assigned successfully", HttpStatus.CREATED, response);
+    }
+
+    @GetMapping("/event/{eventId}")
+    public ResponseEntity<GeneralResponse> getSeatMapByEventId(@PathVariable Integer eventId) {
+        List<SeatMapResponseDTO> response = seatService.getSeatMapByEventId(eventId);
+        return responseBuilder.buildResponse("Seat map retrieved successfully", HttpStatus.OK, response);
     }
 
     @GetMapping
@@ -44,20 +55,9 @@ public class SeatController {
 
     @GetMapping("/locality/{localityId}")
     public ResponseEntity<GeneralResponse> getSeatsByLocalityId(@PathVariable Long localityId) {
-        List<SeatResponseDTO> response = seatService.getSeatsByLocalityId(localityId);
+        List<LocalitySeatResponseDTO> response = seatService.getSeatsByLocalityId(localityId);
         return responseBuilder.buildResponse("Seats retrieved successfully", HttpStatus.OK, response);
     }
-/*
-*
-    @PutMapping("/{id}")
-    public ResponseEntity<GeneralResponse> updateSeat(
-            @PathVariable Long id,
-            @Valid @RequestBody SeatUpdateDTO request
-    ) {
-        SeatResponseDTO response = seatService.updateSeat(id, request);
-        return responseBuilder.buildResponse("Seat updated successfully", HttpStatus.OK, response);
-    }
-* */
 
     @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse> deleteSeat(@PathVariable Long id) {

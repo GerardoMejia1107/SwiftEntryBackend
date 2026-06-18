@@ -18,7 +18,7 @@ http:
         "startDate": "2026-08-15T20:00:00",
         "endDate": "2026-08-15T23:00:00",
         "venueName": "Estadio Nacional",
-        "imageUrl": "https://example.com/image.jpg",
+        "imageUrl": "https://i.ytimg.com/vi/OMOGaugKpzs/maxresdefault.jpg",
         "address": {
           "streetAddress": "Calle Principal #123",
           "neighborhood": "Colonia Escalón",

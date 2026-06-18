@@ -1,6 +1,8 @@
 package com.gerardo.swiftentrybackend.domain.Seat.utils;
 
+import com.gerardo.swiftentrybackend.domain.Seat.LocalitySeatModel;
 import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
+import com.gerardo.swiftentrybackend.domain.Seat.dto.response.LocalitySeatResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Seat.dto.response.SeatResponseDTO;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +12,25 @@ public class SeatMapper {
     public SeatResponseDTO toResponse(SeatModel seat) {
         return SeatResponseDTO.builder()
                 .id(seat.getId())
-                .localityId(seat.getLocality() != null ? seat.getLocality().getId() : null)
-                .localityName(seat.getLocality() != null ? seat.getLocality().getName() : null)
                 .seatNumber(seat.getSeatNumber())
                 .rowLabel(seat.getRowLabel())
-                .status(seat.getStatus())
-                .isActive(seat.getIsActive())
                 .createdAt(seat.getCreatedAt())
                 .updatedAt(seat.getUpdatedAt())
+                .build();
+    }
+
+    public LocalitySeatResponseDTO toLocalitySeatResponse(LocalitySeatModel localitySeat) {
+        return LocalitySeatResponseDTO.builder()
+                .localitySeatId(localitySeat.getId())
+                .seatId(localitySeat.getSeat().getId())
+                .seatNumber(localitySeat.getSeat().getSeatNumber())
+                .rowLabel(localitySeat.getSeat().getRowLabel())
+                .localityId(localitySeat.getLocality().getId())
+                .localityName(localitySeat.getLocality().getName())
+                .status(localitySeat.getStatus())
+                .isActive(localitySeat.getIsActive())
+                .createdAt(localitySeat.getCreatedAt())
+                .updatedAt(localitySeat.getUpdatedAt())
                 .build();
     }
 }

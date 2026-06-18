@@ -2,7 +2,6 @@ package com.gerardo.swiftentrybackend.domain.Reservation;
 
 
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
-import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,6 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Reservation;
 
-import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
+import com.gerardo.swiftentrybackend.domain.Seat.LocalitySeatModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,20 +20,17 @@ public class ReservationSeatModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //Relations
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "reservation_id", nullable = false)
     private ReservationModel reservation;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "seat_id", nullable = false)
-    private SeatModel seat;
+    @JoinColumn(name = "locality_seat_id", nullable = false)
+    private LocalitySeatModel localitySeat;
 
-    //Features
     @Column(name = "price_at_reservation", nullable = false, precision = 10, scale = 2)
     private BigDecimal priceAtReservation;
 
-    //Dates
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -50,5 +47,4 @@ public class ReservationSeatModel {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
 }

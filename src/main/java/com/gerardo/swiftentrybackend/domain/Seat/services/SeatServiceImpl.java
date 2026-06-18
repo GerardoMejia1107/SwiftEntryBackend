@@ -1,75 +1,150 @@
 package com.gerardo.swiftentrybackend.domain.Seat.services;
 
-import com.gerardo.swiftentrybackend.domain.Event.EventModel;
+import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import com.gerardo.swiftentrybackend.domain.Event.repositories.EventRepository;
 import com.gerardo.swiftentrybackend.domain.Locality.LocalityModel;
 import com.gerardo.swiftentrybackend.domain.Locality.repositories.LocalityRepository;
+import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationSeatRepository;
+import com.gerardo.swiftentrybackend.domain.Seat.LocalitySeatModel;
 import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
-import com.gerardo.swiftentrybackend.domain.Seat.dto.request.SeatRequestDTO;
-import com.gerardo.swiftentrybackend.domain.Seat.dto.request.SeatUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Seat.dto.request.SeatAssignmentRequestDTO;
+import com.gerardo.swiftentrybackend.domain.Seat.dto.response.LocalitySeatResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Seat.dto.response.SeatMapResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Seat.dto.response.SeatResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Seat.enums.SeatStatus;
+import com.gerardo.swiftentrybackend.domain.Seat.repositories.LocalitySeatRepository;
 import com.gerardo.swiftentrybackend.domain.Seat.repositories.SeatRepository;
 import com.gerardo.swiftentrybackend.domain.Seat.utils.SeatMapper;
-import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SeatServiceImpl implements SeatService {
 
+    private static final List<String> ROWS = List.of("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
+    private static final int COLUMNS = 16;
+
     private final SeatRepository seatRepository;
+    private final LocalitySeatRepository localitySeatRepository;
     private final LocalityRepository localityRepository;
-    private final SeatMapper seatMapper;
+    private final ReservationSeatRepository reservationSeatRepository;
     private final EventRepository eventRepository;
+    private final SeatMapper seatMapper;
 
     @Override
     @Transactional
-    public List<SeatResponseDTO> createSeats(SeatRequestDTO request) {
-        EventModel eventOfLocality = eventRepository.findById(request.getEventId())
-                .orElseThrow();
-        LocalityModel localityToFill = localityRepository.findByNameAndEvent_Id(request.getLocalityName(),
-                eventOfLocality.getId());
+    public void initializeSeats() {
+        Set<String> existing = seatRepository.findAll().stream()
+                .map(s -> s.getRowLabel() + "-" + s.getSeatNumber())
+                .collect(Collectors.toSet());
 
-        List<SeatModel> newSeats = new ArrayList<>();
+        List<SeatModel> toCreate = new ArrayList<>();
+        for (String row : ROWS) {
+            for (int col = 1; col <= COLUMNS; col++) {
+                if (!existing.contains(row + "-" + col)) {
+                    toCreate.add(SeatModel.builder()
+                            .rowLabel(row)
+                            .seatNumber(String.valueOf(col))
+                            .build());
+                }
+            }
+        }
+        if (!toCreate.isEmpty()) {
+            seatRepository.saveAll(toCreate);
+        }
+    }
 
-        request.getRowLabels()
-                .forEach(rowLabel -> {
-                    for (int seatNumber = 1; seatNumber <= request.getSeatsPerRow(); seatNumber++) {
-                        newSeats.add(
-                                SeatModel.builder()
-                                        .locality(localityToFill)
-                                        .rowLabel(rowLabel)
-                                        .seatNumber(String.valueOf(seatNumber))
-                                        .status(SeatStatus.AVAILABLE)
-                                        .isActive(true)
-                                        .build()
-                        );
-                    }
-                });
+    @Override
+    @Transactional
+    public List<LocalitySeatResponseDTO> assignSeats(SeatAssignmentRequestDTO request) {
+        LocalityModel locality = localityRepository.findById(request.getLocalityId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Locality not found with id: " + request.getLocalityId()));
 
-        List<SeatModel> savedSeats = seatRepository.saveAll(newSeats);
+        Integer eventId = locality.getEvent().getId();
 
-        localityToFill.setCapacity(savedSeats.size());
-        localityRepository.save(localityToFill);
+        List<LocalitySeatModel> assignments = new ArrayList<>();
+        for (String identifier : request.getSeats()) {
+            if (identifier == null || identifier.length() < 2) {
+                throw new ResourceConflictException(
+                        "Invalid seat identifier '" + identifier + "'. Expected format: row + column, e.g. A1, B10.");
+            }
+            String row = String.valueOf(identifier.charAt(0)).toUpperCase();
+            String col = identifier.substring(1);
 
-        return savedSeats.stream()
-                .map(seatMapper::toResponse)
+            SeatModel seat = seatRepository.findByRowLabelAndSeatNumber(row, col)
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Seat " + identifier + " not found. Run POST /swift_entry/seats/initialize first."));
+
+            if (localitySeatRepository.existsBySeat_IdAndLocality_Event_Id(seat.getId(), eventId)) {
+                throw new ResourceConflictException(
+                        "Seat " + identifier + " is already assigned to a locality in this event.");
+            }
+
+            assignments.add(LocalitySeatModel.builder()
+                    .seat(seat)
+                    .locality(locality)
+                    .status(SeatStatus.AVAILABLE)
+                    .isActive(true)
+                    .build());
+        }
+
+        List<LocalitySeatModel> saved = localitySeatRepository.saveAll(assignments);
+
+        locality.setCapacity(locality.getCapacity() + saved.size());
+        locality.setAvailableSlots(locality.getAvailableSlots() + saved.size());
+        localityRepository.save(locality);
+
+        return saved.stream()
+                .map(seatMapper::toLocalitySeatResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SeatMapResponseDTO> getSeatMapByEventId(Integer eventId) {
+        if (!eventRepository.existsById(eventId)) {
+            throw new ResourceNotFoundException("Event not found with id: " + eventId);
+        }
+
+        Map<Long, LocalitySeatModel> assignmentsBySeatId =
+                localitySeatRepository.findAllByLocality_Event_Id(eventId).stream()
+                        .collect(Collectors.toMap(ls -> ls.getSeat().getId(), ls -> ls));
+
+        return seatRepository.findAll().stream()
+                .map(seat -> {
+                    LocalitySeatModel assignment = assignmentsBySeatId.get(seat.getId());
+                    return SeatMapResponseDTO.builder()
+                            .seatId(seat.getId())
+                            .row(seat.getRowLabel())
+                            .col(seat.getSeatNumber())
+                            .localitySeatId(assignment != null ? assignment.getId() : null)
+                            .localityId(assignment != null ? assignment.getLocality().getId() : null)
+                            .localityName(assignment != null ? assignment.getLocality().getName() : null)
+                            .status(assignment != null ? assignment.getStatus() : null)
+                            .build();
+                })
+                .sorted(Comparator.comparing(SeatMapResponseDTO::getRow)
+                        .thenComparing(dto -> Integer.parseInt(dto.getCol())))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<SeatResponseDTO> getAllSeats() {
-        return List.of();
+        return seatRepository.findAll().stream()
+                .map(seatMapper::toResponse)
+                .collect(Collectors.toList());
     }
-
 
     @Override
     public SeatResponseDTO getSeatById(Long id) {
@@ -79,22 +154,26 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public List<SeatResponseDTO> getSeatsByLocalityId(Long localityId) {
+    public List<LocalitySeatResponseDTO> getSeatsByLocalityId(Long localityId) {
         if (!localityRepository.existsById(localityId)) {
             throw new ResourceNotFoundException("Locality with id " + localityId + " not found");
         }
-        return seatRepository.findAllByLocality_Id(localityId)
-                .stream()
-                .map(seatMapper::toResponse)
-                .toList();
+        return localitySeatRepository.findAllByLocality_Id(localityId).stream()
+                .map(seatMapper::toLocalitySeatResponse)
+                .collect(Collectors.toList());
     }
 
-
     @Override
+    @Transactional
     public void deleteSeat(Long id) {
         if (!seatRepository.existsById(id)) {
             throw new ResourceNotFoundException("Seat with id " + id + " not found");
         }
+        if (reservationSeatRepository.existsByLocalitySeat_Seat_Id(id)) {
+            throw new ForbiddenOperationException(
+                    "Cannot delete seat with id " + id + " because it has existing reservations.");
+        }
+        localitySeatRepository.deleteAllBySeat_Id(id);
         seatRepository.deleteById(id);
     }
 }

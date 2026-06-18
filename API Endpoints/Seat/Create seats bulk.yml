@@ -10,10 +10,10 @@ http:
     type: json
     data: |-
       {
-        "localityName": "GENERAL",
-        "eventId": 20,
-        "seatsPerRow": 5,
-        "rowLabels": ["D", "F"]
+        "eventId": 21,
+        "localityName": "Otaku VIP",
+        "rowLabels": ["A", "B", "C"],
+        "seatsPerRow": 5
       }
   auth: inherit
 
