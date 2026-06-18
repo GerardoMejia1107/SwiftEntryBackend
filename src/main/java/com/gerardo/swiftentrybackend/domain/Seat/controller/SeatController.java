@@ -59,6 +59,12 @@ public class SeatController {
         return responseBuilder.buildResponse("Seats retrieved successfully", HttpStatus.OK, response);
     }
 
+    @DeleteMapping("/assignment/{localitySeatId}")
+    public ResponseEntity<GeneralResponse> unassignSeat(@PathVariable Long localitySeatId) {
+        seatService.unassignSeat(localitySeatId);
+        return responseBuilder.buildResponse("Seat unassigned successfully", HttpStatus.OK, null);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse> deleteSeat(@PathVariable Long id) {
         seatService.deleteSeat(id);

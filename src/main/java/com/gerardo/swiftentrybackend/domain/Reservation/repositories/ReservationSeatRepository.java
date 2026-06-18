@@ -13,6 +13,8 @@ public interface ReservationSeatRepository extends JpaRepository<ReservationSeat
 
     List<ReservationSeatModel> findByLocalitySeat_Id(Long localitySeatId);
 
+    boolean existsByLocalitySeat_Id(Long localitySeatId);
+
     boolean existsByLocalitySeat_IdAndReservation_Status(Long localitySeatId, ReservationStatus status);
 
     boolean existsByLocalitySeat_Locality_Event_Id(Integer eventId);

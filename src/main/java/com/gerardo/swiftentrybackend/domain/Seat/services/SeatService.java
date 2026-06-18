@@ -14,5 +14,6 @@ public interface SeatService {
     List<SeatResponseDTO> getAllSeats();
     SeatResponseDTO getSeatById(Long id);
     List<LocalitySeatResponseDTO> getSeatsByLocalityId(Long localityId);
+    void unassignSeat(Long localitySeatId);
     void deleteSeat(Long id);
 }

@@ -165,6 +165,26 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     @Transactional
+    public void unassignSeat(Long localitySeatId) {
+        LocalitySeatModel localitySeat = localitySeatRepository.findById(localitySeatId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Locality seat assignment not found with id: " + localitySeatId));
+
+        if (reservationSeatRepository.existsByLocalitySeat_Id(localitySeatId)) {
+            throw new ForbiddenOperationException(
+                    "Cannot unassign seat: it has an existing reservation.");
+        }
+
+        LocalityModel locality = localitySeat.getLocality();
+        locality.setCapacity(locality.getCapacity() - 1);
+        locality.setAvailableSlots(locality.getAvailableSlots() - 1);
+        localityRepository.save(locality);
+
+        localitySeatRepository.deleteById(localitySeatId);
+    }
+
+    @Override
+    @Transactional
     public void deleteSeat(Long id) {
         if (!seatRepository.existsById(id)) {
             throw new ResourceNotFoundException("Seat with id " + id + " not found");
