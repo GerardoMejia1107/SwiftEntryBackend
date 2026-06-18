@@ -14,12 +14,16 @@ public final class SecurityRoutes {
             "/swift_entry/users", "/swift_entry/events"
     };
 
+    // GET /reservations and GET /reservations/{id} are admin-only
     public static final String[] ADMIN_GET_ENDPOINTS = {
             "/swift_entry/users", "/swift_entry/events", "/swift_entry/roles",
+            "/swift_entry/reservations", "/swift_entry/reservations/*"
     };
 
+    // GET /reservations/me is available to any authenticated user
     public static final String[] AUTHENTICATED_GET_ENDPOINTS = {
             "/swift_entry/users/**",
-            "/swift_entry/events/*"
+            "/swift_entry/events/*",
+            "/swift_entry/reservations/me"
     };
 }

@@ -5,7 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: "{{swift_entry_base_uri}}/seats/assignment/{localitySeatId}"
+  url: "{{swift_entry_base_uri}}/seats/assignment/1"
   auth: inherit
 
 settings:

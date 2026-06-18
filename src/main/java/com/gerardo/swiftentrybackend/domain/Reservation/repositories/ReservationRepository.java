@@ -4,6 +4,8 @@ package com.gerardo.swiftentrybackend.domain.Reservation.repositories;
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,16 +13,22 @@ import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<ReservationModel, Integer> {
 
-    List<ReservationModel> findByUserId(Integer userId);
+    List<ReservationModel> findByUser_Id(Integer userId);
 
     List<ReservationModel> findByStatus(ReservationStatus status);
 
-    List<ReservationModel> findByStatusAndExpiresAtBefore(
-            ReservationStatus status,
-            LocalDateTime expiresAt
+    Optional<ReservationModel> findByIdAndUser_Id(Integer id, Integer userId);
+
+    boolean existsByUser_IdAndStatus(Integer userId, ReservationStatus status);
+
+    // Fetches expired PENDING reservations with all associations loaded to avoid N+1
+    @Query("SELECT DISTINCT r FROM ReservationModel r " +
+           "JOIN FETCH r.reservationSeats rs " +
+           "JOIN FETCH rs.localitySeat ls " +
+           "JOIN FETCH ls.locality " +
+           "WHERE r.status = :status AND r.expiresAt < :now")
+    List<ReservationModel> findExpiredReservations(
+            @Param("status") ReservationStatus status,
+            @Param("now") LocalDateTime now
     );
-
-    Optional<ReservationModel> findByIdAndUserId(Integer id, Integer userId);
-
-    boolean existsByUserIdAndStatus(Integer userId, ReservationStatus status);
 }

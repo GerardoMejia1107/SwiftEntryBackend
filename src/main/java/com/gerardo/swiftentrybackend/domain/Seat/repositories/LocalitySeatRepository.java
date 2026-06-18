@@ -31,6 +31,6 @@ public interface LocalitySeatRepository extends JpaRepository<LocalitySeatModel,
     void deleteAllBySeat_Id(@Param("seatId") Long seatId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT ls FROM LocalitySeatModel ls WHERE ls.id IN :ids")
+    @Query("SELECT ls FROM LocalitySeatModel ls JOIN FETCH ls.locality JOIN FETCH ls.seat WHERE ls.id IN :ids")
     List<LocalitySeatModel> findAllByIdWithLock(@Param("ids") List<Long> ids);
 }

@@ -1,7 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Reservation.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
@@ -12,9 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ReservationRequestDTO {
-    @NotNull(message = "User id is required")
-    private Integer userId;
 
     @NotEmpty(message = "At least one seat must be selected")
-    private List<Long> seatIds;
+    @Size(max = 5, message = "Cannot reserve more than 5 seats at a time")
+    private List<Long> localitySeatIds;
 }

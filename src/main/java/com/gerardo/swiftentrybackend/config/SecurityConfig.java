@@ -56,10 +56,12 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(SecurityRoutes.PUBLIC_ENDPOINTS)
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, SecurityRoutes.ADMIN_GET_ENDPOINTS)
-                        .hasRole("ADMINISTRATOR")
+                        // Specific authenticated routes must be declared BEFORE wildcard admin routes,
+                        // otherwise e.g. /reservations/me is swallowed by /reservations/* (admin).
                         .requestMatchers(HttpMethod.GET, SecurityRoutes.AUTHENTICATED_GET_ENDPOINTS)
                         .authenticated()
+                        .requestMatchers(HttpMethod.GET, SecurityRoutes.ADMIN_GET_ENDPOINTS)
+                        .hasRole("ADMINISTRATOR")
                         .anyRequest()
                         .authenticated()
                 );

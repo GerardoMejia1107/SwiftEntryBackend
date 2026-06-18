@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "localityId": 26,
+        "localityId": 1,
         "seats": ["A1", "A3", "A7", "B2", "D5"]
       }
   auth: inherit
