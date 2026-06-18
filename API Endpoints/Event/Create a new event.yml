@@ -10,33 +10,24 @@ http:
     type: json
     data: |-
       {
-        "name": "Concierto de Rock",
-        "description": "Una noche épica de rock en vivo",
-        "category": "CONCERT",
-        "organizerId": 1,
+        "name": "Food Fest San Salvador",
+        "description": "Festival gastronómico con comida nacional e internacional, música en vivo y zonas familiares",
+        "category": "FESTIVAL",
+        "organizerId": 2,
         "status": "PUBLISHED",
-        "startDate": "2026-08-15T20:00:00",
-        "endDate": "2026-08-15T23:00:00",
-        "venueName": "Estadio Nacional",
-        "imageUrl": "https://i.ytimg.com/vi/OMOGaugKpzs/maxresdefault.jpg",
-        "address": {
-          "streetAddress": "Calle Principal #123",
-          "neighborhood": "Colonia Escalón",
-          "municipality": "San Salvador",
-          "department": "San Salvador",
-          "country": "El Salvador",
-          "referencePoint": "Frente al parque central"
-        },
+        "startDate": "2026-11-12T16:00:00",
+        "endDate": "2026-11-12T22:00:00",
+        "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1",
         "localities": [
           {
-            "name": "VIP",
-            "description": "Zona frontal con mejor vista",
-            "price": 150.00
+            "name": "Entrada General",
+            "description": "Acceso al festival y zonas comunes de comida",
+            "price": 10.00
           },
           {
-            "name": "General",
-            "description": "Zona general",
-            "price": 50.00
+            "name": "Experiencia VIP",
+            "description": "Acceso preferencial, zona privada y degustaciones especiales",
+            "price": 35.00
           }
         ]
       }

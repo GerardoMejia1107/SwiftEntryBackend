@@ -35,9 +35,6 @@ public class EventRequestDTO {
     @NotNull(message = "Organizer id is required")
     private Integer organizerId;
 
-    @Valid
-    private AddressRequestDTO address;
-
     @NotNull(message = "Start date is required")
     @Future(message = "Start date must be in the future")
     private LocalDateTime startDate;

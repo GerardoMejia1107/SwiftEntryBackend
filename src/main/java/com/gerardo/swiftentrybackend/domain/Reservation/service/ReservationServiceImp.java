@@ -178,6 +178,63 @@ public class ReservationServiceImp implements ReservationService {
     }
 
     @Override
+    @Transactional
+    public ReservationResponseDTO removeSeatFromReservation(Integer reservationId, Integer reservationSeatId, String userEmail) {
+        UserModel user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userEmail));
+
+        ReservationModel reservation = reservationRepository.findByIdAndUser_Id(reservationId, user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Reservation not found or does not belong to you."));
+
+        if (!reservation.getStatus().equals(ReservationStatus.PENDING)) {
+            throw new ForbiddenOperationException(
+                    "Only PENDING reservations can be modified (current status: " +
+                    reservation.getStatus() + ").");
+        }
+
+        ReservationSeatModel seatToRemove = reservation.getReservationSeats().stream()
+                .filter(rs -> rs.getId().equals(reservationSeatId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Seat entry not found in this reservation."));
+
+        // Release the locality seat back to available
+        LocalitySeatModel ls = seatToRemove.getLocalitySeat();
+        ls.setStatus(SeatStatus.AVAILABLE);
+        ls.setReservedByUser(null);
+        ls.setReservationExpiresAt(null);
+        localitySeatRepository.save(ls);
+
+        // Restore the available slot on its locality
+        LocalityModel locality = ls.getLocality();
+        locality.setAvailableSlots(locality.getAvailableSlots() + 1);
+        localityRepository.save(locality);
+
+        // Remove the seat line — orphanRemoval handles the DB delete
+        reservation.getReservationSeats().remove(seatToRemove);
+
+        // If no seats remain, cancel the whole reservation
+        if (reservation.getReservationSeats().isEmpty()) {
+            reservation.setStatus(ReservationStatus.CANCELLED);
+            return reservationMapper.toResponse(reservationRepository.save(reservation));
+        }
+
+        // Recalculate totals from the remaining seat prices
+        BigDecimal subtotal = reservation.getReservationSeats().stream()
+                .map(ReservationSeatModel::getPriceAtReservation)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal taxAmount   = subtotal.multiply(TAX_RATE);
+        BigDecimal totalAmount = subtotal.add(taxAmount).subtract(reservation.getDiscountAmount());
+
+        reservation.setSubtotal(subtotal);
+        reservation.setTaxAmount(taxAmount);
+        reservation.setTotalAmount(totalAmount);
+
+        return reservationMapper.toResponse(reservationRepository.save(reservation));
+    }
+
+    @Override
     public List<ReservationResponseDTO> getReservationsByOrganizer(String organizerEmail) {
         UserModel organizer = userRepository.findByEmail(organizerEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + organizerEmail));

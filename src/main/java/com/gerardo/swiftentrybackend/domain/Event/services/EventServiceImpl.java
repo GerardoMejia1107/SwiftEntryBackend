@@ -48,12 +48,7 @@ public class EventServiceImpl implements EventService {
         UserModel organizer = userRepository.findById(eventRequestDTO.getOrganizerId())
                 .orElseThrow();
         AddressModel eventAddress = AddressModel.builder()
-                .streetAddress(eventRequestDTO.getAddress().getStreetAddress())
-                .neighborhood(eventRequestDTO.getAddress().getNeighborhood())
-                .municipality(eventRequestDTO.getAddress().getMunicipality())
-                .department(eventRequestDTO.getAddress().getDepartment())
-                .country(eventRequestDTO.getAddress().getCountry())
-                .referencePoint(eventRequestDTO.getAddress().getReferencePoint())
+                .id(30)
                 .build();
         AddressModel savedAddress = addressRepository.save(eventAddress);
         EventModel event = EventModel.builder()
@@ -64,17 +59,18 @@ public class EventServiceImpl implements EventService {
                 .address(savedAddress)
                 .startDate(eventRequestDTO.getStartDate())
                 .endDate(eventRequestDTO.getEndDate())
-                .venueName(eventRequestDTO.getVenueName())
+                .venueName("Universidad Centroamericana José Simeón Cañas")
                 .status(eventRequestDTO.getStatus())
                 .imageUrl(eventRequestDTO.getImageUrl())
                 .build();
         EventModel savedEvent = eventRepository.save(event);
         List<LocalityModel> savedLocalities = new ArrayList<>();
 
-        eventRequestDTO.getLocalities().forEach(localityRequestDTO -> {
-            LocalityModel newLocality = localityMapper.toModel(localityRequestDTO, savedEvent);
-            savedLocalities.add(localityRepository.save(newLocality));
-        });
+        eventRequestDTO.getLocalities()
+                .forEach(localityRequestDTO -> {
+                    LocalityModel newLocality = localityMapper.toModel(localityRequestDTO, savedEvent);
+                    savedLocalities.add(localityRepository.save(newLocality));
+                });
 
         return eventMapper.toResponse(savedEvent, savedLocalities);
     }
@@ -92,7 +88,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventResponseDTO> getEventsByOrganizerId(Integer userId) {
-        userRepository.findById(userId).orElseThrow();
+        userRepository.findById(userId)
+                .orElseThrow();
 
         return eventRepository.findAllByOrganizer_Id(userId)
                 .stream()
@@ -117,6 +114,9 @@ public class EventServiceImpl implements EventService {
         EventModel event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
 
+        UserModel organizer = userRepository.findById(request.getOrganizerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Organizer not found with id: " + id));
+
         if (request.getName() != null) event.setName(request.getName());
         if (request.getDescription() != null) event.setDescription(request.getDescription());
         if (request.getCategory() != null) event.setCategory(request.getCategory());
@@ -125,16 +125,8 @@ public class EventServiceImpl implements EventService {
         if (request.getEndDate() != null) event.setEndDate(request.getEndDate());
         if (request.getVenueName() != null) event.setVenueName(request.getVenueName());
         if (request.getImageUrl() != null) event.setImageUrl(request.getImageUrl());
-
-        if (request.getAddress() != null) {
-            AddressModel address = event.getAddress();
-            if (address == null) {
-                AddressModel savedAddress = addressRepository.save(addressMapper.toModel(request.getAddress()));
-                event.setAddress(savedAddress);
-            } else {
-                addressMapper.updateModel(address, request.getAddress());
-                addressRepository.save(address);
-            }
+        if (request.getOrganizerId() != null) {
+            event.setOrganizer(organizer);
         }
 
         EventModel savedEvent = eventRepository.save(event);
@@ -152,9 +144,6 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public void deleteEvent(Integer id) {
-        EventModel event = eventRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
-
         if (reservationSeatRepository.existsByLocalitySeat_Locality_Event_Id(id)) {
             throw new ForbiddenOperationException(
                     "Cannot delete event with id " + id + " because it has existing reservations. " +
@@ -167,12 +156,6 @@ public class EventServiceImpl implements EventService {
             localitySeatRepository.deleteAllByLocality_Id(locality.getId());
         }
         localityRepository.deleteAll(localities);
-
-        AddressModel address = event.getAddress();
-        eventRepository.delete(event);
-        if (address != null) {
-            addressRepository.delete(address);
-        }
     }
 
     private List<LocalityModel> processLocalityUpdates(EventModel event, List<LocalityUpdateDTO> requestLocalities) {
@@ -197,7 +180,8 @@ public class EventServiceImpl implements EventService {
         for (LocalityUpdateDTO dto : requestLocalities) {
             if (dto.getId() != null) {
                 LocalityModel existing = existingLocalities.stream()
-                        .filter(l -> l.getId().equals(dto.getId()))
+                        .filter(l -> l.getId()
+                                .equals(dto.getId()))
                         .findFirst()
                         .orElseThrow(() -> new ResourceNotFoundException(
                                 "Locality not found with id: " + dto.getId()));

@@ -10,22 +10,22 @@ http:
     type: json
     data: |-
       {
-        "name": "Dwight",
-        "lastName": "Schrute",
-        "email": "dwight@test.com",
-        "phoneNumber": "7777-2222",
-        "dui": "55667788-9",
-        "nit": "0614-556677-108-9",
-        "birthDate": "1978-01-20",
-        "password": "angela_and_dwight",
-        "roleId": 2,
+        "name": "Kevin",
+        "lastName": "Malone",
+        "email": "kevin@test.com",
+        "phoneNumber": "7777-6666",
+        "dui": "99001122-3",
+        "nit": "0614-990011-112-3",
+        "birthDate": "1968-06-01",
+        "password": "famous_chili",
+        "roleId": 3,
         "address": {
-          "streetAddress": "Schrute Farms #1",
-          "neighborhood": "Beet Farm",
+          "streetAddress": "Malone Apartment #21",
+          "neighborhood": "Central Park",
           "municipality": "San Salvador",
           "department": "San Salvador",
           "country": "El Salvador",
-          "referencePoint": "Cerca de la granja"
+          "referencePoint": "Cerca de un restaurante"
         }
       }
 

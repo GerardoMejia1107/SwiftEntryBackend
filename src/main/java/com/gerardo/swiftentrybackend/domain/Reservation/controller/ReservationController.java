@@ -79,4 +79,17 @@ public class ReservationController {
         return responseBuilder.buildResponse(
                 "Reservation cancelled successfully", HttpStatus.OK, response);
     }
+
+    // DELETE — removes a single seat from a PENDING reservation; auto-cancels if last seat
+    @DeleteMapping("/{reservationId}/seats/{reservationSeatId}")
+    public ResponseEntity<GeneralResponse> removeSeatFromReservation(
+            @PathVariable Integer reservationId,
+            @PathVariable Integer reservationSeatId,
+            Authentication authentication
+    ) {
+        ReservationResponseDTO response = reservationService.removeSeatFromReservation(
+                reservationId, reservationSeatId, authentication.getName());
+        return responseBuilder.buildResponse(
+                "Seat removed from reservation successfully", HttpStatus.OK, response);
+    }
 }

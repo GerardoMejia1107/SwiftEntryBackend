@@ -27,13 +27,6 @@ public class EventResponseDTO {
     private String venueName;
     private String imageUrl;
 
-    private String streetAddress;
-    private String neighborhood;
-    private String municipality;
-    private String department;
-    private String country;
-    private String referencePoint;
-
     private List<LocalityResponseDTO> localities;
 
     private LocalDateTime createdAt;

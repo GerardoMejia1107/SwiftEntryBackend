@@ -26,8 +26,7 @@ public class EventUpdateDTO {
 
     private EventCategory category;
 
-    @Valid
-    private AddressRequestDTO address;
+    private Integer organizerId;
 
     private LocalDateTime startDate;
 
