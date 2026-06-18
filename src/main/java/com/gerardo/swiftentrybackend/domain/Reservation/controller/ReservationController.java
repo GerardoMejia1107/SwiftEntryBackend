@@ -51,6 +51,15 @@ public class ReservationController {
                 "Reservations retrieved successfully", HttpStatus.OK, response);
     }
 
+    // GET reservations for the authenticated organizer's events
+    @GetMapping("/organizer")
+    public ResponseEntity<GeneralResponse> getReservationsByOrganizer(Authentication authentication) {
+        List<ReservationResponseDTO> response = reservationService.getReservationsByOrganizer(
+                authentication.getName());
+        return responseBuilder.buildResponse(
+                "Reservations retrieved successfully", HttpStatus.OK, response);
+    }
+
     // GET by id — admin only (enforced via SecurityRoutes)
     @GetMapping("/{id}")
     public ResponseEntity<GeneralResponse> getReservationById(@PathVariable Integer id) {

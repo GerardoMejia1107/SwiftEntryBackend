@@ -178,6 +178,14 @@ public class ReservationServiceImp implements ReservationService {
     }
 
     @Override
+    public List<ReservationResponseDTO> getReservationsByOrganizer(String organizerEmail) {
+        UserModel organizer = userRepository.findByEmail(organizerEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + organizerEmail));
+        return reservationMapper.toResponseList(
+                reservationRepository.findByOrganizerOfEvent(organizer.getId()));
+    }
+
+    @Override
     @Transactional
     public Integer expirePendingReservations() {
         List<ReservationModel> expired = reservationRepository.findExpiredReservations(

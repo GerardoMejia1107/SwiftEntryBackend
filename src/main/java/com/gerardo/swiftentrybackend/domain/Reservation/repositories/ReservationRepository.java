@@ -31,4 +31,13 @@ public interface ReservationRepository extends JpaRepository<ReservationModel, I
             @Param("status") ReservationStatus status,
             @Param("now") LocalDateTime now
     );
+
+    // Fetches all reservations for events where the given user is the organizer
+    @Query("SELECT DISTINCT r FROM ReservationModel r " +
+           "JOIN r.reservationSeats rs " +
+           "JOIN rs.localitySeat ls " +
+           "JOIN ls.locality l " +
+           "JOIN l.event e " +
+           "WHERE e.organizer.id = :organizerId")
+    List<ReservationModel> findByOrganizerOfEvent(@Param("organizerId") Integer organizerId);
 }

@@ -17,5 +17,7 @@ public interface ReservationService {
 
     ReservationResponseDTO cancelReservation(Integer id, String userEmail);
 
+    List<ReservationResponseDTO> getReservationsByOrganizer(String organizerEmail);
+
     Integer expirePendingReservations();
 }
