@@ -1,27 +1,14 @@
 package com.gerardo.swiftentrybackend.domain.Payment.service;
 
-import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.response.PaymentResponseDTO;
-import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentUpdateDTO;
-
-import java.util.List;
 
 public interface PaymentService {
 
-    PaymentResponseDTO createPayment(PaymentRequestDTO requestDTO);
-
-    List<PaymentResponseDTO> getAllPayments();
-
-    PaymentResponseDTO getPaymentById(Integer id);
-
-    List<PaymentResponseDTO> getPaymentsByReservationId(Integer reservationId);
-
-    List<PaymentResponseDTO> getPaymentsByStatus(PaymentStatus status);
-
-    PaymentResponseDTO updatePayment(Integer id, PaymentUpdateDTO updateDTO);
-
-    PaymentResponseDTO confirmPayment(Integer paymentId);
-
-    PaymentResponseDTO rejectPayment(Integer paymentId);
+    /**
+     * Processes a payment for an existing reservation owned by the authenticated user.
+     * On success the reservation is confirmed, its seats are marked as SOLD and a
+     * ticket is issued per seat.
+     */
+    PaymentResponseDTO processPayment(PaymentRequestDTO requestDTO, String userEmail);
 }
