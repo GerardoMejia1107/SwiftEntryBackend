@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/swift_entry/payments")
 @RequiredArgsConstructor
@@ -20,7 +22,6 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final ResponseBuilder responseBuilder;
 
-    // POST — process a payment for the authenticated user's reservation
     @PostMapping
     public ResponseEntity<GeneralResponse> processPayment(
             @Valid @RequestBody PaymentRequestDTO request,
@@ -30,5 +31,12 @@ public class PaymentController {
                 request, authentication.getName());
         return responseBuilder.buildResponse(
                 "Payment processed successfully", HttpStatus.CREATED, response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<GeneralResponse> getMyPayments(Authentication authentication) {
+        List<PaymentResponseDTO> response = paymentService.getMyPayments(authentication.getName());
+        return responseBuilder.buildResponse(
+                "Payments retrieved successfully", HttpStatus.OK, response);
     }
 }

@@ -28,4 +28,6 @@ public interface TicketService {
     TicketResponseDTO updateTicket(Integer id, TicketUpdateDTO updateDTO);
 
     TicketResponseDTO validateTicketByQrCode(String qrCode, Integer validatorUserId);
+
+    List<TicketResponseDTO> getMyTickets(String userEmail);
 }

@@ -1,0 +1,18 @@
+info:
+  name: Get my tickets
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{swift_entry_base_uri}}/tickets/me"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MTg5MjQ1NywiZXhwIjoxNzgxODkzMzU3fQ.V5gWr8cYvtWLPRxP2D1VsKr0pRCXemKF69P7R46_zLg
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

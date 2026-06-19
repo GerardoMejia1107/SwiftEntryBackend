@@ -20,11 +20,13 @@ public final class SecurityRoutes {
             "/swift_entry/reservations", "/swift_entry/reservations/*"
     };
 
-    // GET /reservations/me and /reservations/organizer are available to any authenticated user
+    // GET /reservations/me, /payments/me, /tickets/me and /reservations/organizer are available to any authenticated user
     public static final String[] AUTHENTICATED_GET_ENDPOINTS = {
             "/swift_entry/users/**",
             "/swift_entry/events/*",
             "/swift_entry/reservations/me",
-            "/swift_entry/reservations/organizer"
+            "/swift_entry/reservations/organizer",
+            "/swift_entry/payments/me",
+            "/swift_entry/tickets/me"
     };
 }

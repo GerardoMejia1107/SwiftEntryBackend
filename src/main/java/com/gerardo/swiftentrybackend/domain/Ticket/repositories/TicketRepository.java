@@ -24,4 +24,6 @@ public interface TicketRepository extends JpaRepository<TicketModel, Integer> {
     boolean existsByQrCode(String qrCode);
 
     boolean existsBySeatIdAndStatus(Integer seatId, TicketStatus status);
+
+    List<TicketModel> findByReservation_User_Email(String email);
 }

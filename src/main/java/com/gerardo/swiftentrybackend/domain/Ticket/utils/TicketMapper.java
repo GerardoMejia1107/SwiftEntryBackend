@@ -61,6 +61,13 @@ public class TicketMapper {
                 .build();
     }
 
+    public TicketResponseDTO toResponse(TicketModel model, String eventName, String localityName) {
+        TicketResponseDTO dto = toResponse(model);
+        dto.setEventName(eventName);
+        dto.setLocalityName(localityName);
+        return dto;
+    }
+
     public List<TicketResponseDTO> toResponseList(List<TicketModel> tickets) {
         return tickets.stream()
                 .map(this::toResponse)

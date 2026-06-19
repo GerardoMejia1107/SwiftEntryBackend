@@ -21,4 +21,6 @@ public interface PaymentRepository extends JpaRepository<PaymentModel, Integer> 
             Integer reservationId,
             PaymentStatus status
     );
+
+    List<PaymentModel> findByReservation_User_Email(String email);
 }

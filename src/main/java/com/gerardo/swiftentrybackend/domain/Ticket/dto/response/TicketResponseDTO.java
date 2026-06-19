@@ -20,6 +20,9 @@ public class TicketResponseDTO {
     private String seatNumber;
     private String rowLabel;
 
+    private String eventName;
+    private String localityName;
+
     private String ticketCode;
     private String qrCode;
 

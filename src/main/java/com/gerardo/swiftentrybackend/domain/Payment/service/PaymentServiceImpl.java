@@ -4,8 +4,11 @@ import com.gerardo.swiftentrybackend.common.exceptions.BadRequestException;
 import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
+import com.gerardo.swiftentrybackend.domain.Payment.PaymentModel;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.response.PaymentResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Payment.repositories.PaymentRepository;
+import com.gerardo.swiftentrybackend.domain.Payment.utils.PaymentMapper;
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationRepository;
@@ -15,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
     private final PaymentExecutor paymentExecutor;
+    private final PaymentRepository paymentRepository;
+    private final PaymentMapper paymentMapper;
 
     @Override
     public PaymentResponseDTO processPayment(PaymentRequestDTO requestDTO, String userEmail) {
@@ -62,10 +68,12 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentExecutor.execute(reservation.getId(), requestDTO, approved);
     }
 
-    /**
-     * Simulates an external payment gateway call. Replace with a real integration later.
-     * Currently always approves the payment.
-     */
+    @Override
+    public List<PaymentResponseDTO> getMyPayments(String userEmail) {
+        List<PaymentModel> payments = paymentRepository.findByReservation_User_Email(userEmail);
+        return payments.stream().map(paymentMapper::toResponse).toList();
+    }
+
     private boolean simulatePaymentProcessing() {
         return true;
     }

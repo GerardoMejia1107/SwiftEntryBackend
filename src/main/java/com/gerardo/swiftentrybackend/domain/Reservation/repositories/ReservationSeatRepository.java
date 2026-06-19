@@ -24,4 +24,6 @@ public interface ReservationSeatRepository extends JpaRepository<ReservationSeat
     boolean existsByLocalitySeat_Seat_Id(Long seatId);
 
     Optional<ReservationSeatModel> findByReservation_IdAndLocalitySeat_Id(Integer reservationId, Long localitySeatId);
+
+    Optional<ReservationSeatModel> findByReservation_IdAndLocalitySeat_Seat_Id(Integer reservationId, Long seatId);
 }
