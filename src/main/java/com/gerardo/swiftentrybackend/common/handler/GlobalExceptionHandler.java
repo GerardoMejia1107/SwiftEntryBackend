@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OptimisticLockingFailureException.class)
     public ResponseEntity<GeneralResponse> handleOptimisticLock(OptimisticLockingFailureException ex) {
         return responseBuilder.buildResponse(
-                "The seat was modified by another transaction. Please try again.",
+                "The resource was modified by another transaction. Please try again.",
                 HttpStatus.CONFLICT,
                 null
         );
