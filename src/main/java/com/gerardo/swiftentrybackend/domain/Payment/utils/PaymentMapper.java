@@ -6,6 +6,7 @@ import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.response.PaymentResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentUpdateDTO;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -33,6 +34,10 @@ public class PaymentMapper {
     }
 
     public PaymentResponseDTO toResponse(PaymentModel model) {
+        return toResponse(model, List.of());
+    }
+
+    public PaymentResponseDTO toResponse(PaymentModel model, List<TicketResponseDTO> tickets) {
         return PaymentResponseDTO.builder()
                 .id(model.getId())
                 .reservationId(model.getReservation().getId())
@@ -43,6 +48,7 @@ public class PaymentMapper {
                 .paidAt(model.getPaidAt())
                 .createdAt(model.getCreatedAt())
                 .updatedAt(model.getUpdatedAt())
+                .tickets(tickets)
                 .build();
     }
 

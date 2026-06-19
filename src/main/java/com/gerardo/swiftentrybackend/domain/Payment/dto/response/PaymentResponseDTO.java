@@ -2,10 +2,12 @@ package com.gerardo.swiftentrybackend.domain.Payment.dto.response;
 
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentMethod;
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +30,7 @@ public class PaymentResponseDTO {
     private LocalDateTime paidAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    // Tickets issued when the payment is approved (empty otherwise)
+    private List<TicketResponseDTO> tickets;
 }
