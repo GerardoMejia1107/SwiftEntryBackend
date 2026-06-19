@@ -2,6 +2,7 @@ package com.gerardo.swiftentrybackend.domain.Payment.dto.response;
 
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentMethod;
 import com.gerardo.swiftentrybackend.domain.Payment.enums.PaymentStatus;
+import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
 import lombok.*;
 
@@ -23,6 +24,8 @@ public class PaymentResponseDTO {
     private BigDecimal amount;
 
     private PaymentMethod paymentMethod;
+    private ReservationStatus reservationStatus;
+
     private PaymentStatus status;
 
     private String transactionReference;

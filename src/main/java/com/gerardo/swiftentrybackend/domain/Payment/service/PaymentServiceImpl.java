@@ -34,22 +34,26 @@ public class PaymentServiceImpl implements PaymentService {
                         "Reservation not found with id: " + requestDTO.getReservationId()));
 
         // Ownership check → 403
-        if (!reservation.getUser().getId().equals(user.getId())) {
+        if (!reservation.getUser()
+                .getId()
+                .equals(user.getId())) {
             throw new ForbiddenOperationException("This reservation does not belong to you.");
+        }
+
+        // Only PENDING reservations are payable (prevents double charging / re-issuing tickets)
+        if (!reservation.getStatus()
+                .equals(ReservationStatus.PENDING)) {
+            throw new ResourceConflictException(
+                    "Reservation is not payable in its current status: " + reservation.getStatus() + ".");
         }
 
         // Expiry check → persist EXPIRED and reject with 400.
         // This method is intentionally NOT @Transactional so this save commits before we throw.
-        if (LocalDateTime.now().isAfter(reservation.getExpiresAt())) {
+        if (LocalDateTime.now()
+                .isAfter(reservation.getExpiresAt())) {
             reservation.setStatus(ReservationStatus.EXPIRED);
             reservationRepository.save(reservation);
             throw new BadRequestException("The reservation has expired and can no longer be paid.");
-        }
-
-        // Only PENDING reservations are payable (prevents double charging / re-issuing tickets)
-        if (!reservation.getStatus().equals(ReservationStatus.PENDING)) {
-            throw new ResourceConflictException(
-                    "Reservation is not payable in its current status: " + reservation.getStatus() + ".");
         }
 
         boolean approved = simulatePaymentProcessing();

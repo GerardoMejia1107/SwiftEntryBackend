@@ -1,5 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Payment.service;
 
+import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import com.gerardo.swiftentrybackend.domain.Payment.PaymentModel;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentRequestDTO;
@@ -48,6 +49,13 @@ public class PaymentExecutor {
         ReservationModel reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Reservation not found with id: " + reservationId));
+
+        // Re-validate inside the transaction — guards against a concurrent thread that
+        // also passed the PENDING check in PaymentServiceImpl before either committed.
+        if (reservation.getStatus() != ReservationStatus.PENDING) {
+            throw new ResourceConflictException(
+                    "Reservation is not payable in its current status: " + reservation.getStatus() + ".");
+        }
 
         PaymentModel payment = paymentMapper.toModel(
                 requestDTO,
