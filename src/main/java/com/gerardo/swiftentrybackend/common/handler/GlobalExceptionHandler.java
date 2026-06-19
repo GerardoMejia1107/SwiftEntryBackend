@@ -2,11 +2,13 @@ package com.gerardo.swiftentrybackend.common.handler;
 
 import com.gerardo.swiftentrybackend.common.components.ResponseBuilder;
 import com.gerardo.swiftentrybackend.common.dto.GeneralResponse;
+import com.gerardo.swiftentrybackend.common.exceptions.BadRequestException;
 import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
 import com.gerardo.swiftentrybackend.common.exceptions.InvalidTokenException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -49,9 +51,24 @@ public class GlobalExceptionHandler {
         return responseBuilder.buildResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED, null);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<GeneralResponse> handleBadRequest(BadRequestException ex) {
+        return responseBuilder.buildResponse(ex.getMessage(), HttpStatus.BAD_REQUEST, null);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<GeneralResponse> handleNotFound(ResourceNotFoundException ex) {
         return responseBuilder.buildResponse(ex.getMessage(), HttpStatus.NOT_FOUND, null);
+    }
+
+    // Optimistic lock contention (e.g. two payments racing on the same seat) → 409
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    public ResponseEntity<GeneralResponse> handleOptimisticLock(OptimisticLockingFailureException ex) {
+        return responseBuilder.buildResponse(
+                "The seat was modified by another transaction. Please try again.",
+                HttpStatus.CONFLICT,
+                null
+        );
     }
 
     @ExceptionHandler(ResourceConflictException.class)
