@@ -28,7 +28,6 @@ public class PaymentMapper {
                 .amount(amount)
                 .paymentMethod(dto.getPaymentMethod())
                 .status(status)
-                .transactionReference(dto.getTransactionReference())
                 .paidAt(paidAt)
                 .build();
     }

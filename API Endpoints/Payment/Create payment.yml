@@ -1,0 +1,25 @@
+info:
+  name: Create payment
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/payments"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MTg4OTY2MCwiZXhwIjoxNzgxODkwNTYwfQ.1RfV2aSBkGnFHMRIskrLCJpmxr2YwZDsdvR5ZNO-Htw
+  body:
+    type: json
+    data: |-
+      {
+        "reservationId": 1,
+        "paymentMethod": "CREDIT_CARD"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

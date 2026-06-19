@@ -1,5 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Payment.service;
 
+import com.gerardo.swiftentrybackend.common.exceptions.BadRequestException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import com.gerardo.swiftentrybackend.domain.Payment.PaymentModel;
@@ -57,6 +58,14 @@ public class PaymentExecutor {
                     "Reservation is not payable in its current status: " + reservation.getStatus() + ".");
         }
 
+        // Re-check expiry inside the transaction: covers the window between the outer
+        // check in PaymentServiceImpl and this transaction start. Throwing here rolls
+        // back cleanly — no state is written. EXPIRED will be persisted by the outer
+        // check on the user's next attempt.
+        if (LocalDateTime.now().isAfter(reservation.getExpiresAt())) {
+            throw new BadRequestException("The reservation has expired and can no longer be paid.");
+        }
+
         PaymentModel payment = paymentMapper.toModel(
                 requestDTO,
                 reservation,
@@ -76,9 +85,7 @@ public class PaymentExecutor {
 
         payment.setStatus(PaymentStatus.APPROVED);
         payment.setPaidAt(now);
-        if (payment.getTransactionReference() == null || payment.getTransactionReference().isBlank()) {
-            payment.setTransactionReference("TXN-" + UUID.randomUUID());
-        }
+        payment.setTransactionReference("TXN-" + UUID.randomUUID());
 
         reservation.setStatus(ReservationStatus.CONFIRMED);
         reservation.setPurchasedAt(now);
@@ -90,6 +97,7 @@ public class PaymentExecutor {
             LocalitySeatModel localitySeat = reservationSeat.getLocalitySeat();
             localitySeat.setStatus(SeatStatus.SOLD);
             localitySeat.setReservationExpiresAt(null);
+            localitySeat.setReservedByUser(null);
             soldSeats.add(localitySeat);
 
             tickets.add(ticketMapper.toModel(
