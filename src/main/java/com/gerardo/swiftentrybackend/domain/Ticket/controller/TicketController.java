@@ -2,8 +2,11 @@ package com.gerardo.swiftentrybackend.domain.Ticket.controller;
 
 import com.gerardo.swiftentrybackend.common.components.ResponseBuilder;
 import com.gerardo.swiftentrybackend.common.dto.GeneralResponse;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.request.TicketTransferRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketTransferResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Ticket.service.TicketService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +28,17 @@ public class TicketController {
         List<TicketResponseDTO> response = ticketService.getMyTickets(authentication.getName());
         return responseBuilder.buildResponse(
                 "Tickets retrieved successfully", HttpStatus.OK, response);
+    }
+
+    @PostMapping("/{ticketId}/transfer")
+    public ResponseEntity<GeneralResponse> transferTicket(
+            @PathVariable Integer ticketId,
+            @Valid @RequestBody TicketTransferRequestDTO request,
+            Authentication authentication
+    ) {
+        TicketTransferResponseDTO response = ticketService.transferTicket(
+                ticketId, request.getReceiverEmail(), authentication.getName());
+        return responseBuilder.buildResponse(
+                "Ticket transferred successfully", HttpStatus.OK, response);
     }
 }

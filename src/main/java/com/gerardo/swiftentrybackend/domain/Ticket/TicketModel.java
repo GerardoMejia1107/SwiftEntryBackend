@@ -45,6 +45,10 @@ public class TicketModel {
     @Column(name = "used_at")
     private LocalDateTime usedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "current_holder_id")
+    private UserModel currentHolder;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "validated_by", nullable = true)
     private UserModel validatedBy;
