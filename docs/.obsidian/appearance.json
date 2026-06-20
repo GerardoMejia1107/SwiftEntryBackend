@@ -1,0 +1,12 @@
+{
+  "cssTheme": "Dracula Official",
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "sunset-glass"
+  ],
+  "textFontFamily": "Inter",
+  "interfaceFontFamily": "Inter",
+  "showRibbon": false,
+  "baseFontSize": 17,
+  "accentColor": "#e264c4"
+}

@@ -1,0 +1,40 @@
+{
+  "callouts": {
+    "custom": [
+      "see-next",
+      "see-also",
+      "resource"
+    ],
+    "settings": {
+      "see-next": [
+        {
+          "changes": {
+            "icon": "lucide-eye",
+            "color": "165, 120, 247"
+          }
+        }
+      ],
+      "see-also": [
+        {
+          "changes": {
+            "icon": "lucide-external-link",
+            "color": "120, 247, 181"
+          }
+        }
+      ],
+      "resource": [
+        {
+          "changes": {
+            "icon": "lucide-book-marked",
+            "color": "173, 88, 124"
+          }
+        }
+      ]
+    }
+  },
+  "calloutDetection": {
+    "obsidian": true,
+    "theme": true,
+    "snippet": true
+  }
+}
