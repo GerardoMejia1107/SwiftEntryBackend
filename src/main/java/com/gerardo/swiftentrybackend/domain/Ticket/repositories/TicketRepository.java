@@ -29,8 +29,9 @@ public interface TicketRepository extends JpaRepository<TicketModel, Integer> {
 
     List<TicketModel> findByReservation_User_Email(String email);
 
-    @Query("SELECT t FROM TicketModel t WHERE " +
-           "(t.currentHolder IS NOT NULL AND t.currentHolder.email = :email) OR " +
-           "(t.currentHolder IS NULL AND t.reservation.user.email = :email)")
+    @Query("SELECT t FROM TicketModel t " +
+           "LEFT JOIN t.currentHolder ch " +
+           "WHERE (ch IS NOT NULL AND ch.email = :email) " +
+           "   OR (ch IS NULL AND t.reservation.user.email = :email)")
     List<TicketModel> findCurrentHolderTickets(@Param("email") String email);
 }

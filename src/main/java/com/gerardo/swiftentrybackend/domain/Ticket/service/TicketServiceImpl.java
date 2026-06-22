@@ -177,7 +177,7 @@ public class TicketServiceImpl implements TicketService {
                 ? ticket.getCurrentHolder().getEmail()
                 : ticket.getReservation().getUser().getEmail();
 
-        if (!currentHolderEmail.equals(senderEmail)) {
+        if (!currentHolderEmail.equalsIgnoreCase(senderEmail)) {
             throw new ForbiddenOperationException("You are not the current holder of this ticket.");
         }
 
