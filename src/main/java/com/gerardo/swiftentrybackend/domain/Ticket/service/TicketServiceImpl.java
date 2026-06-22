@@ -1,5 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Ticket.service;
 
+import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException;
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import com.gerardo.swiftentrybackend.domain.Locality.LocalityModel;
@@ -10,11 +11,14 @@ import com.gerardo.swiftentrybackend.domain.Reservation.repositories.Reservation
 import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
 import com.gerardo.swiftentrybackend.domain.Seat.repositories.SeatRepository;
 import com.gerardo.swiftentrybackend.domain.Ticket.TicketModel;
+import com.gerardo.swiftentrybackend.domain.Ticket.TicketTransferModel;
 import com.gerardo.swiftentrybackend.domain.Ticket.dto.request.TicketRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Ticket.dto.request.TicketUpdateDTO;
 import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketTransferResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketRepository;
+import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketTransferRepository;
 import com.gerardo.swiftentrybackend.domain.Ticket.utils.TicketMapper;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
@@ -32,6 +36,7 @@ import java.util.UUID;
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
+    private final TicketTransferRepository ticketTransferRepository;
     private final TicketMapper ticketMapper;
     private final ReservationRepository reservationRepository;
     private final ReservationSeatRepository reservationSeatRepository;
@@ -143,7 +148,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional(readOnly = true)
     public List<TicketResponseDTO> getMyTickets(String userEmail) {
-        List<TicketModel> tickets = ticketRepository.findByReservation_User_Email(userEmail);
+        List<TicketModel> tickets = ticketRepository.findCurrentHolderTickets(userEmail);
         return tickets.stream().map(ticket -> {
             Optional<ReservationSeatModel> rs = reservationSeatRepository
                     .findByReservation_IdAndLocalitySeat_Seat_Id(
@@ -155,5 +160,52 @@ public class TicketServiceImpl implements TicketService {
             }
             return ticketMapper.toResponse(ticket);
         }).toList();
+    }
+
+    @Override
+    @Transactional
+    public TicketTransferResponseDTO transferTicket(Integer ticketId, String receiverEmail, String senderEmail) {
+        TicketModel ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found: " + ticketId));
+
+        if (ticket.getStatus() != TicketStatus.ISSUED) {
+            throw new ResourceConflictException(
+                    "Only ISSUED tickets can be transferred (current status: " + ticket.getStatus() + ").");
+        }
+
+        String currentHolderEmail = ticket.getCurrentHolder() != null
+                ? ticket.getCurrentHolder().getEmail()
+                : ticket.getReservation().getUser().getEmail();
+
+        if (!currentHolderEmail.equalsIgnoreCase(senderEmail)) {
+            throw new ForbiddenOperationException("You are not the current holder of this ticket.");
+        }
+
+        if (senderEmail.equalsIgnoreCase(receiverEmail)) {
+            throw new ResourceConflictException("You cannot transfer a ticket to yourself.");
+        }
+
+        UserModel sender = userRepository.findByEmail(senderEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("Sender user not found: " + senderEmail));
+
+        UserModel receiver = userRepository.findByEmail(receiverEmail)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No account found with email: " + receiverEmail));
+
+        // Rotate codes so old QR/ticket codes are immediately invalidated
+        ticket.setTicketCode("TKT-" + UUID.randomUUID());
+        ticket.setQrCode("QR-" + UUID.randomUUID());
+        ticket.setCurrentHolder(receiver);
+        ticketRepository.save(ticket);
+
+        TicketTransferModel transfer = TicketTransferModel.builder()
+                .ticket(ticket)
+                .fromUser(sender)
+                .toUser(receiver)
+                .transferredAt(LocalDateTime.now())
+                .build();
+        ticketTransferRepository.save(transfer);
+
+        return ticketMapper.toTransferResponse(transfer);
     }
 }

@@ -3,6 +3,8 @@ package com.gerardo.swiftentrybackend.domain.Ticket.utils;
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Seat.SeatModel;
 import com.gerardo.swiftentrybackend.domain.Ticket.TicketModel;
+import com.gerardo.swiftentrybackend.domain.Ticket.TicketTransferModel;
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketTransferResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
@@ -40,6 +42,11 @@ public class TicketMapper {
                 .seatId(model.getSeat().getId())
                 .seatNumber(model.getSeat().getSeatNumber())
                 .rowLabel(model.getSeat().getRowLabel())
+                .currentHolderEmail(
+                        model.getCurrentHolder() != null
+                                ? model.getCurrentHolder().getEmail()
+                                : model.getReservation().getUser().getEmail()
+                )
                 .ticketCode(model.getTicketCode())
                 .qrCode(model.getQrCode())
                 .status(model.getStatus())
@@ -58,6 +65,16 @@ public class TicketMapper {
                 .validatedAt(model.getValidatedAt())
                 .createdAt(model.getCreatedAt())
                 .updatedAt(model.getUpdatedAt())
+                .build();
+    }
+
+    public TicketTransferResponseDTO toTransferResponse(TicketTransferModel transfer) {
+        return TicketTransferResponseDTO.builder()
+                .transferId(transfer.getId())
+                .transferredAt(transfer.getTransferredAt())
+                .fromUserEmail(transfer.getFromUser().getEmail())
+                .toUserEmail(transfer.getToUser().getEmail())
+                .ticket(toResponse(transfer.getTicket()))
                 .build();
     }
 

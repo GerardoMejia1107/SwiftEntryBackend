@@ -23,6 +23,8 @@ public class TicketResponseDTO {
     private String eventName;
     private String localityName;
 
+    private String currentHolderEmail;
+
     private String ticketCode;
     private String qrCode;
 

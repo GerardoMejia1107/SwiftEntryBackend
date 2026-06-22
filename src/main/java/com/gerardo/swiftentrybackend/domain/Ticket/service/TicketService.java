@@ -1,5 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Ticket.service;
 
+import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketTransferResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.Ticket.dto.request.TicketRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketResponseDTO;
@@ -30,4 +31,6 @@ public interface TicketService {
     TicketResponseDTO validateTicketByQrCode(String qrCode, Integer validatorUserId);
 
     List<TicketResponseDTO> getMyTickets(String userEmail);
+
+    TicketTransferResponseDTO transferTicket(Integer ticketId, String receiverEmail, String senderEmail);
 }
