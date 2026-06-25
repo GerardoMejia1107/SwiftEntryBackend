@@ -1,6 +1,7 @@
 package com.gerardo.swiftentrybackend.domain.Ticket.service.validation;
 
 import com.gerardo.swiftentrybackend.domain.Ticket.TicketModel;
+import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,10 +9,11 @@ import lombok.Setter;
 @Setter
 public class TicketValidationContext {
 
-    private String ticketCode;
+    private String qrCode;
 
-    private String organizerEmail;
+    private Integer validatorUserId;
 
     private TicketModel ticket;
 
+    private UserModel validator;
 }

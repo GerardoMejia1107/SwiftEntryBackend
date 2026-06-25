@@ -19,6 +19,7 @@ import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketTransferRe
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketRepository;
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketTransferRepository;
+import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketValidationHandler;
 import com.gerardo.swiftentrybackend.domain.Ticket.utils.TicketMapper;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
@@ -42,6 +43,7 @@ public class TicketServiceImpl implements TicketService {
     private final ReservationSeatRepository reservationSeatRepository;
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
+    private final TicketValidationHandler ticketValidationChain;
 
     @Override
     public TicketResponseDTO createTicket(TicketRequestDTO requestDTO) {
