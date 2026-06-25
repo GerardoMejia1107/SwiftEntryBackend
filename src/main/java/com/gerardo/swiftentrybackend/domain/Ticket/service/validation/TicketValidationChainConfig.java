@@ -1,7 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Ticket.service.validation;
 
-import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.handlers.TicketExistsHandler;
-import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.handlers.TicketStatusHandler;
+import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.handlers.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,18 +11,18 @@ public class TicketValidationChainConfig {
 
     private final TicketExistsHandler ticketExistsHandler;
     private final TicketStatusHandler ticketStatusHandler;
-//    TODO: validaciones de evento
-//    private final EventOwnershipHandler eventOwnershipHandler;
-//    private final EventDateHandler eventDateHandler;
+    private final ValidatorExistsHandler validatorExistsHandler;
+    private final EventOwnershipHandler eventOwnershipHandler;
+    private final EventDateHandler eventDateHandler;
 
     @Bean
     public TicketValidationHandler ticketValidationChain() {
 
         ticketExistsHandler
-                .setNext(ticketStatusHandler);
-        //    TODO: validaciones de evento
-//                .setNext(eventOwnershipHandler)
-//                .setNext(eventDateHandler);
+                .setNext(ticketStatusHandler)
+                .setNext(validatorExistsHandler)
+                .setNext(eventOwnershipHandler)
+                .setNext(eventDateHandler);
 
         return ticketExistsHandler;
     }

@@ -19,6 +19,7 @@ import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketTransferRe
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketRepository;
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketTransferRepository;
+import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketValidationContext;
 import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketValidationHandler;
 import com.gerardo.swiftentrybackend.domain.Ticket.utils.TicketMapper;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
@@ -124,27 +125,33 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketResponseDTO validateTicketByQrCode(String qrCode, Integer validatorUserId) {
-        TicketModel ticket = ticketRepository.findByQrCode(qrCode)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Ticket not found with QR code: " + qrCode));
+    @Transactional
+    public TicketResponseDTO validateTicketByQrCode(
+            String qrCode,
+            Integer validatorUserId) {
+        // TODO: probar funcionalidad de validación de tickets
 
-        if (ticket.getStatus() != TicketStatus.ISSUED) {
-            throw new ResourceConflictException(
-                    "Ticket cannot be validated in its current status: " + ticket.getStatus());
-        }
+        TicketValidationContext context =
+                new TicketValidationContext();
 
-        UserModel validator = userRepository.findById(validatorUserId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Validator user not found: " + validatorUserId));
+        context.setQrCode(qrCode);
+        context.setValidatorUserId(validatorUserId);
+
+        ticketValidationChain.handle(context);
+
+        TicketModel ticket = context.getTicket();
+        UserModel validator = context.getValidator();
 
         LocalDateTime now = LocalDateTime.now();
+
         ticket.setStatus(TicketStatus.USED);
         ticket.setUsedAt(now);
-        ticket.setValidatedBy(validator);
         ticket.setValidatedAt(now);
+        ticket.setValidatedBy(validator);
 
-        return ticketMapper.toResponse(ticketRepository.save(ticket));
+        ticketRepository.save(ticket);
+
+        return ticketMapper.toResponse(ticket);
     }
 
     @Override
