@@ -150,6 +150,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setValidatedBy(validator);
 
         ticketRepository.save(ticket);
+        // TODO: actualizar ticket a USED
 
         return ticketMapper.toResponse(ticket);
     }
