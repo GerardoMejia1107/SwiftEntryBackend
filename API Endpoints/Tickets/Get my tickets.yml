@@ -8,7 +8,7 @@ http:
   url: "{{swift_entry_base_uri}}/tickets/me"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MTg5MjQ1NywiZXhwIjoxNzgxODkzMzU3fQ.V5gWr8cYvtWLPRxP2D1VsKr0pRCXemKF69P7R46_zLg
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MjYwMzE0MiwiZXhwIjoxNzgyNjA0MDQyfQ.AftIY7LxYWXQjc4yqV7tqenkSPXy76F0CFC84lEsIHw
   auth: inherit
 
 settings:

@@ -5,7 +5,14 @@ info:
 
 http:
   method: POST
-  url: "{{swift_entry_base_uri}}"
+  url: "{{swift_entry_base_uri}}/auth/login"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "holly@gmail.com",
+        "password": "holly_and_michael"
+      }
   auth: inherit
 
 settings:

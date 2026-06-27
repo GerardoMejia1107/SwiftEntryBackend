@@ -6,6 +6,9 @@ info:
 http:
   method: GET
   url: "{{swift_entry_base_uri}}/tickets/me"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MjU4ODA1OCwiZXhwIjoxNzgyNTg4OTU4fQ.cdgP_jW5wn3fvOkqpXqAq4fLo632TdsGv4UMJuDpcC4
   auth: inherit
 
 settings:

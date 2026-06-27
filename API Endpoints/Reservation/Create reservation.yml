@@ -8,12 +8,12 @@ http:
   url: "{{swift_entry_base_uri}}/reservations"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MTc1NTU2OSwiZXhwIjoxNzgxNzU2NDY5fQ.N4uDNL0KKsbaUqQ9gXFfD-9fZUNNC8eE5lUYxBvUgW4
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MjYwMzE0MiwiZXhwIjoxNzgyNjA0MDQyfQ.AftIY7LxYWXQjc4yqV7tqenkSPXy76F0CFC84lEsIHw
   body:
     type: json
     data: |-
       {
-        "localitySeatIds": [38,47,48]
+        "localitySeatIds": [1, 2, 3]
       }
   auth: inherit
 

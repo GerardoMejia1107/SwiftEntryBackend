@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Pruebas/Max Tickets y QR Image.md",
+                "file": "Pruebas/Validacion de Tickets.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,7 +52,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Max Tickets y QR Image"
+              "title": "Validacion de Tickets"
             }
           }
         ],
@@ -223,8 +223,9 @@
   "active": "6c7f4d2563fc81fa",
   "lastOpenFiles": [
     "Pruebas/Descuento Early Bird.md",
-    "Logs/CHANGELOG.md",
+    "Flujos/Flujo de Reserva y Compra.md",
     "Pruebas/Max Tickets y QR Image.md",
+    "Logs/CHANGELOG.md",
     "Pruebas/Max Tickets y QR Image.md.tmp.20445.debc504007fc",
     "Requerimientos/Business Logic Coverage Report.md",
     "Requerimientos/Business Logic Coverage Report.md.tmp.20445.6b07cfa45be9",
@@ -239,7 +240,6 @@
     "Requerimientos/Minimum Business Logic.md",
     "Pruebas/Validacion de Tickets.md",
     "Flujos/Flujo Reserva-Pago-Ticket y Validacion.md",
-    "Flujos/Flujo de Reserva y Compra.md",
     "index.md",
     "Arquitectura/Seguridad y Autenticacion.md",
     "Attachments/Untitled diagram-2026-06-20-230416.png",

@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{swift_entry_base_uri}}/seats/event/1"
+  url: "{{swift_entry_base_uri}}/seats/event/6"
   auth: inherit
 
 settings:

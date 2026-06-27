@@ -10,8 +10,15 @@ http:
     type: json
     data: |-
       {
-        "localityId": 1,
-        "seats": ["A1", "A3", "A7", "B2", "D5"]
+        "localityId": 20,
+        "seats": [
+          "A1",
+          "A2",
+          "A3",
+          "A4",
+          "A5",
+          "A6"
+        ]
       }
   auth: inherit
 

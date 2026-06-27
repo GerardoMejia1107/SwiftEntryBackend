@@ -8,12 +8,12 @@ http:
   url: "{{swift_entry_base_uri}}/payments"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MTg4OTY2MCwiZXhwIjoxNzgxODkwNTYwfQ.1RfV2aSBkGnFHMRIskrLCJpmxr2YwZDsdvR5ZNO-Htw
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MjYwMzE0MiwiZXhwIjoxNzgyNjA0MDQyfQ.AftIY7LxYWXQjc4yqV7tqenkSPXy76F0CFC84lEsIHw
   body:
     type: json
     data: |-
       {
-        "reservationId": 1,
+        "reservationId": 14,
         "paymentMethod": "CREDIT_CARD"
       }
   auth: inherit
