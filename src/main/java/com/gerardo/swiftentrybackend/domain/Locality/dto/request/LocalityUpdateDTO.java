@@ -1,11 +1,13 @@
 package com.gerardo.swiftentrybackend.domain.Locality.dto.request;
 
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,6 +25,12 @@ public class LocalityUpdateDTO {
 
     @DecimalMin(value = "0.00", message = "Price must be zero or greater")
     private BigDecimal price;
+
+    @DecimalMin(value = "0.00", message = "Early bird discount must be 0 or greater")
+    @DecimalMax(value = "100.00", message = "Early bird discount cannot exceed 100")
+    private BigDecimal earlyBirdDiscountPercentage;
+
+    private LocalDateTime earlyBirdDeadline;
 
     @Min(value = 1, message = "Capacity must be at least 1")
     private Integer capacity;

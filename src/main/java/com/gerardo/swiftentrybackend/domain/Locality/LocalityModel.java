@@ -39,6 +39,12 @@ public class LocalityModel {
     @Column(name = "available_slots", nullable = false)
     private Integer availableSlots;
 
+    @Column(name = "early_bird_discount_percentage", precision = 5, scale = 2)
+    private BigDecimal earlyBirdDiscountPercentage;
+
+    @Column(name = "early_bird_deadline")
+    private LocalDateTime earlyBirdDeadline;
+
     @Version
     @Builder.Default
     @Column(nullable = false)

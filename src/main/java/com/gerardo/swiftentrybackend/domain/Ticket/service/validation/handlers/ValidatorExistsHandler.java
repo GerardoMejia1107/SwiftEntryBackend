@@ -18,11 +18,11 @@ public class ValidatorExistsHandler extends TicketValidationHandler {
     protected void process(TicketValidationContext context) {
 
         UserModel validator = userRepository
-                .findById(context.getValidatorUserId())
+                .findByEmail(context.getValidatorEmail())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "Usuario no encontrado: "
-                                        + context.getValidatorUserId()));
+                                        + context.getValidatorEmail()));
 
         context.setValidator(validator);
     }

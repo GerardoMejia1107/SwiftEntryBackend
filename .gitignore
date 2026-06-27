@@ -32,3 +32,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.claude/
+
+docs/Pruebas/
+docs/Logs/
+docs/Requerimientos/
+
+.env

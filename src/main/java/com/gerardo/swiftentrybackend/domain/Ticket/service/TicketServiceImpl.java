@@ -21,6 +21,7 @@ import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketRepository
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketTransferRepository;
 import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketValidationContext;
 import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketValidationHandler;
+import com.gerardo.swiftentrybackend.domain.Ticket.utils.QrCodeGenerator;
 import com.gerardo.swiftentrybackend.domain.Ticket.utils.TicketMapper;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
@@ -45,6 +46,7 @@ public class TicketServiceImpl implements TicketService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
     private final TicketValidationHandler ticketValidationChain;
+    private final QrCodeGenerator qrCodeGenerator;
 
     @Override
     public TicketResponseDTO createTicket(TicketRequestDTO requestDTO) {
@@ -126,16 +128,10 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public TicketResponseDTO validateTicketByQrCode(
-            String qrCode,
-            Integer validatorUserId) {
-        // TODO: probar funcionalidad de validación de tickets
-
-        TicketValidationContext context =
-                new TicketValidationContext();
-
+    public TicketResponseDTO validateTicketByQrCode(String qrCode, String validatorEmail) {
+        TicketValidationContext context = new TicketValidationContext();
         context.setQrCode(qrCode);
-        context.setValidatorUserId(validatorUserId);
+        context.setValidatorEmail(validatorEmail);
 
         ticketValidationChain.handle(context);
 
@@ -143,15 +139,12 @@ public class TicketServiceImpl implements TicketService {
         UserModel validator = context.getValidator();
 
         LocalDateTime now = LocalDateTime.now();
-
         ticket.setStatus(TicketStatus.USED);
         ticket.setUsedAt(now);
         ticket.setValidatedAt(now);
         ticket.setValidatedBy(validator);
 
         ticketRepository.save(ticket);
-        // TODO: actualizar ticket a USED
-
         return ticketMapper.toResponse(ticket);
     }
 
@@ -217,5 +210,21 @@ public class TicketServiceImpl implements TicketService {
         ticketTransferRepository.save(transfer);
 
         return ticketMapper.toTransferResponse(transfer);
+    }
+
+    @Override
+    public byte[] getTicketQrImage(Integer ticketId, String userEmail) {
+        TicketModel ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found: " + ticketId));
+
+        String currentHolderEmail = ticket.getCurrentHolder() != null
+                ? ticket.getCurrentHolder().getEmail()
+                : ticket.getReservation().getUser().getEmail();
+
+        if (!currentHolderEmail.equalsIgnoreCase(userEmail)) {
+            throw new ForbiddenOperationException("You are not the current holder of this ticket.");
+        }
+
+        return qrCodeGenerator.generate(ticket.getQrCode(), 300, 300);
     }
 }

@@ -1,0 +1,15 @@
+info:
+  name: Login Organizer
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -11,7 +11,7 @@ public class TicketValidationContext {
 
     private String qrCode;
 
-    private Integer validatorUserId;
+    private String validatorEmail;
 
     private TicketModel ticket;
 

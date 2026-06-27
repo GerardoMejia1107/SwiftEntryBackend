@@ -15,6 +15,8 @@ public class LocalityResponseDTO {
     private String name;
     private String description;
     private BigDecimal price;
+    private BigDecimal earlyBirdDiscountPercentage;
+    private LocalDateTime earlyBirdDeadline;
     private Integer capacity;
     private Integer availableSlots;
     private LocalDateTime createdAt;

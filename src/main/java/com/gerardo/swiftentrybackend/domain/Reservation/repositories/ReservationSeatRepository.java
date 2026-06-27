@@ -3,11 +3,22 @@ package com.gerardo.swiftentrybackend.domain.Reservation.repositories;
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationSeatModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ReservationSeatRepository extends JpaRepository<ReservationSeatModel, Integer> {
+
+    @Query("SELECT COUNT(rs) FROM ReservationSeatModel rs " +
+           "WHERE rs.reservation.user.id = :userId " +
+           "AND rs.localitySeat.locality.event.id = :eventId " +
+           "AND rs.reservation.status IN :statuses")
+    long countByUserAndEventAndStatuses(
+            @Param("userId") Integer userId,
+            @Param("eventId") Integer eventId,
+            @Param("statuses") List<ReservationStatus> statuses);
 
     List<ReservationSeatModel> findByReservation_Id(Integer reservationId);
 
