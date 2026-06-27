@@ -6,28 +6,28 @@ info:
 http:
   method: POST
   url: "{{swift_entry_base_uri}}/events"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTklTVFJBVE9SIiwic3ViIjoibWljaGFlbEB0ZXN0LmNvbSIsImlhdCI6MTc4MjYwMjA0MCwiZXhwIjoxNzgyNjAyOTQwfQ.6HWv9a5mh6nTvXCvq-w6TCrIb0V3JVxUuzrXjtLqEcw
   body:
     type: json
     data: |-
       {
-        "name": "Food Fest San Salvador",
-        "description": "Festival gastronómico con comida nacional e internacional, música en vivo y zonas familiares",
-        "category": "FESTIVAL",
-        "organizerId": 2,
+        "name": "Concierto Early Bird Test",
+        "description": "Evento de prueba para descuento",
+        "category": "CONCERT",
+        "organizerId": 19,
+        "startDate": "2026-12-01T20:00:00",
+        "endDate": "2026-12-01T23:00:00",
+        "venueName": "Estadio Test",
         "status": "PUBLISHED",
-        "startDate": "2026-11-12T16:00:00",
-        "endDate": "2026-11-12T22:00:00",
-        "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1",
         "localities": [
           {
-            "name": "Entrada General",
-            "description": "Acceso al festival y zonas comunes de comida",
-            "price": 10.00
-          },
-          {
-            "name": "Experiencia VIP",
-            "description": "Acceso preferencial, zona privada y degustaciones especiales",
-            "price": 35.00
+            "name": "General",
+            "description": "Zona general",
+            "price": 100.00,
+            "earlyBirdDiscountPercentage": 20.00,
+            "earlyBirdDeadline": "2026-12-31T23:59:59"
           }
         ]
       }

@@ -8,7 +8,7 @@ http:
   url: "{{swift_entry_base_uri}}/reservations/me"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MTc1NjM5MSwiZXhwIjoxNzgxNzU3MjkxfQ.aya5PEfco4FvbS2j-5OBaqPZ6MHxmnYyjXhvO6E86PU
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InBhbUB0ZXN0LmNvbSIsImlhdCI6MTc4MjYwMzE0MiwiZXhwIjoxNzgyNjA0MDQyfQ.AftIY7LxYWXQjc4yqV7tqenkSPXy76F0CFC84lEsIHw
   auth: inherit
 
 settings:

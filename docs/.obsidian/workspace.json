@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Arquitectura/Seguridad y Autenticacion.md",
+                "file": "Pruebas/Validacion de Tickets.md",
                 "mode": "preview",
                 "source": false,
                 "backlinks": true,
@@ -28,10 +28,35 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Seguridad y Autenticacion"
+              "title": "Validacion de Tickets"
+            }
+          },
+          {
+            "id": "6c7f4d2563fc81fa",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Pruebas/Validacion de Tickets.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "Validacion de Tickets"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -195,18 +220,31 @@
       "callout-manager:Insert Callout": false
     }
   },
-  "active": "36f149942d1eb5d2",
+  "active": "6c7f4d2563fc81fa",
   "lastOpenFiles": [
-    "Attachments/Untitled diagram-2026-06-20-230416.png",
-    "Attachments",
-    "Arquitectura/Infraestructura Compartida.md",
-    "Arquitectura/Seguridad y Autenticacion.md",
-    "index.md",
+    "Pruebas/Descuento Early Bird.md",
     "Flujos/Flujo de Reserva y Compra.md",
-    "Arquitectura/Seguridad y Autenticacion.md.tmp.70022.633695f3731a",
+    "Pruebas/Max Tickets y QR Image.md",
+    "Logs/CHANGELOG.md",
+    "Pruebas/Max Tickets y QR Image.md.tmp.20445.debc504007fc",
+    "Requerimientos/Business Logic Coverage Report.md",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.6b07cfa45be9",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.a5af8832bedb",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.880c5ffeca93",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.86a96e944fcd",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.d62c56e7b49f",
+    "Logs/CHANGELOG.md.tmp.20445.a74e08d7f32b",
+    "Logs/CHANGELOG.md.tmp.20445.bd5a7aa36562",
+    "Pruebas/Descuento Early Bird.md.tmp.20445.02eb3162107a",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.4a5845813630",
+    "Requerimientos/Minimum Business Logic.md",
+    "Pruebas/Validacion de Tickets.md",
+    "Flujos/Flujo Reserva-Pago-Ticket y Validacion.md",
+    "index.md",
+    "Arquitectura/Seguridad y Autenticacion.md",
+    "Attachments/Untitled diagram-2026-06-20-230416.png",
+    "Arquitectura/Infraestructura Compartida.md",
     "Inicio.md",
-    "index.md.tmp.70022.a87abf6944fc",
-    "index.md.tmp.70022.c42a8408b81e",
     "Arquitectura/Concurrencia y Bloqueo.md",
     "Arquitectura/Vision General del Sistema.md",
     "Entidades/Rol.md",
@@ -215,24 +253,12 @@
     "Entidades/Boleto.md",
     "Entities/User.md",
     "Entidades/Reembolso.md",
-    "Entidades/Reembolso.md.tmp.60006.e5aba66c1d0d",
     "Entidades/Direccion.md",
-    "Entidades/Direccion.md.tmp.60006.aa2b6d2cf431",
-    "Entidades/Rol.md.tmp.60006.5c3f57b0fba5",
-    "Entidades/Usuario.md.tmp.60006.f27c89ad6218",
     "Entidades/Localidad.md",
-    "Entidades/Localidad.md.tmp.60006.66f3526aaaad",
     "Entidades/Evento.md",
-    "Entidades/Evento.md.tmp.60006.79d5d3ea0466",
     "Entidades/Asiento.md",
     "Entidades/Pago.md",
     "Home.md",
-    "docs/Entities/User.md",
-    "docs/Entities/Address.md",
-    "docs/Architecture/Security & Authentication.md",
-    "docs/Architecture/Concurrency & Locking.md",
-    "raw/Simulación de Computadoras/Clases/Graphs/Depth First Search.md",
-    "docs/Entities/Refund.md",
     "attachments/Pasted image 20260508215434.png",
     "attachments/Pasted image 20260505203038.png",
     "attachments/Pasted image 20260409185916.png",
@@ -242,7 +268,6 @@
     "attachments/Pasted image 20260104204808.png",
     "attachments/Pasted image 20260107150212.png",
     "attachments/Pasted image 20260108165454.png",
-    "attachments/Pasted image 20260204201603.png",
     "Sin título.canvas",
     "Untitled.canvas"
   ]

@@ -19,6 +19,9 @@ import com.gerardo.swiftentrybackend.domain.Ticket.dto.response.TicketTransferRe
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketRepository;
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketTransferRepository;
+import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketValidationContext;
+import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketValidationHandler;
+import com.gerardo.swiftentrybackend.domain.Ticket.utils.QrCodeGenerator;
 import com.gerardo.swiftentrybackend.domain.Ticket.utils.TicketMapper;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
@@ -42,6 +45,8 @@ public class TicketServiceImpl implements TicketService {
     private final ReservationSeatRepository reservationSeatRepository;
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
+    private final TicketValidationHandler ticketValidationChain;
+    private final QrCodeGenerator qrCodeGenerator;
 
     @Override
     public TicketResponseDTO createTicket(TicketRequestDTO requestDTO) {
@@ -122,27 +127,25 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketResponseDTO validateTicketByQrCode(String qrCode, Integer validatorUserId) {
-        TicketModel ticket = ticketRepository.findByQrCode(qrCode)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Ticket not found with QR code: " + qrCode));
+    @Transactional
+    public TicketResponseDTO validateTicketByQrCode(String qrCode, String validatorEmail) {
+        TicketValidationContext context = new TicketValidationContext();
+        context.setQrCode(qrCode);
+        context.setValidatorEmail(validatorEmail);
 
-        if (ticket.getStatus() != TicketStatus.ISSUED) {
-            throw new ResourceConflictException(
-                    "Ticket cannot be validated in its current status: " + ticket.getStatus());
-        }
+        ticketValidationChain.handle(context);
 
-        UserModel validator = userRepository.findById(validatorUserId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Validator user not found: " + validatorUserId));
+        TicketModel ticket = context.getTicket();
+        UserModel validator = context.getValidator();
 
         LocalDateTime now = LocalDateTime.now();
         ticket.setStatus(TicketStatus.USED);
         ticket.setUsedAt(now);
-        ticket.setValidatedBy(validator);
         ticket.setValidatedAt(now);
+        ticket.setValidatedBy(validator);
 
-        return ticketMapper.toResponse(ticketRepository.save(ticket));
+        ticketRepository.save(ticket);
+        return ticketMapper.toResponse(ticket);
     }
 
     @Override
@@ -207,5 +210,21 @@ public class TicketServiceImpl implements TicketService {
         ticketTransferRepository.save(transfer);
 
         return ticketMapper.toTransferResponse(transfer);
+    }
+
+    @Override
+    public byte[] getTicketQrImage(Integer ticketId, String userEmail) {
+        TicketModel ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found: " + ticketId));
+
+        String currentHolderEmail = ticket.getCurrentHolder() != null
+                ? ticket.getCurrentHolder().getEmail()
+                : ticket.getReservation().getUser().getEmail();
+
+        if (!currentHolderEmail.equalsIgnoreCase(userEmail)) {
+            throw new ForbiddenOperationException("You are not the current holder of this ticket.");
+        }
+
+        return qrCodeGenerator.generate(ticket.getQrCode(), 300, 300);
     }
 }

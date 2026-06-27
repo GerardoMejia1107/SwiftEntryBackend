@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ public class ReservationServiceImp implements ReservationService {
     private static final int MAX_SEATS_PER_RESERVATION = 5;
     private static final int RESERVATION_EXPIRY_MINUTES = 15;
     private static final BigDecimal TAX_RATE = BigDecimal.valueOf(0.13);
+    private static final BigDecimal HUNDRED = BigDecimal.valueOf(100);
 
     private final ReservationRepository reservationRepository;
     private final ReservationSeatRepository reservationSeatRepository;
@@ -77,13 +79,25 @@ public class ReservationServiceImp implements ReservationService {
             }
         }
 
-        // Calculate amounts
+        // Enforce global cap: count seats already held (PENDING or CONFIRMED) for this user+event
+        long alreadyHeld = reservationSeatRepository.countByUserAndEventAndStatuses(
+                user.getId(), eventId,
+                List.of(ReservationStatus.PENDING, ReservationStatus.CONFIRMED));
+        if (alreadyHeld + requestDTO.getLocalitySeatIds().size() > MAX_SEATS_PER_RESERVATION) {
+            throw new ResourceConflictException(
+                    "Cannot hold more than " + MAX_SEATS_PER_RESERVATION +
+                    " tickets for the same event (you already hold " + alreadyHeld + ").");
+        }
+
+        // Calculate amounts — effective price includes early bird discount if deadline is active
         BigDecimal subtotal = seats.stream()
-                .map(ls -> ls.getLocality().getPrice())
+                .map(ls -> effectivePrice(ls.getLocality()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal taxAmount      = subtotal.multiply(TAX_RATE);
-        BigDecimal discountAmount = BigDecimal.ZERO;
-        BigDecimal totalAmount    = subtotal.add(taxAmount).subtract(discountAmount);
+        BigDecimal discountAmount = seats.stream()
+                .map(ls -> ls.getLocality().getPrice().subtract(effectivePrice(ls.getLocality())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal taxAmount   = subtotal.multiply(TAX_RATE);
+        BigDecimal totalAmount = subtotal.add(taxAmount);
 
         LocalDateTime now       = LocalDateTime.now();
         LocalDateTime expiresAt = now.plusMinutes(RESERVATION_EXPIRY_MINUTES);
@@ -105,7 +119,7 @@ public class ReservationServiceImp implements ReservationService {
                     ReservationSeatModel.builder()
                             .reservation(reservation)
                             .localitySeat(ls)
-                            .priceAtReservation(ls.getLocality().getPrice())
+                            .priceAtReservation(effectivePrice(ls.getLocality()))
                             .build()
             );
         }
@@ -220,12 +234,12 @@ public class ReservationServiceImp implements ReservationService {
             return reservationMapper.toResponse(reservationRepository.save(reservation));
         }
 
-        // Recalculate totals from the remaining seat prices
+        // Recalculate totals from the remaining seat prices (already discounted)
         BigDecimal subtotal = reservation.getReservationSeats().stream()
                 .map(ReservationSeatModel::getPriceAtReservation)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal taxAmount   = subtotal.multiply(TAX_RATE);
-        BigDecimal totalAmount = subtotal.add(taxAmount).subtract(reservation.getDiscountAmount());
+        BigDecimal totalAmount = subtotal.add(taxAmount);
 
         reservation.setSubtotal(subtotal);
         reservation.setTaxAmount(taxAmount);
@@ -257,6 +271,17 @@ public class ReservationServiceImp implements ReservationService {
 
         reservationRepository.saveAll(expired);
         return expired.size();
+    }
+
+    private BigDecimal effectivePrice(LocalityModel locality) {
+        BigDecimal pct = locality.getEarlyBirdDiscountPercentage();
+        LocalDateTime deadline = locality.getEarlyBirdDeadline();
+        if (pct != null && deadline != null && LocalDateTime.now().isBefore(deadline)) {
+            return locality.getPrice()
+                    .multiply(HUNDRED.subtract(pct))
+                    .divide(HUNDRED, 2, RoundingMode.HALF_UP);
+        }
+        return locality.getPrice();
     }
 
     // ── Shared seat-release logic (cancel & expire) ────────────

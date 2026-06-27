@@ -8,7 +8,7 @@ http:
   url: "{{swift_entry_base_uri}}/events"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTklTVFJBVE9SIiwic3ViIjoibWljaGFlbEB0ZXN0LmNvbSIsImlhdCI6MTc4MTc0ODIwNSwiZXhwIjoxNzgxNzQ5MTA1fQ.0lHUspeNb1TZkIZvlwmVgeUa8bUGjayX-XpDrYE1qbU
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTklTVFJBVE9SIiwic3ViIjoibWljaGFlbEB0ZXN0LmNvbSIsImlhdCI6MTc4MjYwMjA0MCwiZXhwIjoxNzgyNjAyOTQwfQ.6HWv9a5mh6nTvXCvq-w6TCrIb0V3JVxUuzrXjtLqEcw
   params:
     - name: ""
       value: ""

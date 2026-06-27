@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,6 +25,12 @@ public class LocalityRequestDTO {
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.00", message = "Price must be zero or greater")
     private BigDecimal price;
+
+    @DecimalMin(value = "0.00", message = "Early bird discount must be 0 or greater")
+    @DecimalMax(value = "100.00", message = "Early bird discount cannot exceed 100")
+    private BigDecimal earlyBirdDiscountPercentage;
+
+    private LocalDateTime earlyBirdDeadline;
 
     /*@NotNull(message = "Capacity is required")
     @Min(value = 1, message = "Capacity must be at least 1")

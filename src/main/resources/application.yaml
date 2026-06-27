@@ -1,9 +1,10 @@
 jwt:
-  secret-key: "JinxCyberPunkEffectPropagationsB"
+  secret-key: ${JWT_SECRET_KEY}
   expiration-ms: 900000
   refresh-expiration-days: 7
-
 spring:
+  config:
+    import: "optional:file:.env[.properties]"
   application:
     name: SwiftEntryBackend
   datasource:
@@ -18,7 +19,3 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  security:
-    user:
-      password: holly
-      name: mike

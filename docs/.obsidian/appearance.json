@@ -1,9 +1,7 @@
 {
-  "cssTheme": "Dracula Official",
-  "theme": "obsidian",
-  "enabledCssSnippets": [
-    "sunset-glass"
-  ],
+  "cssTheme": "Things",
+  "theme": "moonstone",
+  "enabledCssSnippets": [],
   "textFontFamily": "Inter",
   "interfaceFontFamily": "Inter",
   "showRibbon": false,

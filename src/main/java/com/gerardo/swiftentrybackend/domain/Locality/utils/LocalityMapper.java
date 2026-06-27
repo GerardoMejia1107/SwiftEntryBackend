@@ -16,6 +16,8 @@ public class LocalityMapper {
                 .name(request.getName())
                 .description(request.getDescription())
                 .price(request.getPrice())
+                .earlyBirdDiscountPercentage(request.getEarlyBirdDiscountPercentage())
+                .earlyBirdDeadline(request.getEarlyBirdDeadline())
                 .capacity(0)
                 .availableSlots(0)
                 .build();
@@ -27,6 +29,8 @@ public class LocalityMapper {
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .price(dto.getPrice())
+                .earlyBirdDiscountPercentage(dto.getEarlyBirdDiscountPercentage())
+                .earlyBirdDeadline(dto.getEarlyBirdDeadline())
                 .capacity(0)
                 .availableSlots(0)
                 .build();
@@ -38,6 +42,8 @@ public class LocalityMapper {
                 .name(locality.getName())
                 .description(locality.getDescription())
                 .price(locality.getPrice())
+                .earlyBirdDiscountPercentage(locality.getEarlyBirdDiscountPercentage())
+                .earlyBirdDeadline(locality.getEarlyBirdDeadline())
                 .capacity(locality.getCapacity())
                 .availableSlots(locality.getAvailableSlots())
                 .createdAt(locality.getCreatedAt())
@@ -49,6 +55,8 @@ public class LocalityMapper {
         if (request.getName() != null) locality.setName(request.getName());
         if (request.getDescription() != null) locality.setDescription(request.getDescription());
         if (request.getPrice() != null) locality.setPrice(request.getPrice());
+        if (request.getEarlyBirdDiscountPercentage() != null) locality.setEarlyBirdDiscountPercentage(request.getEarlyBirdDiscountPercentage());
+        if (request.getEarlyBirdDeadline() != null) locality.setEarlyBirdDeadline(request.getEarlyBirdDeadline());
         if (request.getCapacity() != null) locality.setCapacity(request.getCapacity());
         if (request.getAvailableSlots() != null) locality.setAvailableSlots(request.getAvailableSlots());
     }
