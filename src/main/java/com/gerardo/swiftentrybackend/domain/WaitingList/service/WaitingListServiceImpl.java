@@ -6,6 +6,8 @@ import com.gerardo.swiftentrybackend.common.exceptions.ResourceConflictException
 import com.gerardo.swiftentrybackend.common.exceptions.ResourceNotFoundException;
 import com.gerardo.swiftentrybackend.domain.Locality.LocalityModel;
 import com.gerardo.swiftentrybackend.domain.Locality.repositories.LocalityRepository;
+import com.gerardo.swiftentrybackend.domain.Notification.enums.NotificationType;
+import com.gerardo.swiftentrybackend.domain.Notification.service.NotificationService;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
 import com.gerardo.swiftentrybackend.domain.WaitingList.WaitingListModel;
@@ -33,6 +35,7 @@ public class WaitingListServiceImpl implements WaitingListService {
     private final LocalityRepository localityRepository;
     private final UserRepository userRepository;
     private final WaitingListMapper waitingListMapper;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -127,6 +130,7 @@ public class WaitingListServiceImpl implements WaitingListService {
             entry.setStatus(WaitingListStatus.NOTIFIED);
             entry.setNotifiedAt(now);
             entry.setNotificationExpiresAt(now.plusMinutes(NOTIFICATION_WINDOW_MINUTES));
+            notifyUserSeatAvailable(entry);
         }
 
         waitingListRepository.saveAll(waiting.subList(0, toNotify));
@@ -182,6 +186,7 @@ public class WaitingListServiceImpl implements WaitingListService {
                         entry.setStatus(WaitingListStatus.NOTIFIED);
                         entry.setNotifiedAt(now);
                         entry.setNotificationExpiresAt(now.plusMinutes(NOTIFICATION_WINDOW_MINUTES));
+                        notifyUserSeatAvailable(entry);
                     }
 
                     waitingListRepository.saveAll(next.subList(0, toNotify));
@@ -189,5 +194,16 @@ public class WaitingListServiceImpl implements WaitingListService {
         );
 
         return expired.size();
+    }
+
+    private void notifyUserSeatAvailable(WaitingListModel entry) {
+        notificationService.createNotification(
+                entry.getUser(),
+                NotificationType.WAITING_LIST_SEAT_AVAILABLE,
+                "A seat is now available",
+                "A seat just became available for " + entry.getLocality().getName()
+                        + ". You have " + NOTIFICATION_WINDOW_MINUTES
+                        + " minutes to complete your reservation before your spot is released.",
+                entry.getLocality().getId());
     }
 }
