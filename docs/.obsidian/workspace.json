@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Pruebas/Validacion de Tickets.md",
+                "file": "Requerimientos/Business Logic Coverage Report.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,7 +52,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Validacion de Tickets"
+              "title": "Business Logic Coverage Report"
             }
           }
         ],
@@ -222,23 +222,24 @@
   },
   "active": "6c7f4d2563fc81fa",
   "lastOpenFiles": [
+    "Pruebas/Lista de Espera.md",
+    "Pruebas/Lista de Espera.md.tmp.32351.b28ac98d68b5",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.32351.419eed2a8c70",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.32351.d4b6846ca6e3",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.32351.b47b79a9e05a",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.32351.aea946b32ee8",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.32351.60dabc6f5e3e",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.32351.5432eba8d40a",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.32351.354dc8fa13bc",
+    "Logs/CHANGELOG.md.tmp.32351.4f3da2c5b639",
+    "Logs/CHANGELOG.md.tmp.32351.2efe1b818d8e",
+    "Pruebas/Validacion de Tickets.md",
     "Pruebas/Descuento Early Bird.md",
     "Flujos/Flujo de Reserva y Compra.md",
     "Pruebas/Max Tickets y QR Image.md",
     "Logs/CHANGELOG.md",
-    "Pruebas/Max Tickets y QR Image.md.tmp.20445.debc504007fc",
     "Requerimientos/Business Logic Coverage Report.md",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.6b07cfa45be9",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.a5af8832bedb",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.880c5ffeca93",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.86a96e944fcd",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.d62c56e7b49f",
-    "Logs/CHANGELOG.md.tmp.20445.a74e08d7f32b",
-    "Logs/CHANGELOG.md.tmp.20445.bd5a7aa36562",
-    "Pruebas/Descuento Early Bird.md.tmp.20445.02eb3162107a",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.4a5845813630",
     "Requerimientos/Minimum Business Logic.md",
-    "Pruebas/Validacion de Tickets.md",
     "Flujos/Flujo Reserva-Pago-Ticket y Validacion.md",
     "index.md",
     "Arquitectura/Seguridad y Autenticacion.md",
@@ -258,7 +259,6 @@
     "Entidades/Evento.md",
     "Entidades/Asiento.md",
     "Entidades/Pago.md",
-    "Home.md",
     "attachments/Pasted image 20260508215434.png",
     "attachments/Pasted image 20260505203038.png",
     "attachments/Pasted image 20260409185916.png",

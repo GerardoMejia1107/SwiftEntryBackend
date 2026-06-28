@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface RefundService {
 
-    RefundResponseDTO createRefundRequest(RefundRequestDTO requestDTO);
+    RefundResponseDTO createRefundRequest(RefundRequestDTO requestDTO, String userEmail);
 
     List<RefundResponseDTO> getAllRefunds();
 
     RefundResponseDTO getRefundById(Integer id);
 
-    List<RefundResponseDTO> getRefundsByPaymentId(Integer paymentId);
+    List<RefundResponseDTO> getRefundsByPaymentId(Integer paymentId, String userEmail);
 
     List<RefundResponseDTO> getRefundsByStatus(RefundStatus status);
 

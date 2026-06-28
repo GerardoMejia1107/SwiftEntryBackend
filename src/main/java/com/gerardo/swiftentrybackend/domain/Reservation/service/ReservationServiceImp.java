@@ -18,6 +18,7 @@ import com.gerardo.swiftentrybackend.domain.Seat.enums.SeatStatus;
 import com.gerardo.swiftentrybackend.domain.Seat.repositories.LocalitySeatRepository;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
+import com.gerardo.swiftentrybackend.domain.WaitingList.service.WaitingListService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class ReservationServiceImp implements ReservationService {
     private final LocalityRepository localityRepository;
     private final UserRepository userRepository;
     private final ReservationMapper reservationMapper;
+    private final WaitingListService waitingListService;
 
     @Override
     @Transactional
@@ -225,6 +227,8 @@ public class ReservationServiceImp implements ReservationService {
         locality.setAvailableSlots(locality.getAvailableSlots() + 1);
         localityRepository.save(locality);
 
+        waitingListService.notifyNextInQueue(locality.getId(), 1);
+
         // Remove the seat line — orphanRemoval handles the DB delete
         reservation.getReservationSeats().remove(seatToRemove);
 
@@ -311,5 +315,8 @@ public class ReservationServiceImp implements ReservationService {
                 loc.setAvailableSlots(loc.getAvailableSlots() + restoreDeltas.get(locId))
         );
         localityRepository.saveAll(new ArrayList<>(localityMap.values()));
+
+        restoreDeltas.forEach((locId, delta) ->
+                waitingListService.notifyNextInQueue(locId, delta));
     }
 }
