@@ -32,6 +32,8 @@ public final class SecurityRoutes {
             "/swift_entry/payments/me",
             "/swift_entry/tickets/me",
             "/swift_entry/refunds/payment/**",
-            "/swift_entry/waiting-list/me"
+            "/swift_entry/waiting-list/me",
+            "/swift_entry/notifications/me",
+            "/swift_entry/notifications/me/**"
     };
 }
