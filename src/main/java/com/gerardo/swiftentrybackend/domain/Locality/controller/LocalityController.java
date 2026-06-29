@@ -2,7 +2,6 @@ package com.gerardo.swiftentrybackend.domain.Locality.controller;
 
 import com.gerardo.swiftentrybackend.common.components.ResponseBuilder;
 import com.gerardo.swiftentrybackend.common.dto.GeneralResponse;
-import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityUpdateDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.dto.response.LocalityResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.services.LocalityService;
@@ -24,13 +23,6 @@ public class LocalityController {
 
     private final LocalityService localityService;
     private final ResponseBuilder responseBuilder;
-
-    @Operation(summary = "Crear localidad", description = "⚠️ Stub — actualmente no hace nada. Las localidades se crean desde el endpoint de Eventos")
-    @PostMapping
-    public ResponseEntity<GeneralResponse> createLocality(@Valid @RequestBody LocalityRequestDTO request) {
-        LocalityResponseDTO response = localityService.createLocality(request);
-        return responseBuilder.buildResponse("Locality created successfully", HttpStatus.CREATED, response);
-    }
 
     @Operation(summary = "Listar todas las localidades", description = "Ruta pública")
     @GetMapping

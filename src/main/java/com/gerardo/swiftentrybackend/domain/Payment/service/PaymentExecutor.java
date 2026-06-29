@@ -20,6 +20,7 @@ import com.gerardo.swiftentrybackend.domain.Ticket.TicketModel;
 import com.gerardo.swiftentrybackend.domain.Ticket.enums.TicketStatus;
 import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketRepository;
 import com.gerardo.swiftentrybackend.domain.Ticket.utils.TicketMapper;
+import com.gerardo.swiftentrybackend.domain.WaitingList.service.WaitingListService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Holds the atomic payment mutation. Kept in its own bean so the transaction boundary
@@ -44,6 +47,7 @@ public class PaymentExecutor {
     private final LocalitySeatRepository localitySeatRepository;
     private final PaymentMapper paymentMapper;
     private final TicketMapper ticketMapper;
+    private final WaitingListService waitingListService;
 
     @Transactional
     public PaymentResponseDTO execute(Integer reservationId, PaymentRequestDTO requestDTO, boolean approved) {
@@ -114,6 +118,13 @@ public class PaymentExecutor {
         reservationRepository.save(reservation);
         PaymentModel savedPayment = paymentRepository.save(payment);
         List<TicketModel> savedTickets = ticketRepository.saveAll(tickets);
+
+        Set<Long> soldLocalityIds = soldSeats.stream()
+                .map(ls -> ls.getLocality().getId())
+                .collect(Collectors.toSet());
+        Integer reservationUserId = reservation.getUser().getId();
+        soldLocalityIds.forEach(locId ->
+                waitingListService.fulfillNotifiedEntry(reservationUserId, locId));
 
         return paymentMapper.toResponse(savedPayment, ticketMapper.toResponseList(savedTickets));
     }

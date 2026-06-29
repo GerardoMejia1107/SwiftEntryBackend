@@ -3,7 +3,6 @@ package com.gerardo.swiftentrybackend.domain.Locality.services;
 import com.gerardo.swiftentrybackend.common.exceptions.ForbiddenOperationException;
 import com.gerardo.swiftentrybackend.domain.Event.repositories.EventRepository;
 import com.gerardo.swiftentrybackend.domain.Locality.LocalityModel;
-import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityUpdateDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.dto.response.LocalityResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.repositories.LocalityRepository;
@@ -26,11 +25,6 @@ public class LocalityServiceImpl implements LocalityService {
     private final LocalityMapper localityMapper;
     private final LocalitySeatRepository localitySeatRepository;
     private final ReservationSeatRepository reservationSeatRepository;
-
-    @Override
-    public LocalityResponseDTO createLocality(LocalityRequestDTO request) {
-        return null;
-    }
 
     @Override
     public List<LocalityResponseDTO> getAllLocalities() {

@@ -1,0 +1,18 @@
+info:
+  name: Mark all as read
+  type: http
+  seq: 5
+
+http:
+  method: PATCH
+  url: "{{swift_entry_base_uri}}/notifications/me/read-all"
+  headers:
+    - name: Authorization
+      value: Bearer {{access_token}}
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
