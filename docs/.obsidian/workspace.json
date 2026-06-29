@@ -37,8 +37,8 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Requerimientos/Business Logic Coverage Report.md",
-                "mode": "source",
+                "file": "Pruebas del Sistema/02 - Creación de Evento y Asignación de Asientos.md",
+                "mode": "preview",
                 "source": false,
                 "backlinks": true,
                 "backlinkOpts": {
@@ -52,7 +52,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Business Logic Coverage Report"
+              "title": "02 - Creación de Evento y Asignación de Asientos"
             }
           }
         ],
@@ -222,6 +222,9 @@
   },
   "active": "6c7f4d2563fc81fa",
   "lastOpenFiles": [
+    "Pruebas del Sistema/01 - Autenticación y Usuarios.md",
+    "Pruebas del Sistema/00 - Índice y Preparación.md",
+    "Requerimientos/Business Logic Coverage Report.md",
     "Pruebas/Lista de Espera.md",
     "Pruebas/Lista de Espera.md.tmp.32351.b28ac98d68b5",
     "Requerimientos/Business Logic Coverage Report.md.tmp.32351.419eed2a8c70",
@@ -238,7 +241,6 @@
     "Flujos/Flujo de Reserva y Compra.md",
     "Pruebas/Max Tickets y QR Image.md",
     "Logs/CHANGELOG.md",
-    "Requerimientos/Business Logic Coverage Report.md",
     "Requerimientos/Minimum Business Logic.md",
     "Flujos/Flujo Reserva-Pago-Ticket y Validacion.md",
     "index.md",
@@ -257,8 +259,6 @@
     "Entidades/Direccion.md",
     "Entidades/Localidad.md",
     "Entidades/Evento.md",
-    "Entidades/Asiento.md",
-    "Entidades/Pago.md",
     "attachments/Pasted image 20260508215434.png",
     "attachments/Pasted image 20260505203038.png",
     "attachments/Pasted image 20260409185916.png",
