@@ -1,13 +1,11 @@
 package com.gerardo.swiftentrybackend.domain.Locality.services;
 
-import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.dto.request.LocalityUpdateDTO;
 import com.gerardo.swiftentrybackend.domain.Locality.dto.response.LocalityResponseDTO;
 
 import java.util.List;
 
 public interface LocalityService {
-    LocalityResponseDTO createLocality(LocalityRequestDTO request);
     List<LocalityResponseDTO> getAllLocalities();
     LocalityResponseDTO getLocalityById(Long id);
     List<LocalityResponseDTO> getLocalitiesByEventId(Integer eventId);
