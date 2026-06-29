@@ -7,6 +7,8 @@ import com.gerardo.swiftentrybackend.domain.Role.dto.response.RoleResponseDTO;
 
 import com.gerardo.swiftentrybackend.domain.Role.services.RoleService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Roles", description = "Gestión de roles de usuario")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/swift_entry/roles")
@@ -22,6 +25,7 @@ public class RoleController {
     private final RoleService roleService;
     private final ResponseBuilder responseBuilder;
 
+    @Operation(summary = "Crear rol")
     @PostMapping
     public ResponseEntity<GeneralResponse> creatRole(
             @Valid @RequestBody RoleRequestDTO requestDTO) {
@@ -33,6 +37,7 @@ public class RoleController {
         );
     }
 
+    @Operation(summary = "Listar todos los roles", description = "Solo ADMINISTRATOR")
     @GetMapping
     public ResponseEntity<GeneralResponse> getAllRoles() {
         List<RoleResponseDTO> response = roleService.getAllRoles();

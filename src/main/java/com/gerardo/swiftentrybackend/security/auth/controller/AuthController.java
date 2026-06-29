@@ -6,6 +6,8 @@ import com.gerardo.swiftentrybackend.security.auth.dto.AuthRequestDTO;
 import com.gerardo.swiftentrybackend.security.auth.dto.AuthResponseDTO;
 import com.gerardo.swiftentrybackend.security.auth.dto.RefreshRequestDTO;
 import com.gerardo.swiftentrybackend.security.auth.services.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Autenticación", description = "Login, refresh de token y logout")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/swift_entry/auth")
@@ -23,6 +26,7 @@ public class AuthController {
     private final AuthService authService;
     private final ResponseBuilder responseBuilder;
 
+    @Operation(summary = "Iniciar sesión", description = "Retorna un access token (15 min) y un refresh token (7 días)")
     @PostMapping("/login")
     public ResponseEntity<GeneralResponse> login(
             @Valid @RequestBody AuthRequestDTO requestDTO
@@ -31,6 +35,7 @@ public class AuthController {
         return responseBuilder.buildResponse("Login successful", HttpStatus.OK, authResponseDTO);
     }
 
+    @Operation(summary = "Renovar token", description = "Renueva el access token usando el refresh token. El refresh token se rota en cada llamada")
     @PostMapping("/refresh")
     public ResponseEntity<GeneralResponse> refresh(
             @Valid @RequestBody RefreshRequestDTO requestDTO
@@ -39,6 +44,7 @@ public class AuthController {
         return responseBuilder.buildResponse("Token refreshed successfully", HttpStatus.OK, authResponseDTO);
     }
 
+    @Operation(summary = "Cerrar sesión", description = "Invalida el refresh token en base de datos")
     @PostMapping("/logout")
     public ResponseEntity<GeneralResponse> logout(
             @Valid @RequestBody RefreshRequestDTO requestDTO

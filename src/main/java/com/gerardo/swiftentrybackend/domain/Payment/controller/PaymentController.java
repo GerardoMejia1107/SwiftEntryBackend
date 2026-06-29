@@ -5,6 +5,8 @@ import com.gerardo.swiftentrybackend.common.dto.GeneralResponse;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.request.PaymentRequestDTO;
 import com.gerardo.swiftentrybackend.domain.Payment.dto.response.PaymentResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Payment.service.PaymentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Pagos", description = "Procesar el pago de una reserva y consultar historial")
 @RestController
 @RequestMapping("/swift_entry/payments")
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final ResponseBuilder responseBuilder;
 
+    @Operation(summary = "Procesar pago", description = "Convierte una reserva PENDING en CONFIRMED, marca los asientos como SOLD y emite un Ticket por cada asiento. Incluye IVA del 13%")
     @PostMapping
     public ResponseEntity<GeneralResponse> processPayment(
             @Valid @RequestBody PaymentRequestDTO request,
@@ -33,6 +37,7 @@ public class PaymentController {
                 "Payment processed successfully", HttpStatus.CREATED, response);
     }
 
+    @Operation(summary = "Mis pagos", description = "Lista el historial de pagos del usuario autenticado")
     @GetMapping("/me")
     public ResponseEntity<GeneralResponse> getMyPayments(Authentication authentication) {
         List<PaymentResponseDTO> response = paymentService.getMyPayments(authentication.getName());

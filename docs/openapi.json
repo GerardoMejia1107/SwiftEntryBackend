@@ -1,0 +1,1828 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "SwiftEntry API",
+        "description": "Backend REST de SwiftEntry \u2014 plataforma de venta de boletos para eventos.\n\n**Autenticaci\u00f3n:** todas las rutas protegidas requieren un JWT en el header `Authorization: Bearer <token>`. Obt\u00e9n el token en `POST /swift_entry/auth/login` y p\u00e9galo en el bot\u00f3n **Authorize** de arriba.\n\n**Flujo principal:** Evento \u2192 Localidad \u2192 Asiento \u2192 Reserva \u2192 Pago \u2192 Boleto\n",
+        "contact": {
+            "name": "SwiftEntry Team",
+            "email": "gerardo.port1107.psql@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Generated server url"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "Eventos",
+            "description": "Creaci\u00f3n y consulta de eventos"
+        },
+        {
+            "name": "Usuarios",
+            "description": "Registro y consulta de usuarios"
+        },
+        {
+            "name": "Roles",
+            "description": "Gesti\u00f3n de roles de usuario"
+        },
+        {
+            "name": "Reservas",
+            "description": "Apartado temporal de asientos (expira en 15 min si no se paga)"
+        },
+        {
+            "name": "Autenticaci\u00f3n",
+            "description": "Login, refresh de token y logout"
+        },
+        {
+            "name": "Localidades",
+            "description": "Secciones con precio dentro de un evento (VIP, General, etc.)"
+        },
+        {
+            "name": "Asientos",
+            "description": "Grilla f\u00edsica de asientos y asignaci\u00f3n a localidades"
+        },
+        {
+            "name": "Boletos",
+            "description": "Consulta, validaci\u00f3n QR y transferencia de boletos"
+        },
+        {
+            "name": "Direcciones",
+            "description": "Gesti\u00f3n de direcciones postales de usuarios y eventos"
+        },
+        {
+            "name": "Pagos",
+            "description": "Procesar el pago de una reserva y consultar historial"
+        }
+    ],
+    "paths": {
+        "/swift_entry/localities/{id}": {
+            "get": {
+                "tags": [
+                    "Localidades"
+                ],
+                "summary": "Obtener localidad por ID",
+                "operationId": "getLocalityById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Localidades"
+                ],
+                "summary": "Actualizar localidad",
+                "operationId": "updateLocality",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocalityUpdateDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Localidades"
+                ],
+                "summary": "Eliminar localidad",
+                "operationId": "deleteLocality",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/events/{id}": {
+            "get": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Obtener evento por ID",
+                "operationId": "getEventById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Actualizar evento",
+                "operationId": "updateEvent",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventUpdateDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Eliminar evento",
+                "operationId": "deleteEvent",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/users": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Listar todos los usuarios",
+                "description": "Solo ADMINISTRATOR",
+                "operationId": "getUsers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Registrar usuario",
+                "description": "Ruta p\u00fablica. Crea una cuenta nueva con rol por defecto",
+                "operationId": "createUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/tickets/{ticketId}/transfer": {
+            "post": {
+                "tags": [
+                    "Boletos"
+                ],
+                "summary": "Transferir boleto",
+                "description": "Cede el boleto a otro usuario por email. Queda registrado en ticket_transfer",
+                "operationId": "transferTicket",
+                "parameters": [
+                    {
+                        "name": "ticketId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TicketTransferRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/tickets/validate": {
+            "post": {
+                "tags": [
+                    "Boletos"
+                ],
+                "summary": "Validar boleto por QR",
+                "description": "Escaneo en puerta: verifica que el QR sea v\u00e1lido, marca el boleto como USED y registra qui\u00e9n lo valid\u00f3",
+                "operationId": "validateTicket",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TicketValidateRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/seats/initialize": {
+            "post": {
+                "tags": [
+                    "Asientos"
+                ],
+                "summary": "Inicializar grilla de asientos",
+                "description": "Crea todos los asientos f\u00edsicos del venue. Llamar una sola vez por venue",
+                "operationId": "initializeSeats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/seats/assign": {
+            "post": {
+                "tags": [
+                    "Asientos"
+                ],
+                "summary": "Asignar asientos a una localidad",
+                "description": "Vincula asientos f\u00edsicos a una localidad; crea los registros en locality_seats con estado AVAILABLE",
+                "operationId": "assignSeats",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SeatAssignmentRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Listar todos los roles",
+                "description": "Solo ADMINISTRATOR",
+                "operationId": "getAllRoles",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Crear rol",
+                "operationId": "creatRole",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RoleRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/reservations": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Listar todas las reservas",
+                "description": "Solo ADMINISTRATOR",
+                "operationId": "getAllReservations",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Crear reserva",
+                "description": "Aparta los asientos seleccionados por 15 minutos. M\u00e1ximo 5 asientos por reserva",
+                "operationId": "createReservation",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReservationRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/payments": {
+            "post": {
+                "tags": [
+                    "Pagos"
+                ],
+                "summary": "Procesar pago",
+                "description": "Convierte una reserva PENDING en CONFIRMED, marca los asientos como SOLD y emite un Ticket por cada asiento. Incluye IVA del 13%",
+                "operationId": "processPayment",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PaymentRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/localities": {
+            "get": {
+                "tags": [
+                    "Localidades"
+                ],
+                "summary": "Listar todas las localidades",
+                "description": "Ruta p\u00fablica",
+                "operationId": "getAllLocalities",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Localidades"
+                ],
+                "summary": "Crear localidad",
+                "description": "\u26a0\ufe0f Stub \u2014 actualmente no hace nada. Las localidades se crean desde el endpoint de Eventos",
+                "operationId": "createLocality",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocalityRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/events": {
+            "get": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Listar todos los eventos",
+                "description": "Ruta p\u00fablica",
+                "operationId": "getAllEvents",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Crear evento",
+                "description": "Ruta p\u00fablica. Crea el evento junto con sus localidades",
+                "operationId": "createEvent",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Autenticaci\u00f3n"
+                ],
+                "summary": "Renovar token",
+                "description": "Renueva el access token usando el refresh token. El refresh token se rota en cada llamada",
+                "operationId": "refresh",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefreshRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/auth/logout": {
+            "post": {
+                "tags": [
+                    "Autenticaci\u00f3n"
+                ],
+                "summary": "Cerrar sesi\u00f3n",
+                "description": "Invalida el refresh token en base de datos",
+                "operationId": "logout",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefreshRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/auth/login": {
+            "post": {
+                "tags": [
+                    "Autenticaci\u00f3n"
+                ],
+                "summary": "Iniciar sesi\u00f3n",
+                "description": "Retorna un access token (15 min) y un refresh token (7 d\u00edas)",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/addresses": {
+            "get": {
+                "tags": [
+                    "Direcciones"
+                ],
+                "summary": "Listar todas las direcciones",
+                "operationId": "getAddress",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Direcciones"
+                ],
+                "summary": "Crear direcci\u00f3n",
+                "operationId": "createAddress",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressRequestDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/users/{id}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Obtener usuario por ID",
+                "description": "Un usuario solo puede ver su propio perfil; ADMINISTRATOR puede ver cualquiera",
+                "operationId": "getUserById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/tickets/{id}/qr": {
+            "get": {
+                "tags": [
+                    "Boletos"
+                ],
+                "summary": "Imagen QR del boleto",
+                "description": "Retorna la imagen PNG del c\u00f3digo QR. Solo el titular puede solicitarla",
+                "operationId": "getTicketQr",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "byte"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/tickets/me": {
+            "get": {
+                "tags": [
+                    "Boletos"
+                ],
+                "summary": "Mis boletos",
+                "description": "Lista los boletos activos del usuario autenticado",
+                "operationId": "getMyTickets",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/seats": {
+            "get": {
+                "tags": [
+                    "Asientos"
+                ],
+                "summary": "Listar todos los asientos",
+                "operationId": "getAllSeats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/seats/{id}": {
+            "get": {
+                "tags": [
+                    "Asientos"
+                ],
+                "summary": "Obtener asiento por ID",
+                "operationId": "getSeatById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Asientos"
+                ],
+                "summary": "Eliminar asiento f\u00edsico",
+                "operationId": "deleteSeat",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/seats/locality/{localityId}": {
+            "get": {
+                "tags": [
+                    "Asientos"
+                ],
+                "summary": "Asientos de una localidad",
+                "operationId": "getSeatsByLocalityId",
+                "parameters": [
+                    {
+                        "name": "localityId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/seats/event/{eventId}": {
+            "get": {
+                "tags": [
+                    "Asientos"
+                ],
+                "summary": "Mapa de asientos de un evento",
+                "description": "Devuelve todos los locality_seats del evento con su estado actual (AVAILABLE/RESERVED/SOLD)",
+                "operationId": "getSeatMapByEventId",
+                "parameters": [
+                    {
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/reservations/{id}": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Obtener reserva por ID",
+                "description": "Solo ADMINISTRATOR",
+                "operationId": "getReservationById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Cancelar reserva",
+                "description": "Libera todos los asientos de la reserva",
+                "operationId": "cancelReservation",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/reservations/organizer": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Reservas de mis eventos",
+                "description": "Para organizadores: muestra las reservas de todos sus eventos",
+                "operationId": "getReservationsByOrganizer",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/reservations/me": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Mis reservas",
+                "description": "Lista las reservas del usuario autenticado",
+                "operationId": "getMyReservations",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/payments/me": {
+            "get": {
+                "tags": [
+                    "Pagos"
+                ],
+                "summary": "Mis pagos",
+                "description": "Lista el historial de pagos del usuario autenticado",
+                "operationId": "getMyPayments",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/localities/event/{eventId}": {
+            "get": {
+                "tags": [
+                    "Localidades"
+                ],
+                "summary": "Localidades de un evento",
+                "operationId": "getLocalitiesByEventId",
+                "parameters": [
+                    {
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/events/organizer/{id}": {
+            "get": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Eventos por organizador",
+                "operationId": "getAllEventsByOrganizerId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/seats/assignment/{localitySeatId}": {
+            "delete": {
+                "tags": [
+                    "Asientos"
+                ],
+                "summary": "Desasignar asiento de una localidad",
+                "operationId": "unassignSeat",
+                "parameters": [
+                    {
+                        "name": "localitySeatId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swift_entry/reservations/{reservationId}/seats/{reservationSeatId}": {
+            "delete": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Quitar un asiento de la reserva",
+                "description": "Si era el \u00faltimo asiento, cancela la reserva completa",
+                "operationId": "removeSeatFromReservation",
+                "parameters": [
+                    {
+                        "name": "reservationId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "reservationSeatId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeneralResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LocalityUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number",
+                        "minimum": 0.0
+                    },
+                    "earlyBirdDiscountPercentage": {
+                        "type": "number",
+                        "maximum": 100.0,
+                        "minimum": 0.0
+                    },
+                    "earlyBirdDeadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 1
+                    },
+                    "availableSlots": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "GeneralResponse": {
+                "type": "object",
+                "properties": {
+                    "uri": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "data": {}
+                }
+            },
+            "EventUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 150,
+                        "minLength": 0
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 1000,
+                        "minLength": 0
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "CONCERT",
+                            "SPORTS",
+                            "THEATER",
+                            "COMEDY",
+                            "CONFERENCE",
+                            "FESTIVAL",
+                            "MOVIE",
+                            "CULTURAL"
+                        ]
+                    },
+                    "organizerId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "startDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "endDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "venueName": {
+                        "type": "string",
+                        "maxLength": 150,
+                        "minLength": 0
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "DRAFT",
+                            "PUBLISHED",
+                            "CANCELLED",
+                            "FINISHED"
+                        ]
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "maxLength": 500,
+                        "minLength": 0
+                    },
+                    "localities": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LocalityUpdateDTO"
+                        }
+                    }
+                }
+            },
+            "AddressRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "streetAddress": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 0
+                    },
+                    "neighborhood": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "municipality": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "department": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "referencePoint": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 0
+                    }
+                },
+                "required": [
+                    "country",
+                    "department",
+                    "municipality",
+                    "streetAddress"
+                ]
+            },
+            "UserRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 150,
+                        "minLength": 0
+                    },
+                    "phoneNumber": {
+                        "type": "string",
+                        "maxLength": 25,
+                        "minLength": 0
+                    },
+                    "dui": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "minLength": 0
+                    },
+                    "nit": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "minLength": 0
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "password": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 8
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/AddressRequestDTO"
+                    },
+                    "roleId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "required": [
+                    "address",
+                    "email",
+                    "lastName",
+                    "name",
+                    "password",
+                    "roleId"
+                ]
+            },
+            "TicketTransferRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "receiverEmail": {
+                        "type": "string",
+                        "format": "email",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "receiverEmail"
+                ]
+            },
+            "TicketValidateRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "qrCode": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "qrCode"
+                ]
+            },
+            "SeatAssignmentRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "localityId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "seats": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    }
+                },
+                "required": [
+                    "localityId",
+                    "seats"
+                ]
+            },
+            "RoleRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 50,
+                        "minLength": 0
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 250,
+                        "minLength": 0
+                    }
+                },
+                "required": [
+                    "description",
+                    "name"
+                ]
+            },
+            "ReservationRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "localitySeatIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "maxItems": 5,
+                        "minItems": 0
+                    }
+                },
+                "required": [
+                    "localitySeatIds"
+                ]
+            },
+            "PaymentRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "reservationId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "paymentMethod": {
+                        "type": "string",
+                        "enum": [
+                            "CASH",
+                            "CREDIT_CARD",
+                            "DEBIT_CARD",
+                            "BANK_TRANSFER"
+                        ]
+                    }
+                },
+                "required": [
+                    "paymentMethod",
+                    "reservationId"
+                ]
+            },
+            "LocalityRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number",
+                        "minimum": 0.0
+                    },
+                    "earlyBirdDiscountPercentage": {
+                        "type": "number",
+                        "maximum": 100.0,
+                        "minimum": 0.0
+                    },
+                    "earlyBirdDeadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "name",
+                    "price"
+                ]
+            },
+            "EventRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 150,
+                        "minLength": 0
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 1000,
+                        "minLength": 0
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "CONCERT",
+                            "SPORTS",
+                            "THEATER",
+                            "COMEDY",
+                            "CONFERENCE",
+                            "FESTIVAL",
+                            "MOVIE",
+                            "CULTURAL"
+                        ]
+                    },
+                    "organizerId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "startDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "endDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "venueName": {
+                        "type": "string",
+                        "maxLength": 150,
+                        "minLength": 0
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "DRAFT",
+                            "PUBLISHED",
+                            "CANCELLED",
+                            "FINISHED"
+                        ]
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "maxLength": 500,
+                        "minLength": 0
+                    },
+                    "localities": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LocalityRequestDTO"
+                        },
+                        "maxItems": 2147483647,
+                        "minItems": 1
+                    }
+                },
+                "required": [
+                    "category",
+                    "endDate",
+                    "localities",
+                    "name",
+                    "organizerId",
+                    "startDate",
+                    "status"
+                ]
+            },
+            "RefreshRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "refreshToken": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "refreshToken"
+                ]
+            },
+            "AuthRequestDTO": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

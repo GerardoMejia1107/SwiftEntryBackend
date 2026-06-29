@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Pruebas/Validacion de Tickets.md",
+                "file": "Arquitectura/DiagramaER.md",
                 "mode": "preview",
                 "source": false,
                 "backlinks": true,
@@ -28,35 +28,10 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Validacion de Tickets"
-            }
-          },
-          {
-            "id": "6c7f4d2563fc81fa",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Pruebas/Validacion de Tickets.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
-              },
-              "icon": "lucide-file",
-              "title": "Validacion de Tickets"
+              "title": "DiagramaER"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -220,25 +195,27 @@
       "callout-manager:Insert Callout": false
     }
   },
-  "active": "6c7f4d2563fc81fa",
+  "active": "36f149942d1eb5d2",
   "lastOpenFiles": [
+    "Requerimientos/Business Logic Coverage Report.md.tmp.8868.f64ebee37a68",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.8868.8830cac08048",
+    "Logs/CHANGELOG.md.tmp.8868.75b3e0b2760d",
+    "Logs/CHANGELOG.md.tmp.8868.5736171a082b",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.8868.41a4f8311e7d",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.8868.53a7bfc4d7b0",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.8868.8a4cd66c717d",
+    "Requerimientos/Business Logic Coverage Report.md.tmp.8868.977d3fb3815c",
+    "api-docs.html",
+    "openapi.json",
+    "Pruebas/Validacion de Tickets.md",
+    "Arquitectura/DiagramaER.md",
+    "Arquitectura/DiagramaER.md.tmp.8868.af7b4ab4e8cd",
     "Pruebas/Descuento Early Bird.md",
     "Flujos/Flujo de Reserva y Compra.md",
     "Pruebas/Max Tickets y QR Image.md",
     "Logs/CHANGELOG.md",
-    "Pruebas/Max Tickets y QR Image.md.tmp.20445.debc504007fc",
     "Requerimientos/Business Logic Coverage Report.md",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.6b07cfa45be9",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.a5af8832bedb",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.880c5ffeca93",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.86a96e944fcd",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.d62c56e7b49f",
-    "Logs/CHANGELOG.md.tmp.20445.a74e08d7f32b",
-    "Logs/CHANGELOG.md.tmp.20445.bd5a7aa36562",
-    "Pruebas/Descuento Early Bird.md.tmp.20445.02eb3162107a",
-    "Requerimientos/Business Logic Coverage Report.md.tmp.20445.4a5845813630",
     "Requerimientos/Minimum Business Logic.md",
-    "Pruebas/Validacion de Tickets.md",
     "Flujos/Flujo Reserva-Pago-Ticket y Validacion.md",
     "index.md",
     "Arquitectura/Seguridad y Autenticacion.md",
@@ -257,8 +234,6 @@
     "Entidades/Localidad.md",
     "Entidades/Evento.md",
     "Entidades/Asiento.md",
-    "Entidades/Pago.md",
-    "Home.md",
     "attachments/Pasted image 20260508215434.png",
     "attachments/Pasted image 20260505203038.png",
     "attachments/Pasted image 20260409185916.png",
