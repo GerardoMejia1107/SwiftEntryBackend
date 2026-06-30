@@ -18,6 +18,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<GeneralResponse> handleNotReadable(HttpMessageNotReadableException ex) {
         return responseBuilder.buildResponse("Malformed or missing request body", HttpStatus.BAD_REQUEST, null);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<GeneralResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String msg = "Invalid value '" + ex.getValue() + "' for parameter '" + ex.getName() + "'";
+        return responseBuilder.buildResponse(msg, HttpStatus.BAD_REQUEST, null);
     }
 
     @ExceptionHandler(InvalidTokenException.class)

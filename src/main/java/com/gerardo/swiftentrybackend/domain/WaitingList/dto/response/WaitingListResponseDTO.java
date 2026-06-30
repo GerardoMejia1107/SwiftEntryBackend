@@ -19,6 +19,7 @@ public class WaitingListResponseDTO {
     private Long localityId;
     private String localityName;
     private Integer eventId;
+    private String eventName;
     private WaitingListStatus status;
     private LocalDateTime notifiedAt;
     private LocalDateTime notificationExpiresAt;

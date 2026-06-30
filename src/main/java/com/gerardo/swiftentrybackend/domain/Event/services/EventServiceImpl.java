@@ -114,9 +114,6 @@ public class EventServiceImpl implements EventService {
         EventModel event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
 
-        UserModel organizer = userRepository.findById(request.getOrganizerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Organizer not found with id: " + id));
-
         if (request.getName() != null) event.setName(request.getName());
         if (request.getDescription() != null) event.setDescription(request.getDescription());
         if (request.getCategory() != null) event.setCategory(request.getCategory());
@@ -126,6 +123,8 @@ public class EventServiceImpl implements EventService {
         if (request.getVenueName() != null) event.setVenueName(request.getVenueName());
         if (request.getImageUrl() != null) event.setImageUrl(request.getImageUrl());
         if (request.getOrganizerId() != null) {
+            UserModel organizer = userRepository.findById(request.getOrganizerId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Organizer not found with id: " + request.getOrganizerId()));
             event.setOrganizer(organizer);
         }
 
@@ -156,6 +155,7 @@ public class EventServiceImpl implements EventService {
             localitySeatRepository.deleteAllByLocality_Id(locality.getId());
         }
         localityRepository.deleteAll(localities);
+        eventRepository.deleteById(id);
     }
 
     private List<LocalityModel> processLocalityUpdates(EventModel event, List<LocalityUpdateDTO> requestLocalities) {

@@ -12,6 +12,8 @@ import com.gerardo.swiftentrybackend.domain.Payment.utils.PaymentMapper;
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationRepository;
+import com.gerardo.swiftentrybackend.domain.Ticket.repositories.TicketRepository;
+import com.gerardo.swiftentrybackend.domain.Ticket.utils.TicketMapper;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentExecutor paymentExecutor;
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
+    private final TicketRepository ticketRepository;
+    private final TicketMapper ticketMapper;
 
     @Override
     public PaymentResponseDTO processPayment(PaymentRequestDTO requestDTO, String userEmail) {
@@ -71,7 +75,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<PaymentResponseDTO> getMyPayments(String userEmail) {
         List<PaymentModel> payments = paymentRepository.findByReservation_User_Email(userEmail);
-        return payments.stream().map(paymentMapper::toResponse).toList();
+        return payments.stream()
+                .map(payment -> paymentMapper.toResponse(
+                        payment,
+                        ticketMapper.toResponseList(
+                                ticketRepository.findByReservationId(payment.getReservation().getId()))))
+                .toList();
     }
 
     private boolean simulatePaymentProcessing() {

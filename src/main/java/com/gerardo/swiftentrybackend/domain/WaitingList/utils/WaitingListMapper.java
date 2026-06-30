@@ -18,6 +18,7 @@ public class WaitingListMapper {
                 .localityId(model.getLocality().getId())
                 .localityName(model.getLocality().getName())
                 .eventId(model.getLocality().getEvent().getId())
+                .eventName(model.getLocality().getEvent().getName())
                 .status(model.getStatus())
                 .notifiedAt(model.getNotifiedAt())
                 .notificationExpiresAt(model.getNotificationExpiresAt())
