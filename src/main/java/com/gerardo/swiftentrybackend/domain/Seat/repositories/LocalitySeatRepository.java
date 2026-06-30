@@ -33,4 +33,16 @@ public interface LocalitySeatRepository extends JpaRepository<LocalitySeatModel,
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT ls FROM LocalitySeatModel ls JOIN FETCH ls.locality JOIN FETCH ls.seat WHERE ls.id IN :ids")
     List<LocalitySeatModel> findAllByIdWithLock(@Param("ids") List<Long> ids);
+
+    @Query("""
+    SELECT
+        e.id,
+        e.name,
+        SUM(l.capacity),
+        SUM(l.availableSlots)
+    FROM LocalityModel l
+    JOIN l.event e
+    GROUP BY e.id, e.name
+    """)
+    List<Object[]> getSeatAvailabilityReport();
 }
