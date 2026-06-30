@@ -1,6 +1,8 @@
 package com.gerardo.swiftentrybackend.domain.Report.services;
 
 import com.gerardo.swiftentrybackend.domain.Report.dto.response.ReportResponseDTO;
+import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
+import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationSeatRepository;
 import com.gerardo.swiftentrybackend.domain.Seat.repositories.LocalitySeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.util.List;
 public class ReportService {
 
     private final LocalitySeatRepository localityRepository;
+    private final ReservationSeatRepository reservationSeatRepository;
 
     public List<ReportResponseDTO.EventAvailabilityReportDto> getSeatAvailabilityReport() {
 
@@ -39,6 +42,20 @@ public class ReportService {
                             percentage
                     );
                 })
+                .toList();
+    }
+
+
+
+    public List<ReportResponseDTO.EventSalesReportDto> getSalesReport() {
+        return reservationSeatRepository.getSalesReport(ReservationStatus.CONFIRMED)
+                .stream()
+                .map(r -> new ReportResponseDTO.EventSalesReportDto(
+                        r.getEventId(),
+                        r.getEventName(),
+                        r.getTicketsSold(),
+                        r.getRevenue()
+                ))
                 .toList();
     }
 }

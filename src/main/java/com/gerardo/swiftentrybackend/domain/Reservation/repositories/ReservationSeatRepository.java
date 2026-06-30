@@ -1,5 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Reservation.repositories;
 
+import com.gerardo.swiftentrybackend.domain.Event.repositories.projection.EventSalesProjection;
 import com.gerardo.swiftentrybackend.domain.Reservation.ReservationSeatModel;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,4 +38,19 @@ public interface ReservationSeatRepository extends JpaRepository<ReservationSeat
     Optional<ReservationSeatModel> findByReservation_IdAndLocalitySeat_Id(Integer reservationId, Long localitySeatId);
 
     Optional<ReservationSeatModel> findByReservation_IdAndLocalitySeat_Seat_Id(Integer reservationId, Long seatId);
+
+    @Query("""
+        SELECT
+            rs.localitySeat.locality.event.id AS eventId,
+            rs.localitySeat.locality.event.name AS eventName,
+            COUNT(rs.id) AS ticketsSold,
+            COALESCE(SUM(rs.priceAtReservation), 0) AS revenue
+        FROM ReservationSeatModel rs
+        WHERE rs.reservation.status = :status
+        GROUP BY
+            rs.localitySeat.locality.event.id,
+            rs.localitySeat.locality.event.name
+    """)
+    List<EventSalesProjection> getSalesReport(
+            @Param("status") ReservationStatus status);
 }

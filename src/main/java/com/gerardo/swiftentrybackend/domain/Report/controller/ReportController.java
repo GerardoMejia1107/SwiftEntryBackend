@@ -21,4 +21,9 @@ public class ReportController {
     public ResponseEntity<List<ReportResponseDTO.EventAvailabilityReportDto>> getSeatAvailability() {
         return ResponseEntity.ok(reportService.getSeatAvailabilityReport());
     }
+
+    @GetMapping("/events/sales")
+    public ResponseEntity<List<ReportResponseDTO.EventSalesReportDto>> getSalesReport() {
+        return ResponseEntity.ok(reportService.getSalesReport());
+    }
 }

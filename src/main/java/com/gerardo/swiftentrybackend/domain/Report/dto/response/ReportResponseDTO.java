@@ -1,5 +1,14 @@
 package com.gerardo.swiftentrybackend.domain.Report.dto.response;
 
+import lombok.*;
+
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ReportResponseDTO {
 
     public record EventAvailabilityReportDto(
@@ -10,4 +19,13 @@ public class ReportResponseDTO {
             Integer reservedSeats,
             Double availabilityPercentage
     ) {}
+
+    public record EventSalesReportDto(
+            Integer eventId,
+            String eventName,
+            Long ticketsSold,
+            BigDecimal revenue
+    ) {}
+
+
 }
