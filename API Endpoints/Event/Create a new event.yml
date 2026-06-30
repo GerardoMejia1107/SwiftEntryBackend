@@ -8,26 +8,29 @@ http:
   url: "{{swift_entry_base_uri}}/events"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTklTVFJBVE9SIiwic3ViIjoibWljaGFlbEB0ZXN0LmNvbSIsImlhdCI6MTc4MjYwMjA0MCwiZXhwIjoxNzgyNjAyOTQwfQ.6HWv9a5mh6nTvXCvq-w6TCrIb0V3JVxUuzrXjtLqEcw
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9PUkdBTklaRVIiLCJzdWIiOiJuYW1pLm5hdmlnYXRvckBzd2lmdGVudHJ5LmNvbSIsImlhdCI6MTc4MjgzOTA3NSwiZXhwIjoxNzgyODM5OTc1fQ.UcDyRj5uJtmfxFojvuGoakRkRNmGsJbmgi8v5DW_XlM
   body:
     type: json
     data: |-
       {
-        "name": "Concierto Early Bird Test",
-        "description": "Evento de prueba para descuento",
+        "name": "Festival Pirata Grand Line 2026",
+        "description": "Evento temático con música en vivo, gastronomía y actividades inspiradas en aventuras marítimas.",
         "category": "CONCERT",
-        "organizerId": 19,
-        "startDate": "2026-12-01T20:00:00",
-        "endDate": "2026-12-01T23:00:00",
-        "venueName": "Estadio Test",
+        "organizerId": 39,
+        "startDate": "2026-11-22T18:00:00",
+        "endDate": "2026-11-22T23:30:00",
         "status": "PUBLISHED",
+        "imageUrl": "https://example.com/grand-line-festival.jpg",
         "localities": [
           {
-            "name": "General",
-            "description": "Zona general",
-            "price": 100.00,
-            "earlyBirdDiscountPercentage": 20.00,
-            "earlyBirdDeadline": "2026-12-31T23:59:59"
+            "name": "Sunny VIP",
+            "description": "Zona premium con vista preferencial al escenario",
+            "price": 85.00
+          },
+          {
+            "name": "East Blue General",
+            "description": "Acceso general al festival",
+            "price": 30.00
           }
         ]
       }

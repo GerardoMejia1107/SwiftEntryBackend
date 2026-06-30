@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: "{{swift_entry_base_uri}}/seats/locality/20"
+  url: "{{swift_entry_base_uri}}/seats/locality/30"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTklTVFJBVE9SIiwic3ViIjoibWljaGFlbEB0ZXN0LmNvbSIsImlhdCI6MTc4MjYwMzAzMiwiZXhwIjoxNzgyNjAzOTMyfQ.qt7LwszV5Ytd2WAq8BF1yKkkx83EZD1_yjXHRm_ERYY
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9PUkdBTklaRVIiLCJzdWIiOiJuYW1pLm5hdmlnYXRvckBzd2lmdGVudHJ5LmNvbSIsImlhdCI6MTc4MjgzOTU1OCwiZXhwIjoxNzgyODQwNDU4fQ.LJKv-7qXDN0O2XwHnMUhrTFL9F_1FoxiAu_0d4rlOU4
   auth: inherit
 
 settings:

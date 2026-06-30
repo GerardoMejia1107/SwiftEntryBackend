@@ -1,21 +1,14 @@
 info:
-  name: Create payment
+  name: Get qr ticket
   type: http
-  seq: 1
+  seq: 3
 
 http:
-  method: POST
-  url: "{{swift_entry_base_uri}}/payments"
+  method: GET
+  url: "{{swift_entry_base_uri}}/tickets/me"
   headers:
     - name: Authorization
       value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InVzb3BwLnNvZ2VraW5nQHN3aWZ0ZW50cnkuY29tIiwiaWF0IjoxNzgyODQwNDU4LCJleHAiOjE3ODI4NDEzNTh9.D7ZXEPe3vT23rS7q3EOFsKms-OPZnHd_rZGFVv_BpdY
-  body:
-    type: json
-    data: |-
-      {
-        "reservationId": 27,
-        "paymentMethod": "CREDIT_CARD"
-      }
   auth: inherit
 
 settings:

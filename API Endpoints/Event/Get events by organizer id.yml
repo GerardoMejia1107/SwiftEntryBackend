@@ -5,7 +5,10 @@ info:
 
 http:
   method: GET
-  url: "{{swift_entry_base_uri}}//events"
+  url: "{{swift_entry_base_uri}}/events/organizer/39"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9PUkdBTklaRVIiLCJzdWIiOiJuYW1pLm5hdmlnYXRvckBzd2lmdGVudHJ5LmNvbSIsImlhdCI6MTc4MjgzOTU1OCwiZXhwIjoxNzgyODQwNDU4fQ.LJKv-7qXDN0O2XwHnMUhrTFL9F_1FoxiAu_0d4rlOU4
   auth: inherit
 
 settings:

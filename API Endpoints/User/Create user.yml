@@ -10,22 +10,22 @@ http:
     type: json
     data: |-
       {
-        "name": "Kevin",
-        "lastName": "Malone",
-        "email": "kevin@test.com",
-        "phoneNumber": "7777-6666",
-        "dui": "99001122-3",
-        "nit": "0614-990011-112-3",
-        "birthDate": "1968-06-01",
-        "password": "famous_chili",
+        "name": "Usopp",
+        "lastName": "Sogeking",
+        "email": "usopp.sogeking@swiftentry.com",
+        "phoneNumber": "7025-8891",
+        "dui": "73458921-6",
+        "nit": "0614-734589-216-8",
+        "password": "Kabuto123!",
+        "birthDate": "1995-04-01",
         "roleId": 3,
         "address": {
-          "streetAddress": "Malone Apartment #21",
-          "neighborhood": "Central Park",
-          "municipality": "San Salvador",
-          "department": "San Salvador",
+          "streetAddress": "Villa Syrup #17",
+          "neighborhood": "East Blue",
+          "municipality": "Santa Tecla",
+          "department": "La Libertad",
           "country": "El Salvador",
-          "referencePoint": "Cerca de un restaurante"
+          "referencePoint": "Cerca de una torre alta"
         }
       }
 

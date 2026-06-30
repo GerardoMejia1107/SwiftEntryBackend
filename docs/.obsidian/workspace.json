@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Arquitectura/DiagramaER.md",
+                "file": "Pruebas del Sistema/05 - Validación y Transferencia de Tickets.md",
                 "mode": "preview",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "DiagramaER"
+              "title": "05 - Validación y Transferencia de Tickets"
             }
           }
         ]
@@ -88,7 +88,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 288.5086555480957
+    "width": 288.5086555480957,
+    "collapsed": true
   },
   "right": {
     "id": "48bcb0ccbe9aaabe",
@@ -197,6 +198,13 @@
   },
   "active": "36f149942d1eb5d2",
   "lastOpenFiles": [
+    "Pruebas del Sistema/00 - Índice y Preparación.md",
+    "Pruebas del Sistema/04 - Pago y Tickets.md",
+    "Pruebas del Sistema/03 - Reserva de Asientos.md",
+    "Pruebas del Sistema/02 - Creación de Evento y Asignación de Asientos.md",
+    "Pruebas del Sistema/01 - Autenticación y Usuarios.md",
+    "presentation_script.md",
+    "Arquitectura/DiagramaER.md",
     "Requerimientos/Business Logic Coverage Report.md.tmp.8868.f64ebee37a68",
     "Requerimientos/Business Logic Coverage Report.md.tmp.8868.8830cac08048",
     "Logs/CHANGELOG.md.tmp.8868.75b3e0b2760d",
@@ -208,8 +216,6 @@
     "api-docs.html",
     "openapi.json",
     "Pruebas/Validacion de Tickets.md",
-    "Arquitectura/DiagramaER.md",
-    "Arquitectura/DiagramaER.md.tmp.8868.af7b4ab4e8cd",
     "Pruebas/Descuento Early Bird.md",
     "Flujos/Flujo de Reserva y Compra.md",
     "Pruebas/Max Tickets y QR Image.md",
@@ -229,11 +235,6 @@
     "Entidades/Reserva.md",
     "Entidades/Boleto.md",
     "Entities/User.md",
-    "Entidades/Reembolso.md",
-    "Entidades/Direccion.md",
-    "Entidades/Localidad.md",
-    "Entidades/Evento.md",
-    "Entidades/Asiento.md",
     "attachments/Pasted image 20260508215434.png",
     "attachments/Pasted image 20260505203038.png",
     "attachments/Pasted image 20260409185916.png",
