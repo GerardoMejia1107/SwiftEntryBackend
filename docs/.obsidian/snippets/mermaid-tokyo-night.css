@@ -1,0 +1,8 @@
+:root {
+  --mermaid-bg-color: #1a1b26;
+}
+
+/* Mermaid global theme */
+.mermaid {
+  background-color: #1a1b26 !important;
+}

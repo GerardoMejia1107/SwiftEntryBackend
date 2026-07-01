@@ -1,0 +1,29 @@
+info:
+  name: Assign seats to event locality
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/seats/assign"
+  body:
+    type: json
+    data: |-
+      {
+        "localityId": 31,
+        "seats": [
+          "B1",
+          "B2",
+          "B3",
+          "B4",
+          "B5",
+          "B6"
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

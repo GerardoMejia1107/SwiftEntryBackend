@@ -1,0 +1,25 @@
+info:
+  name: Create role
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/swift_entry/roles
+  body:
+    type: json
+    data: |2-
+       {
+          "name": "CONSUMER",
+          "description": "Standard client role with access to consumer features"
+        }
+  auth:
+    type: basic
+    username: mike
+    password: holly
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

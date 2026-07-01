@@ -1,0 +1,24 @@
+info:
+  name: Create seats bulk
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/seats/bulk"
+  body:
+    type: json
+    data: |-
+      {
+        "eventId": 21,
+        "localityName": "Otaku VIP",
+        "rowLabels": ["A", "B", "C"],
+        "seatsPerRow": 5
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

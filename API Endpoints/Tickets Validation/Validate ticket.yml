@@ -1,0 +1,24 @@
+info:
+  name: Validate ticket
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/tickets/validate"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9PUkdBTklaRVIiLCJzdWIiOiJuYW1pLm5hdmlnYXRvckBzd2lmdGVudHJ5LmNvbSIsImlhdCI6MTc4Mjg0MTcwMCwiZXhwIjoxNzgyODQyNjAwfQ.GhFxMrXWVzTwD90Ra58GMTIvgZwBAgIsRYlYtGnFveY
+  body:
+    type: json
+    data: |-
+      {
+        "qrCode": "QR-f78c10d5-80ea-491e-b215-075eca40d18a"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

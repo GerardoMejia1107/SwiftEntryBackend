@@ -1,0 +1,25 @@
+info:
+  name: Update locality
+  type: http
+  seq: 3
+
+http:
+  method: PUT
+  url: "{{swift_entry_base_uri}}/localities/30"
+  body:
+    type: json
+    data: |-
+      {
+        "price": 85.00,
+        "description": "Zona premium con vista preferencial al escenario",
+            "price": 85.00,
+        "earlyBirdDiscountPercentage": 15.00,
+        "earlyBirdDeadline": "2026-10-01T23:59:00"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

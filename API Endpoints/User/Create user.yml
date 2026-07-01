@@ -1,0 +1,36 @@
+info:
+  name: Create user
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/users"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Usopp",
+        "lastName": "Sogeking",
+        "email": "usopp.sogeking@swiftentry.com",
+        "phoneNumber": "7025-8891",
+        "dui": "73458921-6",
+        "nit": "0614-734589-216-8",
+        "password": "Kabuto123!",
+        "birthDate": "1995-04-01",
+        "roleId": 3,
+        "address": {
+          "streetAddress": "Villa Syrup #17",
+          "neighborhood": "East Blue",
+          "municipality": "Santa Tecla",
+          "department": "La Libertad",
+          "country": "El Salvador",
+          "referencePoint": "Cerca de una torre alta"
+        }
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

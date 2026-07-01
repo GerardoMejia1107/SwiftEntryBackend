@@ -1,0 +1,164 @@
+/* ── Deep Dark — El Manguito ───────────────────────────── */
+
+:root {
+    --color-base-00: #070b10;
+    --color-base-05: #060910;
+    --color-base-10: #060b12;
+    --color-base-20: #0d1320;
+    --color-base-25: #0d1828;
+    --color-base-30: #1a2535;
+    --color-base-35: #1e2d45;
+    --color-base-40: #2a3a52;
+    --color-base-50: #3a5070;
+    --color-base-60: #5a7090;
+    --color-base-70: #abb2bf;
+    --color-base-100: #e6edf3;
+
+    --color-accent-hsl: 220, 90%, 67%;
+    --color-accent: #61afef;
+    --interactive-accent: #528bff;
+    --interactive-accent-hover: #61afef;
+
+    --background-primary: #070b10;
+    --background-primary-alt: #060b12;
+    --background-secondary: #060910;
+    --background-secondary-alt: #060b12;
+    --background-modifier-border: #0d1320;
+    --background-modifier-hover: #0d1828;
+    --background-modifier-active-hover: #0d1828;
+
+    --text-normal: #abb2bf;
+    --text-muted: #3a5070;
+    --text-faint: #1e2d45;
+    --text-accent: #61afef;
+    --text-accent-hover: #528bff;
+    --text-on-accent: #e6edf3;
+
+    --titlebar-background: #060910;
+    --titlebar-background-focused: #060910;
+
+    --ribbon-background: #060910;
+    --ribbon-background-collapsed: #060910;
+
+    --nav-item-color: #2a3a52;
+    --nav-item-color-hover: #5a7090;
+    --nav-item-color-active: #abb2bf;
+    --nav-item-background-active: #0d1828;
+    --nav-item-background-hover: #0a1220;
+    --nav-folder-color: #1e2d45;
+
+    --tab-background-active: #070b10;
+    --tab-text-color-active: #e6edf3;
+    --tab-text-color: #2a3a52;
+    --tab-outline-color: #0d1320;
+
+    --modal-background: #060912;
+    --modal-border-color: #0d1320;
+    --prompt-background: #060912;
+    --prompt-border-color: #0d1320;
+
+    --scrollbar-thumb-bg: #0d1320;
+    --scrollbar-active-thumb-bg: #1a2535;
+
+    --font-text-theme: 'Georgia', 'Times New Roman', serif;
+    --font-monospace-theme: 'JetBrains Mono', 'Fira Code', monospace;
+    --font-interface-theme: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-text-size: 15px;
+    --line-height-normal: 1.85;
+}
+
+/* ── Editor surface ── */
+.cm-s-obsidian,
+.markdown-source-view,
+.markdown-preview-view {
+    background-color: var(--background-primary);
+    padding: 28px 36px;
+}
+
+/* ── Typography ── */
+.markdown-preview-view h1,
+.cm-header-1 { color: #e6edf3; font-size: 1.6em; font-weight: 700; }
+.markdown-preview-view h2,
+.cm-header-2 { color: #61afef; font-size: 1.25em; font-weight: 600; }
+.markdown-preview-view h3,
+.cm-header-3 { color: #c678dd; font-size: 1.1em; font-weight: 600; }
+.markdown-preview-view h4,
+.cm-header-4 { color: #e5c07b; font-size: 1em; font-weight: 600; }
+
+.markdown-preview-view p { color: #5a7090; line-height: 1.85; }
+.markdown-preview-view strong { color: #e5c07b; }
+.markdown-preview-view em { color: #98c379; }
+
+/* ── Links ── */
+.internal-link { color: #61afef !important; text-decoration: none; border-bottom: 1px solid #1a3050; }
+.internal-link:hover { color: #528bff !important; border-bottom-color: #2a4070; }
+.external-link { color: #56b6c2 !important; }
+
+/* ── Tags ── */
+.tag {
+    background: #0d1828;
+    color: #56b6c2;
+    border: 1px solid #1a2d45;
+    border-radius: 12px;
+    padding: 1px 8px;
+    font-size: 0.78em;
+    text-decoration: none;
+}
+.tag:hover { background: #1a2535; }
+
+/* ── Code ── */
+code { background: #0d1320; color: #e06c75; border-radius: 4px; padding: 1px 5px; font-size: 0.88em; }
+pre { background: #060912 !important; border: 1px solid #0d1320; border-radius: 6px; }
+pre code { color: #abb2bf; }
+.HyperMD-codeblock { color: #abb2bf !important; }
+
+/* ── Blockquotes ── */
+blockquote {
+    border-left: 2px solid #1e2d45;
+    background: transparent;
+    color: #3a5070;
+    font-style: italic;
+    padding-left: 14px;
+    margin: 12px 0;
+}
+
+/* ── Horizontal rule ── */
+hr { border-color: #0d1320; }
+
+/* ── Checkboxes ── */
+input[type=checkbox] { border-color: #1e2d45; }
+input[type=checkbox]:checked { background-color: #528bff; border-color: #528bff; }
+
+/* ── Cursor ── */
+.cm-cursor { border-left-color: #528bff !important; border-left-width: 2px !important; }
+
+/* ── Active line highlight ── */
+.cm-active-line { background-color: #0d1828 !important; }
+
+/* ── Selection ── */
+.cm-selectionBackground, ::selection { background: #1c3050 !important; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #0d1320; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #1a2535; }
+
+/* ── Graph view ── */
+.graph-view.color-fill { color: #0d1828; }
+.graph-view.color-fill-focused { color: #528bff; }
+.graph-view.color-fill-unresolved { color: #1a2535; }
+.graph-view.color-line { color: #0d1828; }
+.graph-view.color-line-focused { color: #1a3050; }
+.graph-view.color-text { color: #3a5070; }
+.graph-view.color-background { color: #060912; }
+
+/* ── Status bar ── */
+.status-bar { background: #0a0e1a; border-top: 1px solid #0d1320; }
+.status-bar-item { color: #1e2d45; font-size: 10px; }
+
+/* ── Modal / command palette ── */
+.suggestion-item.is-selected { background: #0d1828; }
+.suggestion-title { color: #abb2bf; }
+.suggestion-note { color: #3a5070; }
+.prompt-input { background: #060912; color: #abb2bf; border: 1px solid #0d1320; }

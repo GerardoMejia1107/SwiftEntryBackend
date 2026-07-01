@@ -1,0 +1,18 @@
+info:
+  name: Get event by id
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{swift_entry_base_uri}}/events/20"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTklTVFJBVE9SIiwic3ViIjoibWljaGFlbEB0ZXN0LmNvbSIsImlhdCI6MTc4MTQ4ODExOSwiZXhwIjoxNzgxNDg5MDE5fQ.amok3X3pMW3EHTH6TpS1RjGudy9xKIWvw7OF3dksDnI
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

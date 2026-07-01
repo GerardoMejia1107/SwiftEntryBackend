@@ -1,0 +1,18 @@
+info:
+  name: Get my payments
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{swift_entry_base_uri}}/payments/me"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InVzb3BwLnNvZ2VraW5nQHN3aWZ0ZW50cnkuY29tIiwiaWF0IjoxNzgyODQwNDU4LCJleHAiOjE3ODI4NDEzNTh9.D7ZXEPe3vT23rS7q3EOFsKms-OPZnHd_rZGFVv_BpdY
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

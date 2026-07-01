@@ -1,0 +1,22 @@
+info:
+  name: Login Organizer
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/auth/login"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "holly@gmail.com",
+        "password": "holly_and_michael"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

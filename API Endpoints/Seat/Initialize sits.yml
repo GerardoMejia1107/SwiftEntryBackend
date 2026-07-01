@@ -1,0 +1,15 @@
+info:
+  name: Initialize sits
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{swift_entry_base_uri}}/seats/initialize"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

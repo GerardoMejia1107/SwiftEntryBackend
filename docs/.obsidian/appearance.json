@@ -1,0 +1,10 @@
+{
+  "cssTheme": "Things",
+  "theme": "moonstone",
+  "enabledCssSnippets": [],
+  "textFontFamily": "Inter",
+  "interfaceFontFamily": "Inter",
+  "showRibbon": false,
+  "baseFontSize": 17,
+  "accentColor": "#e264c4"
+}
