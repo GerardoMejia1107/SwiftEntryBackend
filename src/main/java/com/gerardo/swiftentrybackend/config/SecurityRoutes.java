@@ -20,7 +20,8 @@ public final class SecurityRoutes {
             "/swift_entry/users", "/swift_entry/events", "/swift_entry/roles",
             "/swift_entry/reservations", "/swift_entry/reservations/*",
             "/swift_entry/refunds", "/swift_entry/refunds/*",
-            "/swift_entry/waiting-list", "/swift_entry/waiting-list/**"
+            "/swift_entry/waiting-list", "/swift_entry/waiting-list/**",
+            "/swift_entry/reports/**"
     };
 
     // GET /reservations/me, /payments/me, /tickets/me and /reservations/organizer are available to any authenticated user

@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class ReportResponseDTO {
 
@@ -16,7 +15,7 @@ public class ReportResponseDTO {
             String eventName,
             Integer totalSeats,
             Integer availableSeats,
-            Integer reservedSeats,
+            Integer occupiedSeats,
             Double availabilityPercentage
     ) {}
 

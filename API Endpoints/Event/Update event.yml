@@ -5,10 +5,17 @@ info:
 
 http:
   method: PUT
-  url: "{{swift_entry_base_uri}}/events/20"
+  url: "{{swift_entry_base_uri}}/events/14"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9PUkdBTklaRVIiLCJzdWIiOiJuYW1pLm5hdmlnYXRvckBzd2lmdGVudHJ5LmNvbSIsImlhdCI6MTc4Mjg0MTcwMCwiZXhwIjoxNzgyODQyNjAwfQ.GhFxMrXWVzTwD90Ra58GMTIvgZwBAgIsRYlYtGnFveY
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "startDate": "2026-06-30T11:00:00",
+        "endDate": "2026-06-30T12:00:00"
+      }
   auth: inherit
 
 settings:

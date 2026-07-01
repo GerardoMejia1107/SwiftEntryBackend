@@ -1,5 +1,6 @@
 package com.gerardo.swiftentrybackend.domain.Report.services;
 
+import com.gerardo.swiftentrybackend.domain.Report.EventAvailabilityProjection;
 import com.gerardo.swiftentrybackend.domain.Report.dto.response.ReportResponseDTO;
 import com.gerardo.swiftentrybackend.domain.Reservation.enums.ReservationStatus;
 import com.gerardo.swiftentrybackend.domain.Reservation.repositories.ReservationSeatRepository;
@@ -20,26 +21,22 @@ public class ReportService {
 
         return localityRepository.getSeatAvailabilityReport()
                 .stream()
-                .map(row -> {
+                .map(r -> {
+                    Integer totalSeats = r.getTotalSeats().intValue();
+                    Integer availableSeats = r.getAvailableSeats().intValue();
+                    Integer occupiedSeats = totalSeats - availableSeats;
 
-                    Integer eventId = (Integer) row[0];
-                    String eventName = (String) row[1];
-                    Integer totalSeats = ((Long) row[2]).intValue();
-                    Integer availableSeats = ((Long) row[3]).intValue();
-
-                    Integer reservedSeats = totalSeats - availableSeats;
-
-                    double percentage = totalSeats == 0
+                    double availabilityPercentage = totalSeats == 0
                             ? 0.0
                             : (availableSeats * 100.0) / totalSeats;
 
                     return new ReportResponseDTO.EventAvailabilityReportDto(
-                            eventId,
-                            eventName,
+                            r.getEventId(),
+                            r.getEventName(),
                             totalSeats,
                             availableSeats,
-                            reservedSeats,
-                            percentage
+                            occupiedSeats,
+                            availabilityPercentage
                     );
                 })
                 .toList();

@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: "{{swift_entry_base_uri}}/tickets/me"
+  url: "{{swift_entry_base_uri}}/tickets/14/qr"
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InVzb3BwLnNvZ2VraW5nQHN3aWZ0ZW50cnkuY29tIiwiaWF0IjoxNzgyODQwNDU4LCJleHAiOjE3ODI4NDEzNTh9.D7ZXEPe3vT23rS7q3EOFsKms-OPZnHd_rZGFVv_BpdY
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9DT05TVU1FUiIsInN1YiI6InVzb3BwLnNvZ2VraW5nQHN3aWZ0ZW50cnkuY29tIiwiaWF0IjoxNzgyODQxMzgzLCJleHAiOjE3ODI4NDIyODN9.iXTe7ClwCpCUKq0nTvqPI8QGsaVmzSOM3MgLemwIDSs
   auth: inherit
 
 settings:

@@ -36,13 +36,13 @@ public interface LocalitySeatRepository extends JpaRepository<LocalitySeatModel,
 
     @Query("""
     SELECT
-        e.id,
-        e.name,
-        SUM(l.capacity),
-        SUM(l.availableSlots)
+        e.id AS eventId,
+        e.name AS eventName,
+        SUM(l.capacity) AS totalSeats,
+        SUM(l.availableSlots) AS availableSeats
     FROM LocalityModel l
     JOIN l.event e
     GROUP BY e.id, e.name
     """)
-    List<Object[]> getSeatAvailabilityReport();
+    List<com.gerardo.swiftentrybackend.domain.Report.EventAvailabilityProjection> getSeatAvailabilityReport();
 }
