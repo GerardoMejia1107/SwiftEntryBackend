@@ -14,12 +14,14 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+// Responde con el envoltorio GeneralResponse (401) cuando falta o es inválida la autenticación
 @Component
 @RequiredArgsConstructor
 public class AuthEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper objectMapper;
 
+    // Escribe la respuesta JSON 401 en el formato estándar de la API
     @Override
     public void commence(
             HttpServletRequest request,

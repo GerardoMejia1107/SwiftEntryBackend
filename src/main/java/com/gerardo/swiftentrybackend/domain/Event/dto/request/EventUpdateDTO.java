@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para actualizar parcialmente un evento (campos nulos se ignoran); localities, si viene, sincroniza las localidades del evento.
 public class EventUpdateDTO {
 
     @Size(max = 150, message = "Event name cannot exceed 150 characters")

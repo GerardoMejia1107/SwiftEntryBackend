@@ -18,11 +18,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/swift_entry/waiting-list")
 @RequiredArgsConstructor
+// Expone los endpoints para unirse, salir y consultar la lista de espera de una localidad sin cupo
 public class WaitingListController {
 
     private final WaitingListService waitingListService;
     private final ResponseBuilder responseBuilder;
 
+    // Une al usuario autenticado a la lista de espera de una localidad
     @PostMapping
     public ResponseEntity<GeneralResponse> joinWaitingList(
             @Valid @RequestBody WaitingListRequestDTO request,
@@ -34,6 +36,7 @@ public class WaitingListController {
                 "Successfully joined the waiting list", HttpStatus.CREATED, response);
     }
 
+    // Cancela la entrada del usuario autenticado en la lista de espera
     @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse> leaveWaitingList(
             @PathVariable Integer id,
@@ -45,6 +48,7 @@ public class WaitingListController {
                 "Successfully left the waiting list", HttpStatus.OK, response);
     }
 
+    // Lista todas las entradas de lista de espera del usuario autenticado
     @GetMapping("/me")
     public ResponseEntity<GeneralResponse> getMyEntries(Authentication authentication) {
         List<WaitingListResponseDTO> response = waitingListService.getMyEntries(
@@ -53,6 +57,7 @@ public class WaitingListController {
                 "Waiting list entries retrieved", HttpStatus.OK, response);
     }
 
+    // Lista todas las entradas de lista de espera del sistema (solo administradores)
     @GetMapping
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<GeneralResponse> getAllEntries() {
@@ -61,6 +66,7 @@ public class WaitingListController {
                 "All waiting list entries retrieved", HttpStatus.OK, response);
     }
 
+    // Lista las entradas de lista de espera de una localidad específica (solo administradores)
     @GetMapping("/locality/{localityId}")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<GeneralResponse> getEntriesByLocality(@PathVariable Long localityId) {

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+// Envoltorio estándar de respuesta de la API (uri, mensaje, status, data)
 @Data
 @Builder
 public class GeneralResponse {

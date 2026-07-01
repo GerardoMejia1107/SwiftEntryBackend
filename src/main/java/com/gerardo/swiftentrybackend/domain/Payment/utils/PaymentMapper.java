@@ -13,9 +13,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Conversión entre PaymentModel y sus DTOs de entrada/salida
 @Component
 public class PaymentMapper {
 
+    // Construye un PaymentModel nuevo a partir de la solicitud, sin id de persistencia
     public PaymentModel toModel(
             PaymentRequestDTO dto,
             ReservationModel reservation,
@@ -32,10 +34,12 @@ public class PaymentMapper {
                 .build();
     }
 
+    // Mapea sin tickets (usado cuando el pago no fue aprobado)
     public PaymentResponseDTO toResponse(PaymentModel model) {
         return toResponse(model, List.of());
     }
 
+    // Mapea incluyendo los tickets emitidos para el pago
     public PaymentResponseDTO toResponse(PaymentModel model, List<TicketResponseDTO> tickets) {
         return PaymentResponseDTO.builder()
                 .id(model.getId())
@@ -60,6 +64,7 @@ public class PaymentMapper {
                 .toList();
     }
 
+    // Aplica al modelo solo los campos no nulos presentes en el DTO de actualización
     public void updateModel(PaymentModel model, PaymentUpdateDTO dto) {
         if (dto.getStatus() != null) {
             model.setStatus(dto.getStatus());

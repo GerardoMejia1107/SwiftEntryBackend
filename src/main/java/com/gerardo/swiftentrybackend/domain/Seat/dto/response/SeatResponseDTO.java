@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos de un asiento físico expuestos en las respuestas de la API.
 public class SeatResponseDTO {
     private Long id;
     private String seatNumber;

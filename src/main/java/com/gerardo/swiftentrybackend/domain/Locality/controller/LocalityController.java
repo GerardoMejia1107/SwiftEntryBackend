@@ -19,11 +19,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/swift_entry/localities")
 @RequiredArgsConstructor
+// Controlador REST de localidades: consulta, actualización y eliminación (la creación va vía Event).
 public class LocalityController {
 
     private final LocalityService localityService;
     private final ResponseBuilder responseBuilder;
 
+    // Lista todas las localidades; ruta pública.
     @Operation(summary = "Listar todas las localidades", description = "Ruta pública")
     @GetMapping
     public ResponseEntity<GeneralResponse> getAllLocalities() {
@@ -31,6 +33,7 @@ public class LocalityController {
         return responseBuilder.buildResponse("Localities retrieved successfully", HttpStatus.OK, response);
     }
 
+    // Obtiene una localidad por id.
     @Operation(summary = "Obtener localidad por ID")
     @GetMapping("/{id}")
     public ResponseEntity<GeneralResponse> getLocalityById(@PathVariable Long id) {
@@ -38,6 +41,7 @@ public class LocalityController {
         return responseBuilder.buildResponse("Locality found successfully", HttpStatus.OK, response);
     }
 
+    // Lista las localidades pertenecientes a un evento.
     @Operation(summary = "Localidades de un evento")
     @GetMapping("/event/{eventId}")
     public ResponseEntity<GeneralResponse> getLocalitiesByEventId(@PathVariable Integer eventId) {
@@ -45,6 +49,7 @@ public class LocalityController {
         return responseBuilder.buildResponse("Localities retrieved successfully", HttpStatus.OK, response);
     }
 
+    // Actualiza parcialmente una localidad existente.
     @Operation(summary = "Actualizar localidad")
     @PutMapping("/{id}")
     public ResponseEntity<GeneralResponse> updateLocality(
@@ -55,6 +60,7 @@ public class LocalityController {
         return responseBuilder.buildResponse("Locality updated successfully", HttpStatus.OK, response);
     }
 
+    // Elimina una localidad; falla si ya tiene reservas asociadas.
     @Operation(summary = "Eliminar localidad")
     @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse> deleteLocality(@PathVariable Long id) {

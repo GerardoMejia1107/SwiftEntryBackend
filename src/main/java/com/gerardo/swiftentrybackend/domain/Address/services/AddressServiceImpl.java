@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// Implementación de AddressService respaldada por AddressRepository
 @Service
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
 
+    // Persiste una nueva dirección
     @Override
     public AddressResponseDTO createAddress(AddressRequestDTO addressRequestDTO) {
 
@@ -27,6 +29,7 @@ public class AddressServiceImpl implements AddressService {
         );
     }
 
+    // Busca una dirección por id; lanza ResourceNotFoundException si no existe
     @Override
     public AddressResponseDTO getAddress(Integer addressId) {
 
@@ -40,6 +43,7 @@ public class AddressServiceImpl implements AddressService {
         return addressMapper.toResponse(address);
     }
 
+    // Devuelve todas las direcciones mapeadas a DTO
     @Override
     public List<AddressResponseDTO> getAllAddresses() {
         return addressRepository.findAll()

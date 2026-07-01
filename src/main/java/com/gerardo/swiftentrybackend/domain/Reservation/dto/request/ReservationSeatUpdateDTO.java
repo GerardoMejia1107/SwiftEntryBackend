@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Campo opcional para actualizar el precio congelado de un asiento reservado
 public class ReservationSeatUpdateDTO {
 
     @DecimalMin(value = "0.00", message = "Price at reservation cannot be negative")

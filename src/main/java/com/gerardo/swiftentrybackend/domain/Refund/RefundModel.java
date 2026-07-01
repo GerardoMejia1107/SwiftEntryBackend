@@ -8,6 +8,9 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Entidad de reembolso: representa una devolución de dinero asociada a un pago.
+ */
 @Entity
 @Table(name = "refund")
 @Getter

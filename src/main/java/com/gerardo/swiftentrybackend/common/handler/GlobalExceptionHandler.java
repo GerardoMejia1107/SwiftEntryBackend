@@ -23,12 +23,14 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.HashMap;
 import java.util.Map;
 
+// Manejador global que traduce excepciones a respuestas GeneralResponse con el status HTTP correspondiente
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
     private final ResponseBuilder responseBuilder;
 
+    // Errores de validación de @Valid: junta los errores por campo en un mapa
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<GeneralResponse> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> fieldErrors = new HashMap<>();
@@ -42,11 +44,13 @@ public class GlobalExceptionHandler {
         return responseBuilder.buildResponse("Validation failed", HttpStatus.BAD_REQUEST, fieldErrors);
     }
 
+    // Body de request malformado o ausente
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<GeneralResponse> handleNotReadable(HttpMessageNotReadableException ex) {
         return responseBuilder.buildResponse("Malformed or missing request body", HttpStatus.BAD_REQUEST, null);
     }
 
+    // Parámetro de request con un tipo/valor inválido
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<GeneralResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         String msg = "Invalid value '" + ex.getValue() + "' for parameter '" + ex.getName() + "'";
@@ -88,6 +92,7 @@ public class GlobalExceptionHandler {
         return responseBuilder.buildResponse(ex.getMessage(), HttpStatus.FORBIDDEN, null);
     }
 
+    // Spring Security deniega el acceso por falta de rol/autoridad
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<GeneralResponse> handleAccessDenied(AccessDeniedException ex) {
         return responseBuilder.buildResponse(
@@ -97,11 +102,13 @@ public class GlobalExceptionHandler {
         );
     }
 
+    // Falla de autenticación genérica de Spring Security
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<GeneralResponse> handleAuthentication(AuthenticationException ex) {
         return responseBuilder.buildResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED, null);
     }
 
+    // Fallback para cualquier excepción no manejada explícitamente
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GeneralResponse> handleGeneric(Exception ex) {
         return responseBuilder.buildResponse("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR, null);

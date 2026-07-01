@@ -12,6 +12,7 @@ public interface RefundRepository extends JpaRepository<RefundModel, Integer> {
 
     List<RefundModel> findByStatus(RefundStatus status);
 
+    // Verifica si ya existe un reembolso de un pago en un estado dado (evita duplicados).
     boolean existsByPaymentIdAndStatus(
             Integer paymentId,
             RefundStatus status

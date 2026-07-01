@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos de una notificación devueltos al cliente
 public class NotificationResponseDTO {
 
     private Integer id;

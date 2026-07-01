@@ -7,6 +7,8 @@ import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketVali
 import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketValidationHandler;
 import org.springframework.stereotype.Component;
 
+// Segundo paso: rechaza el escaneo si el ticket no está en estado ISSUED (ya usado,
+// cancelado o reembolsado).
 @Component
 public class TicketStatusHandler extends TicketValidationHandler {
 

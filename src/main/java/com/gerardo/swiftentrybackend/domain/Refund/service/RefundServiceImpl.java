@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// Implementación de RefundService: creación, aprobación/rechazo y consulta de reembolsos.
 @Service
 @RequiredArgsConstructor
 public class RefundServiceImpl implements RefundService {
@@ -50,6 +51,8 @@ public class RefundServiceImpl implements RefundService {
     private final LocalityRepository localityRepository;
     private final WaitingListService waitingListService;
 
+    // Valida que el pago esté APROBADO, sea del solicitante, no tenga un reembolso
+    // pendiente, esté dentro de la ventana de 48h antes del evento y el monto no exceda lo pagado.
     @Override
     public RefundResponseDTO createRefundRequest(RefundRequestDTO dto, String userEmail) {
         PaymentModel payment = paymentRepository.findByIdWithFullChain(dto.getPaymentId())
@@ -85,6 +88,8 @@ public class RefundServiceImpl implements RefundService {
         return refundMapper.toResponse(refundRepository.save(refund));
     }
 
+    // Si el reembolso cubre el monto total del pago, cancela los tickets, libera los
+    // asientos y marca reserva/pago como reembolsados; en reembolso parcial solo se completa el reembolso.
     @Override
     @Transactional
     public RefundResponseDTO approveRefund(Integer id) {
@@ -123,6 +128,7 @@ public class RefundServiceImpl implements RefundService {
         return refundMapper.toResponse(refundRepository.save(refund));
     }
 
+    // Rechaza un reembolso en estado REQUESTED sin afectar asientos, reserva ni pago.
     @Override
     public RefundResponseDTO rejectRefund(Integer id) {
         RefundModel refund = refundRepository.findById(id)
@@ -174,6 +180,8 @@ public class RefundServiceImpl implements RefundService {
         return refundMapper.toResponseList(refundRepository.findByStatus(status));
     }
 
+    // Libera los asientos de una reserva reembolsada, restaura los cupos de cada
+    // localidad y notifica a la lista de espera de los cupos liberados.
     private void releaseSeats(ReservationModel reservation) {
         List<LocalitySeatModel> seats = reservation.getReservationSeats()
                 .stream()

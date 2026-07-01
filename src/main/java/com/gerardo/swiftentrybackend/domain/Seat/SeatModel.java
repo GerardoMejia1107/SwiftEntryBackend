@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Entidad que representa un asiento físico del recinto (fila + número), sin relación directa a evento o localidad.
 public class SeatModel {
 
     @Id

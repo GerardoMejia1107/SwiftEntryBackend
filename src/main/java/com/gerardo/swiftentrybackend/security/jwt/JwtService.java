@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
 
+// Genera, firma (HS256) y valida los JWT de acceso; la expiración se configura en jwt.expiration-ms (15 min)
 @Service
 public class JwtService {
 
@@ -23,6 +24,7 @@ public class JwtService {
     @Value("${jwt.expiration-ms}")
     private long jwtExpirationMs;
 
+    // Genera un token incluyendo el rol del usuario como claim extra
     public String generateToken(UserDetails userDetails) {
         String role = userDetails.getAuthorities()
                 .stream()
@@ -36,6 +38,7 @@ public class JwtService {
         );
     }
 
+    // Construye y firma el JWT: subject = email, expira jwtExpirationMs después de emitido
     public String generateToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
@@ -49,14 +52,17 @@ public class JwtService {
                 .compact();
     }
 
+    // Extrae el subject del token (el email del usuario)
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    // Extrae la fecha de expiración del token
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    // Verifica que el token corresponda al usuario dado y no haya expirado
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
 
@@ -64,11 +70,13 @@ public class JwtService {
                 && !isTokenExpired(token);
     }
 
+    // Compara la fecha de expiración contra la hora actual
     private boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration)
                 .before(new Date());
     }
 
+    // Parsea y verifica la firma del token, luego aplica el resolver sobre sus claims
     private <T> T extractClaim(
             String token,
             Function<Claims, T> claimsResolver
@@ -82,6 +90,7 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    // Deriva la clave de firma HMAC a partir del secreto configurado
     private SecretKey getSigningKey() {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);

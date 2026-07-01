@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Representa un asiento en el mapa visual del venue para un evento, con su localidad y estado (null si no está asignado).
 public class SeatMapResponseDTO {
     private Long seatId;
     private String row;

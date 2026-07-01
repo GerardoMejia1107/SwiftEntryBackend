@@ -14,10 +14,12 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+// Convierte entre EventModel y sus DTOs de request/response, incluyendo el mapeo anidado de localidades.
 public class EventMapper {
 
     private final LocalityMapper localityMapper;
 
+    // Construye el DTO de respuesta del evento junto con sus localidades ya mapeadas.
     public EventResponseDTO toResponse(EventModel event, List<LocalityModel> localityModels) {
         return EventResponseDTO.builder()
                 .id(event.getId())
@@ -44,6 +46,7 @@ public class EventMapper {
                 .build();
     }
 
+    // Sobrescribe todos los campos del evento existente con los valores del request (no hace merge parcial).
     public void updateModel(
             EventModel event,
             EventRequestDTO request,

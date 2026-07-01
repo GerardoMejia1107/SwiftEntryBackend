@@ -11,11 +11,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+// Acceso a datos de las entradas de lista de espera
 public interface WaitingListRepository extends JpaRepository<WaitingListModel, Integer> {
 
+    // Verifica si el usuario ya tiene una entrada activa (en alguno de los estados dados) para esa localidad
     boolean existsByUser_IdAndLocality_IdAndStatusIn(
             Integer userId, Long localityId, Collection<WaitingListStatus> statuses);
 
+    // Entradas de una localidad en un estado dado, ordenadas por antigüedad (orden de turno)
     List<WaitingListModel> findByLocality_IdAndStatusOrderByCreatedAtAsc(
             Long localityId, WaitingListStatus status);
 
@@ -26,6 +29,7 @@ public interface WaitingListRepository extends JpaRepository<WaitingListModel, I
     Optional<WaitingListModel> findByUser_IdAndLocality_IdAndStatus(
             Integer userId, Long localityId, WaitingListStatus status);
 
+    // Entradas NOTIFIED cuya ventana de notificación ya venció (usado por el scheduler de expiración)
     @Query("SELECT w FROM WaitingListModel w WHERE w.status = :status AND w.notificationExpiresAt < :now")
     List<WaitingListModel> findExpiredNotifications(
             @Param("status") WaitingListStatus status,

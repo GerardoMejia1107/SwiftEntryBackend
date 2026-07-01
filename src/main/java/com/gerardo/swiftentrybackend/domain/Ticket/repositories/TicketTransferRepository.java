@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface TicketTransferRepository extends JpaRepository<TicketTransferModel, Integer> {
 
+    // Historial de transferencias de un ticket específico.
     List<TicketTransferModel> findByTicket_Id(Integer ticketId);
 }

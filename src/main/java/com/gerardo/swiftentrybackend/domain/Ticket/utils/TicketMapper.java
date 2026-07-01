@@ -14,9 +14,11 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Convierte entre TicketModel/TicketTransferModel y sus DTOs de request/response.
 @Component
 public class TicketMapper {
 
+    // Construye un nuevo ticket a partir de la reserva, el asiento y los códigos generados.
     public TicketModel toModel(
             ReservationModel reservation,
             SeatModel seat,
@@ -35,6 +37,8 @@ public class TicketMapper {
                 .build();
     }
 
+    // Mapea el modelo a DTO; resuelve el email del titular actual (poseedor por
+    // transferencia o comprador original si nunca fue transferido).
     public TicketResponseDTO toResponse(TicketModel model) {
         return TicketResponseDTO.builder()
                 .id(model.getId())
@@ -68,6 +72,7 @@ public class TicketMapper {
                 .build();
     }
 
+    // Mapea un registro de transferencia (con el ticket embebido) a su DTO de respuesta.
     public TicketTransferResponseDTO toTransferResponse(TicketTransferModel transfer) {
         return TicketTransferResponseDTO.builder()
                 .transferId(transfer.getId())
@@ -78,6 +83,7 @@ public class TicketMapper {
                 .build();
     }
 
+    // Variante que además incluye el nombre del evento y de la localidad en la respuesta.
     public TicketResponseDTO toResponse(TicketModel model, String eventName, String localityName) {
         TicketResponseDTO dto = toResponse(model);
         dto.setEventName(eventName);
@@ -91,6 +97,7 @@ public class TicketMapper {
                 .toList();
     }
 
+    // Aplica cambios parciales (solo campos no nulos) del DTO al modelo existente.
     public void updateModel(TicketModel model, TicketUpdateDTO dto, UserModel validatedBy) {
         if (dto.getStatus() != null) {
             model.setStatus(dto.getStatus());

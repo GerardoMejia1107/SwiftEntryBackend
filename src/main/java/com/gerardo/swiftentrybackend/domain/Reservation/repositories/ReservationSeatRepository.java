@@ -10,8 +10,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+// Consultas sobre asientos individuales dentro de una reserva
 public interface ReservationSeatRepository extends JpaRepository<ReservationSeatModel, Integer> {
 
+    // Cuenta asientos que el usuario tiene reservados/comprados en un evento, en los estados dados
     @Query("SELECT COUNT(rs) FROM ReservationSeatModel rs " +
            "WHERE rs.reservation.user.id = :userId " +
            "AND rs.localitySeat.locality.event.id = :eventId " +
@@ -39,6 +41,7 @@ public interface ReservationSeatRepository extends JpaRepository<ReservationSeat
 
     Optional<ReservationSeatModel> findByReservation_IdAndLocalitySeat_Seat_Id(Integer reservationId, Long seatId);
 
+    // Reporte de ventas por evento: boletos vendidos e ingresos, para reservas en el estado dado
     @Query("""
         SELECT
             rs.localitySeat.locality.event.id AS eventId,

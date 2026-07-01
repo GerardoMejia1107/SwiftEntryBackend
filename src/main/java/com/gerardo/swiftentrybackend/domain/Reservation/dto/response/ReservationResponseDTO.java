@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Representación de una reserva devuelta al cliente, con montos y asientos incluidos
 public class ReservationResponseDTO {
 
     private Integer id;

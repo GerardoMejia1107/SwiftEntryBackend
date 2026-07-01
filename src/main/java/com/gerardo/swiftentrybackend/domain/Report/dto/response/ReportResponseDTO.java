@@ -8,8 +8,10 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Builder
+// Contenedor de los DTOs devueltos por los endpoints de reportes
 public class ReportResponseDTO {
 
+    // Disponibilidad de asientos de un evento (totales, disponibles, ocupados y porcentaje)
     public record EventAvailabilityReportDto(
             Integer eventId,
             String eventName,
@@ -19,6 +21,7 @@ public class ReportResponseDTO {
             Double availabilityPercentage
     ) {}
 
+    // Ventas de un evento (boletos vendidos e ingresos totales)
     public record EventSalesReportDto(
             Integer eventId,
             String eventName,

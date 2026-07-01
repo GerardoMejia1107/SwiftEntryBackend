@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Entidad que representa una reserva de asientos (apartado temporal o compra confirmada)
 public class ReservationModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +63,7 @@ public class ReservationModel {
     @Column(name = "purchased_at")
     private LocalDateTime purchasedAt;
 
+    // Momento en que la reserva PENDING deja de ser pagable (15 minutos tras crearse)
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 

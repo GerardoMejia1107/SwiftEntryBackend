@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Datos mínimos del usuario embebidos en AuthResponseDTO
 @Builder
 public class AuthUserDTO {
     private Integer id;

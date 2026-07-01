@@ -5,9 +5,11 @@ import com.gerardo.swiftentrybackend.domain.Address.dto.response.AddressResponse
 import com.gerardo.swiftentrybackend.domain.Address.model.AddressModel;
 import org.springframework.stereotype.Component;
 
+// Convierte entre AddressModel y sus DTOs de request/response
 @Component
 public class AddressMapper {
 
+    // Construye una nueva entidad AddressModel a partir del DTO de request
     public AddressModel toModel(AddressRequestDTO request) {
         return AddressModel.builder()
                 .streetAddress(request.getStreetAddress())
@@ -19,6 +21,7 @@ public class AddressMapper {
                 .build();
     }
 
+    // Actualiza in-place los campos no nulos del request sobre una entidad existente
     public void updateModel(AddressModel address, AddressRequestDTO request) {
         if (request.getStreetAddress() != null) address.setStreetAddress(request.getStreetAddress());
         if (request.getNeighborhood() != null) address.setNeighborhood(request.getNeighborhood());
@@ -28,6 +31,7 @@ public class AddressMapper {
         if (request.getReferencePoint() != null) address.setReferencePoint(request.getReferencePoint());
     }
 
+    // Convierte una entidad AddressModel a su DTO de respuesta
     public AddressResponseDTO toResponse(AddressModel address) {
         return AddressResponseDTO.builder()
                 .id(address.getId())

@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Representación de un pago devuelta al cliente, incluyendo los tickets emitidos si fue aprobado
 public class PaymentResponseDTO {
 
     private Integer id;

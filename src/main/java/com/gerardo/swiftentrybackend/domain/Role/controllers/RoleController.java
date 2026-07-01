@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Endpoints REST para creación y consulta de roles de usuario
 @Tag(name = "Roles", description = "Gestión de roles de usuario")
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class RoleController {
     private final RoleService roleService;
     private final ResponseBuilder responseBuilder;
 
+    // Crea un nuevo rol
     @Operation(summary = "Crear rol")
     @PostMapping
     public ResponseEntity<GeneralResponse> creatRole(
@@ -37,6 +39,7 @@ public class RoleController {
         );
     }
 
+    // Lista todos los roles (requiere rol ADMINISTRATOR)
     @Operation(summary = "Listar todos los roles", description = "Solo ADMINISTRATOR")
     @GetMapping
     public ResponseEntity<GeneralResponse> getAllRoles() {

@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para solicitar un reembolso: pago, monto y motivo.
 public class RefundRequestDTO {
 
     @NotNull(message = "Payment id is required")

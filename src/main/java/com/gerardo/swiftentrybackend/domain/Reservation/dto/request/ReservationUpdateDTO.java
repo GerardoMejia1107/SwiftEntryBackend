@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Campos opcionales para actualizar una reserva existente
 public class ReservationUpdateDTO {
 
     private ReservationStatus status;

@@ -20,10 +20,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/swift_entry/events")
 @RequiredArgsConstructor
+// Controlador REST de eventos: creación, consulta, actualización y eliminación.
 public class EventController {
     private final EventService eventService;
     private final ResponseBuilder responseBuilder;
 
+    // Crea un evento junto con sus localidades; ruta pública.
     @Operation(summary = "Crear evento", description = "Ruta pública. Crea el evento junto con sus localidades")
     @PostMapping
     public ResponseEntity<GeneralResponse> createEvent(@Valid @RequestBody EventRequestDTO eventRequestDTO) {
@@ -35,6 +37,7 @@ public class EventController {
         );
     }
 
+    // Lista todos los eventos; ruta pública.
     @Operation(summary = "Listar todos los eventos", description = "Ruta pública")
     @GetMapping
     public ResponseEntity<GeneralResponse> getAllEvents() {
@@ -46,6 +49,7 @@ public class EventController {
         );
     }
 
+    // Lista los eventos creados por el organizador indicado.
     @Operation(summary = "Eventos por organizador")
     @GetMapping("/organizer/{id}")
     public ResponseEntity<GeneralResponse> getAllEventsByOrganizerId(@PathVariable Integer id) {
@@ -57,6 +61,7 @@ public class EventController {
         );
     }
 
+    // Obtiene el detalle de un evento con sus localidades.
     @Operation(summary = "Obtener evento por ID")
     @GetMapping("/{id}")
     public ResponseEntity<GeneralResponse> getEventById(@PathVariable Integer id) {
@@ -68,6 +73,7 @@ public class EventController {
         );
     }
 
+    // Actualiza el evento y opcionalmente sincroniza sus localidades.
     @Operation(summary = "Actualizar evento")
     @PutMapping("/{id}")
     public ResponseEntity<GeneralResponse> updateEvent(
@@ -82,6 +88,7 @@ public class EventController {
         );
     }
 
+    // Elimina el evento; falla si ya tiene reservas asociadas.
     @Operation(summary = "Eliminar evento")
     @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse> deleteEvent(@PathVariable Integer id) {

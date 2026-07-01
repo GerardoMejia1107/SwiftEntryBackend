@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para crear una reserva: los asientos seleccionados (máximo 5)
 public class ReservationRequestDTO {
 
     @NotEmpty(message = "At least one seat must be selected")

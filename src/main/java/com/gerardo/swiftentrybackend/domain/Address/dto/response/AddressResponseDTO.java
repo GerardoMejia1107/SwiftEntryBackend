@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Representación de una dirección devuelta por la API
 @Builder
 public class AddressResponseDTO {
 

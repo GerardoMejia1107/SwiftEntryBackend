@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// Datos para validar un ticket en el escaneo de acceso: el código QR leído.
 public class TicketValidateRequestDTO {
 
     @NotBlank(message = "QR code is required")

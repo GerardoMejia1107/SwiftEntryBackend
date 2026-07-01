@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Entidad que representa una localidad (sección con precio y cupo) dentro de un evento.
 public class LocalityModel {
 
     @Id
@@ -36,6 +37,7 @@ public class LocalityModel {
     @Column(nullable = false)
     private Integer capacity;
 
+    // Cupo restante de la localidad; debe mantenerse consistente con el estado de los LocalitySeat asociados.
     @Column(name = "available_slots", nullable = false)
     private Integer availableSlots;
 
@@ -45,6 +47,7 @@ public class LocalityModel {
     @Column(name = "early_bird_deadline")
     private LocalDateTime earlyBirdDeadline;
 
+    // Bloqueo optimista para evitar condiciones de carrera al actualizar availableSlots concurrentemente.
     @Version
     @Builder.Default
     @Column(nullable = false)

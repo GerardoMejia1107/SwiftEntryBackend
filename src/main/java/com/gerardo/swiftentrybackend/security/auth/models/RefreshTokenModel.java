@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Entidad JPA de refresh token persistido en BD; expira a los 7 días y se rota en cada /auth/refresh
 @Builder
 public class RefreshTokenModel {
 
@@ -19,6 +20,7 @@ public class RefreshTokenModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    // Valor único del token (UUID)
     @Column(nullable = false, unique = true, length = 36)
     private String token;
 

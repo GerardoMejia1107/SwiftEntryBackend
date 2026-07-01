@@ -16,8 +16,10 @@ import org.springframework.context.annotation.Configuration;
         scheme = "bearer",
         bearerFormat = "JWT"
 )
+// Configuración de Swagger/OpenAPI: metadatos de la API y esquema de seguridad bearer JWT
 public class OpenApiConfig {
 
+    // Define título, versión, descripción y el requisito de seguridad bearerAuth para toda la API
     @Bean
     public OpenAPI swiftEntryOpenAPI() {
         return new OpenAPI()

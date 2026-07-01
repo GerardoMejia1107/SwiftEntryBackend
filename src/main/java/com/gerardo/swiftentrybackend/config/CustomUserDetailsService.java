@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+// Adapta UserModel a UserDetails de Spring Security para el proceso de autenticación
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {

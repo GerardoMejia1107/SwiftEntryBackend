@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos que envía el cliente para procesar el pago de una reserva
 public class PaymentRequestDTO {
 
     @NotNull(message = "Reservation id is required")

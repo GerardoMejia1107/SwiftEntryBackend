@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Respuesta de login/refresh: tokens emitidos y datos básicos del usuario autenticado
 @Builder
 public class AuthResponseDTO {
     private String accessToken;

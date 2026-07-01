@@ -7,6 +7,8 @@ import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketVali
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import org.springframework.stereotype.Component;
 
+// Cuarto paso: solo el organizador del evento (dueño de la localidad del ticket)
+// puede validar el ingreso; rechaza a cualquier otro validador.
 @Component
 public class EventOwnershipHandler
         extends TicketValidationHandler {

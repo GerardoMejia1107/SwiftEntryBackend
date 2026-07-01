@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos de la asignación de un asiento físico a una localidad, incluyendo su estado actual de disponibilidad.
 public class LocalitySeatResponseDTO {
     private Long localitySeatId;
     private Long seatId;

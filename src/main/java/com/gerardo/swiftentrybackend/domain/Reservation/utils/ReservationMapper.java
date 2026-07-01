@@ -12,12 +12,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Conversión entre ReservationModel y sus DTOs de entrada/salida
 @Component
 @RequiredArgsConstructor
 public class ReservationMapper {
 
     private final ReservationSeatMapper reservationSeatMapper;
 
+    // Construye un ReservationModel nuevo a partir de los montos ya calculados, sin id de persistencia
     public ReservationModel toModel(
             UserModel user,
             ReservationStatus status,
@@ -40,6 +42,7 @@ public class ReservationMapper {
                 .build();
     }
 
+    // Mapea el modelo a su DTO de respuesta, incluyendo los asientos anidados
     public ReservationResponseDTO toResponse(ReservationModel model) {
         return ReservationResponseDTO.builder()
                 .id(model.getId())
@@ -71,6 +74,7 @@ public class ReservationMapper {
                 .toList();
     }
 
+    // Aplica al modelo solo los campos no nulos presentes en el DTO de actualización
     public void updateModel(ReservationModel model, ReservationUpdateDTO dto) {
         if (dto.getStatus() != null) {
             model.setStatus(dto.getStatus());

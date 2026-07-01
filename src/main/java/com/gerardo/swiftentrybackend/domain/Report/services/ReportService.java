@@ -12,11 +12,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+// Construye los reportes agregados de disponibilidad y ventas a partir de proyecciones de los repositorios
 public class ReportService {
 
     private final LocalitySeatRepository localityRepository;
     private final ReservationSeatRepository reservationSeatRepository;
 
+    // Calcula, por evento, asientos ocupados y porcentaje de disponibilidad a partir de la proyección de asientos
     public List<ReportResponseDTO.EventAvailabilityReportDto> getSeatAvailabilityReport() {
 
         return localityRepository.getSeatAvailabilityReport()
@@ -44,6 +46,7 @@ public class ReportService {
 
 
 
+    // Boletos vendidos e ingresos por evento, calculados sobre asientos de reservas con estado CONFIRMED
     public List<ReportResponseDTO.EventSalesReportDto> getSalesReport() {
         return reservationSeatRepository.getSalesReport(ReservationStatus.CONFIRMED)
                 .stream()

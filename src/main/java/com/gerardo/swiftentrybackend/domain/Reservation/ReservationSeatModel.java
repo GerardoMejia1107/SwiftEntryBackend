@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Entidad de unión entre una reserva y un asiento de localidad concreto
 public class ReservationSeatModel {
 
     @Id
@@ -28,6 +29,7 @@ public class ReservationSeatModel {
     @JoinColumn(name = "locality_seat_id", nullable = false)
     private LocalitySeatModel localitySeat;
 
+    // Precio congelado al momento de reservar, independiente de cambios posteriores en la localidad
     @Column(name = "price_at_reservation", nullable = false, precision = 10, scale = 2)
     private BigDecimal priceAtReservation;
 

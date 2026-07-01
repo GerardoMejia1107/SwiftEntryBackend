@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Representación de un ticket para respuestas de API, incluyendo asiento, evento y validación.
 public class TicketResponseDTO {
 
     private Integer id;

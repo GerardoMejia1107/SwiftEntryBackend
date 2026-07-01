@@ -11,12 +11,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+// Consultas para el ciclo de vida de una reserva y su expiración
 public interface ReservationRepository extends JpaRepository<ReservationModel, Integer> {
 
     List<ReservationModel> findByUser_Id(Integer userId);
 
     List<ReservationModel> findByStatus(ReservationStatus status);
 
+    // Usado para validar que una reserva pertenezca al usuario autenticado
     Optional<ReservationModel> findByIdAndUser_Id(Integer id, Integer userId);
 
     boolean existsByUser_IdAndStatus(Integer userId, ReservationStatus status);

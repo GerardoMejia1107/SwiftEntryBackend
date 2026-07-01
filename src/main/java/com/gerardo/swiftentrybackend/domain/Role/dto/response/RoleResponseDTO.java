@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+// Representación de un rol devuelta por la API
 @Builder
 public class RoleResponseDTO {
     private Integer id;

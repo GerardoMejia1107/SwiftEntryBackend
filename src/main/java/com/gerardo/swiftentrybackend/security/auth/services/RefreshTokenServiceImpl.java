@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// Implementación de RefreshTokenService respaldada por RefreshTokenRepository
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService {
@@ -24,6 +25,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
 
+    // Crea un refresh token con UUID aleatorio y expiración a los N días configurados
     @Override
     @Transactional
     public RefreshTokenModel createRefreshToken(String userEmail) {
@@ -39,6 +41,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return refreshTokenRepository.save(refreshToken);
     }
 
+    // Busca el token y valida su expiración; si expiró lo borra y lanza InvalidTokenException
     @Override
     public RefreshTokenModel validateRefreshToken(String token) {
         RefreshTokenModel refreshToken = refreshTokenRepository.findByTokenWithUser(token)
@@ -52,12 +55,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return refreshToken;
     }
 
+    // Elimina un refresh token específico por su valor
     @Override
     @Transactional
     public void revokeToken(String token) {
         refreshTokenRepository.deleteByToken(token);
     }
 
+    // Elimina todos los refresh tokens asociados a un usuario
     @Override
     @Transactional
     public void revokeAllForUser(String userEmail) {

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Representación de un usuario devuelta por la API (sin password)
 @Builder
 public class UserResponseDTO {
 

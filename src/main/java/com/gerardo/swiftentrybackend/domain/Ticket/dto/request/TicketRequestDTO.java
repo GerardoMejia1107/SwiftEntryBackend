@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para crear un ticket individual: reserva y asiento a los que pertenece.
 public class TicketRequestDTO {
 
     @NotNull(message = "Reservation id is required")

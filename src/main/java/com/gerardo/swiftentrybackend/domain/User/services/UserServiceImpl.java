@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// Implementación de UserService: registro, consulta con control de propiedad, y listado
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    // Crea un usuario: valida email único, resuelve el rol, hashea el password con BCrypt (fuerza 12) y guarda
     @Override
     public UserResponseDTO createUser(UserRequestDTO request) {
 
@@ -59,6 +61,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(userRepository.save(user));
     }
 
+    // Obtiene un usuario por id; verifica ownership: solo el propio usuario o un ADMINISTRATOR puede verlo
     @Override
     public UserResponseDTO getUserById(Integer id) {
         Authentication authentication = SecurityContextHolder.getContext()
@@ -88,6 +91,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(userModel);
     }
 
+    // Devuelve todos los usuarios mapeados a DTO
     @Override
     public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll()

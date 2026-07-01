@@ -11,9 +11,11 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Convierte entre RefundModel y sus DTOs de request/response.
 @Component
 public class RefundMapper {
 
+    // Construye un nuevo reembolso a partir del pago y los datos de la solicitud.
     public RefundModel toModel(
             RefundRequestDTO dto,
             PaymentModel payment,
@@ -29,6 +31,7 @@ public class RefundMapper {
                 .build();
     }
 
+    // Mapea el modelo a DTO, incluyendo el id de la reserva asociada al pago.
     public RefundResponseDTO toResponse(RefundModel model) {
         return RefundResponseDTO.builder()
                 .id(model.getId())
@@ -49,6 +52,7 @@ public class RefundMapper {
                 .toList();
     }
 
+    // Aplica cambios parciales (solo campos no nulos) del DTO al modelo existente.
     public void updateModel(RefundModel model, RefundUpdateDTO dto) {
         if (dto.getStatus() != null) {
             model.setStatus(dto.getStatus());

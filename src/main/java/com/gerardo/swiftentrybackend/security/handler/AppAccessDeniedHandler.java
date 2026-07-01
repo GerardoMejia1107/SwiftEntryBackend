@@ -13,12 +13,14 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+// Responde con el envoltorio GeneralResponse (403) cuando Spring Security deniega acceso por falta de rol
 @Component
 @RequiredArgsConstructor
 public class AppAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper;
 
+    // Escribe la respuesta JSON 403 en el formato estándar de la API
     @Override
     public void handle(
             HttpServletRequest request,

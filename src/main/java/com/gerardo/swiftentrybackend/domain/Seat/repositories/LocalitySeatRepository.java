@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+// Repositorio JPA de LocalitySeat (join entre asiento físico y localidad), incluye el bloqueo pesimista usado al reservar.
 public interface LocalitySeatRepository extends JpaRepository<LocalitySeatModel, Long> {
 
     List<LocalitySeatModel> findAllByLocality_Id(Long localityId);
@@ -30,10 +31,12 @@ public interface LocalitySeatRepository extends JpaRepository<LocalitySeatModel,
     @Query("DELETE FROM LocalitySeatModel ls WHERE ls.seat.id = :seatId")
     void deleteAllBySeat_Id(@Param("seatId") Long seatId);
 
+    // Carga los LocalitySeat indicados con PESSIMISTIC_WRITE para evitar que dos reservas tomen el mismo asiento concurrentemente.
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT ls FROM LocalitySeatModel ls JOIN FETCH ls.locality JOIN FETCH ls.seat WHERE ls.id IN :ids")
     List<LocalitySeatModel> findAllByIdWithLock(@Param("ids") List<Long> ids);
 
+    // Reporte agregado de disponibilidad de asientos (total vs. disponibles) por evento.
     @Query("""
     SELECT
         e.id AS eventId,

@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/swift_entry/reports")
 @RequiredArgsConstructor
+// Expone reportes administrativos agregados sobre eventos (disponibilidad de asientos y ventas)
 public class ReportController {
 
     private final ReportService reportService;
     private final ResponseBuilder responseBuilder;
 
+    // Reporte de ocupación: asientos totales, disponibles y ocupados por evento
     @GetMapping("/events/seat-availability")
     public ResponseEntity<GeneralResponse> getSeatAvailability() {
         return responseBuilder.buildResponse(
@@ -27,6 +29,7 @@ public class ReportController {
         );
     }
 
+    // Reporte de ventas: boletos vendidos e ingresos por evento, sobre reservas confirmadas
     @GetMapping("/events/sales")
     public ResponseEntity<GeneralResponse> getSalesReport() {
         return responseBuilder.buildResponse(

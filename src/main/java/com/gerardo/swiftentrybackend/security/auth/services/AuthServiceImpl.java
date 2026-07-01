@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+// Implementación de AuthService: delega la autenticación en Spring Security y la emisión de tokens en JwtService/RefreshTokenService
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -27,6 +28,7 @@ public class AuthServiceImpl implements AuthService {
     private final CustomUserDetailsService customUserDetailsService;
     private final UserRepository userRepository;
 
+    // Valida credenciales con AuthenticationManager y genera access token (JWT, 15 min) + refresh token nuevo
     @Override
     public AuthResponseDTO login(AuthRequestDTO authRequestDTO) {
         Authentication authentication = authenticationManager.authenticate(
@@ -66,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    // Valida el refresh token, lo revoca (rotación) y emite un nuevo access token + refresh token
     @Override
     public AuthResponseDTO refresh(RefreshRequestDTO refreshRequestDTO) {
         RefreshTokenModel oldToken = refreshTokenService.validateRefreshToken(refreshRequestDTO.getRefreshToken());
@@ -91,6 +94,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    // Revoca (elimina) el refresh token recibido
     @Override
     public void logout(RefreshRequestDTO refreshRequestDTO) {
         refreshTokenService.revokeToken(refreshRequestDTO.getRefreshToken());

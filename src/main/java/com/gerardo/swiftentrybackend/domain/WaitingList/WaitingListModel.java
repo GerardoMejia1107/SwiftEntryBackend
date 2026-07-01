@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Entidad que representa el turno de un usuario en la lista de espera de una localidad sin cupo disponible
 public class WaitingListModel {
 
     @Id
@@ -33,12 +34,15 @@ public class WaitingListModel {
     @Column(nullable = false, length = 30)
     private WaitingListStatus status;
 
+    // Momento en que se notificó al usuario que hay un cupo disponible
     @Column(name = "notified_at")
     private LocalDateTime notifiedAt;
 
+    // Límite de tiempo para que el usuario reserve antes de que la notificación expire y se libere el cupo
     @Column(name = "notification_expires_at")
     private LocalDateTime notificationExpiresAt;
 
+    // Momento en que el usuario concretó la reserva tras ser notificado
     @Column(name = "fulfilled_at")
     private LocalDateTime fulfilledAt;
 

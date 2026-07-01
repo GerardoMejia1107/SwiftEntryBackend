@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos de un evento expuestos en las respuestas de la API, incluyendo sus localidades.
 public class EventResponseDTO {
     private Integer id;
     private String name;

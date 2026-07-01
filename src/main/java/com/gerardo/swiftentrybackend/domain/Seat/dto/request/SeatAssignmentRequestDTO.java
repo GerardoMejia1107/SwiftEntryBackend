@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para asignar una lista de asientos físicos (identificados como fila+columna, ej. "A1") a una localidad.
 public class SeatAssignmentRequestDTO {
 
     @NotNull(message = "Locality id is required")

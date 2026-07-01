@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Endpoints para crear, consultar y cancelar reservas de asientos
 @Tag(name = "Reservas", description = "Apartado temporal de asientos (expira en 15 min si no se paga)")
 @RestController
 @RequestMapping("/swift_entry/reservations")

@@ -24,6 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationMapper notificationMapper;
     private final UserRepository userRepository;
 
+    // Persiste una nueva notificación sin leer para el usuario dado
     @Override
     @Transactional
     public void createNotification(UserModel user, NotificationType type, String title,
@@ -59,6 +60,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository.countByUser_IdAndReadFalse(user.getId());
     }
 
+    // Marca una notificación como leída; lanza excepción si no existe o no pertenece al usuario
     @Override
     @Transactional
     public NotificationResponseDTO markAsRead(Integer id, String userEmail) {
@@ -79,6 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationMapper.toResponse(notification);
     }
 
+    // Marca en bloque todas las notificaciones no leídas del usuario; no hace nada si no hay ninguna
     @Override
     @Transactional
     public void markAllAsRead(String userEmail) {

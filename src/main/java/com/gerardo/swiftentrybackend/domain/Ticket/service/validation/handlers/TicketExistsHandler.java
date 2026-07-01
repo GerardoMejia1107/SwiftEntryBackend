@@ -8,6 +8,7 @@ import com.gerardo.swiftentrybackend.domain.Ticket.service.validation.TicketVali
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+// Primer paso de la cadena: busca el ticket por QR y lo carga en el contexto.
 @Component
 @RequiredArgsConstructor
 public class TicketExistsHandler extends TicketValidationHandler {

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos de una localidad expuestos en las respuestas de la API.
 public class LocalityResponseDTO {
     private Long id;
     private String name;

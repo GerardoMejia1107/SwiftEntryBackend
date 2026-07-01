@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+// Repositorio JPA de eventos.
 public interface EventRepository extends JpaRepository<EventModel, Integer> {
     boolean existsByName(String name);
 
+    // Obtiene todos los eventos creados por un organizador.
     List<EventModel> findAllByOrganizer_Id(Integer organizerId);
 }

@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+// Convierte entidades de notificación a su DTO de respuesta
 public class NotificationMapper {
 
+    // Mapea una notificación a su DTO de respuesta
     public NotificationResponseDTO toResponse(NotificationModel model) {
         return NotificationResponseDTO.builder()
                 .id(model.getId())
@@ -23,6 +25,7 @@ public class NotificationMapper {
                 .build();
     }
 
+    // Mapea una lista de notificaciones a sus DTO de respuesta
     public List<NotificationResponseDTO> toResponseList(List<NotificationModel> models) {
         return models.stream().map(this::toResponse).toList();
     }

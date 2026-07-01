@@ -7,6 +7,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Datos de entrada para renovar sesión o cerrar sesión (contiene el refresh token)
 @Builder
 public class RefreshRequestDTO {
     @NotBlank

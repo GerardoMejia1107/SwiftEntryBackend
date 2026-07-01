@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+// Último paso: solo permite validar el ticket mientras el evento está en curso
+// (entre su fecha de inicio y de fin).
 @Component
 public class EventDateHandler
         extends TicketValidationHandler {

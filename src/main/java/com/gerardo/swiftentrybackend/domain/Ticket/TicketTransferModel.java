@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entidad que registra el historial de transferencias de un ticket entre usuarios.
+ */
 @Entity
 @Table(name = "ticket_transfer")
 @Getter

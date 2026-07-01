@@ -8,6 +8,7 @@ import com.gerardo.swiftentrybackend.domain.User.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+// Tercer paso: busca al usuario que está escaneando el ticket y lo carga en el contexto.
 @Component
 @RequiredArgsConstructor
 public class ValidatorExistsHandler extends TicketValidationHandler {

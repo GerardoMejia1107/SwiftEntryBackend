@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+// Implementación de SeatService.
 public class SeatServiceImpl implements SeatService {
 
     private static final List<String> ROWS = List.of("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
@@ -42,6 +43,7 @@ public class SeatServiceImpl implements SeatService {
     private final EventRepository eventRepository;
     private final SeatMapper seatMapper;
 
+    // Genera los asientos de la grilla fija (filas A-J x 16 columnas) que aún no existan.
     @Override
     @Transactional
     public void initializeSeats() {
@@ -65,6 +67,7 @@ public class SeatServiceImpl implements SeatService {
         }
     }
 
+    // Resuelve cada identificador de asiento (ej. "A1") y crea su LocalitySeat; valida que no esté ya asignado en el evento.
     @Override
     @Transactional
     public List<LocalitySeatResponseDTO> assignSeats(SeatAssignmentRequestDTO request) {
@@ -111,6 +114,7 @@ public class SeatServiceImpl implements SeatService {
                 .collect(Collectors.toList());
     }
 
+    // Combina todos los asientos físicos con su asignación (si existe) en el evento dado, ordenados por fila y columna.
     @Override
     public List<SeatMapResponseDTO> getSeatMapByEventId(Integer eventId) {
         if (!eventRepository.existsById(eventId)) {
@@ -139,6 +143,7 @@ public class SeatServiceImpl implements SeatService {
                 .collect(Collectors.toList());
     }
 
+    // Lista todos los asientos físicos.
     @Override
     public List<SeatResponseDTO> getAllSeats() {
         return seatRepository.findAll().stream()
@@ -146,6 +151,7 @@ public class SeatServiceImpl implements SeatService {
                 .collect(Collectors.toList());
     }
 
+    // Busca un asiento físico por id o lanza ResourceNotFoundException.
     @Override
     public SeatResponseDTO getSeatById(Long id) {
         SeatModel seat = seatRepository.findById(id)
@@ -153,6 +159,7 @@ public class SeatServiceImpl implements SeatService {
         return seatMapper.toResponse(seat);
     }
 
+    // Lista los LocalitySeat de una localidad; valida primero que la localidad exista.
     @Override
     public List<LocalitySeatResponseDTO> getSeatsByLocalityId(Long localityId) {
         if (!localityRepository.existsById(localityId)) {
@@ -163,6 +170,7 @@ public class SeatServiceImpl implements SeatService {
                 .collect(Collectors.toList());
     }
 
+    // Elimina el LocalitySeat y decrementa capacity/availableSlots de la localidad; rechaza si ya tiene reserva.
     @Override
     @Transactional
     public void unassignSeat(Long localitySeatId) {
@@ -183,6 +191,7 @@ public class SeatServiceImpl implements SeatService {
         localitySeatRepository.deleteById(localitySeatId);
     }
 
+    // Elimina el asiento físico junto con sus asignaciones a localidades; rechaza si ya tiene reservas.
     @Override
     @Transactional
     public void deleteSeat(Long id) {

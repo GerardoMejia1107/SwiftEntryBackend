@@ -17,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Entidad JPA de usuario; identidad para login (email) y dueño de dirección/refresh tokens
 @Builder
 public class UserModel{
 
@@ -56,6 +57,7 @@ public class UserModel{
     @Column(name = "email_verified", nullable = false)
     private Boolean emailVerified = false;
 
+   // Relación 1:1 con cascade ALL + orphanRemoval: la dirección se crea/borra junto con el usuario
    @OneToOne(
            fetch = FetchType.LAZY,
            cascade = CascadeType.ALL,
@@ -68,6 +70,7 @@ public class UserModel{
     @JoinColumn(name = "role_id", nullable = false)
     private RoleModel role;
 
+    // 1:N con RefreshToken; cascade ALL + orphanRemoval limpia los tokens al eliminar el usuario
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RefreshTokenModel> refreshTokens = new ArrayList<>();

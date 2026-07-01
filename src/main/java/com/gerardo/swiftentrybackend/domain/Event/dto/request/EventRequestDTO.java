@@ -21,6 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para crear un evento junto con sus localidades iniciales.
 public class EventRequestDTO {
     @NotBlank(message = "Event name is required")
     @Size(max = 150, message = "Event name cannot exceed 150 characters")

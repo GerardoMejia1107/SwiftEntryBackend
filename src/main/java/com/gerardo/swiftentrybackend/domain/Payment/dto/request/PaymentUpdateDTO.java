@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Campos opcionales para actualizar un pago existente
 public class PaymentUpdateDTO {
 
     private PaymentStatus status;

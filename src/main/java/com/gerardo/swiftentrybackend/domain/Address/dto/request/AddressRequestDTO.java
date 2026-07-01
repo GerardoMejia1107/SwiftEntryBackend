@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Datos de entrada para crear o actualizar una dirección
 @Builder
 public class AddressRequestDTO {
 

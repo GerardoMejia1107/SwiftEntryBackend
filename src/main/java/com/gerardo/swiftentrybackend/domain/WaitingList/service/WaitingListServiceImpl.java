@@ -27,8 +27,10 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+// Implementa el ciclo de vida de la lista de espera: alta, baja, notificación y expiración de turnos
 public class WaitingListServiceImpl implements WaitingListService {
 
+    // Minutos que un usuario notificado tiene para reservar antes de perder su turno
     private static final int NOTIFICATION_WINDOW_MINUTES = 30;
 
     private final WaitingListRepository waitingListRepository;
@@ -37,6 +39,7 @@ public class WaitingListServiceImpl implements WaitingListService {
     private final WaitingListMapper waitingListMapper;
     private final NotificationService notificationService;
 
+    // Valida que la localidad no tenga cupo y que el usuario no tenga ya una entrada activa antes de anotarlo
     @Override
     @Transactional
     public WaitingListResponseDTO joinWaitingList(WaitingListRequestDTO dto, String userEmail) {
@@ -67,6 +70,7 @@ public class WaitingListServiceImpl implements WaitingListService {
         return waitingListMapper.toResponse(waitingListRepository.save(entry));
     }
 
+    // Cancela la entrada del usuario; solo permitido si está en estado WAITING o NOTIFIED
     @Override
     @Transactional
     public WaitingListResponseDTO leaveWaitingList(Integer id, String userEmail) {
@@ -112,6 +116,8 @@ public class WaitingListServiceImpl implements WaitingListService {
         return waitingListMapper.toResponseList(waitingListRepository.findByLocality_Id(localityId));
     }
 
+    // Pasa a NOTIFIED a los primeros usuarios en cola (por antigüedad), uno por cada cupo liberado,
+    // y les fija la ventana de expiración de la notificación
     @Override
     @Transactional
     public void notifyNextInQueue(Long localityId, int slotsReleased) {
@@ -136,6 +142,7 @@ public class WaitingListServiceImpl implements WaitingListService {
         waitingListRepository.saveAll(waiting.subList(0, toNotify));
     }
 
+    // Si el usuario tiene una entrada NOTIFIED para esa localidad, la marca como FULFILLED (silencioso si no existe)
     @Override
     @Transactional
     public void fulfillNotifiedEntry(Integer userId, Long localityId) {
@@ -148,6 +155,7 @@ public class WaitingListServiceImpl implements WaitingListService {
                 });
     }
 
+    // Expira las notificaciones NOTIFIED vencidas y reintenta notificar al siguiente en cola por localidad afectada
     @Override
     @Transactional
     public int expireNotifiedEntries() {
@@ -196,6 +204,7 @@ public class WaitingListServiceImpl implements WaitingListService {
         return expired.size();
     }
 
+    // Crea la notificación de "asiento disponible" para el usuario de la entrada dada
     private void notifyUserSeatAvailable(WaitingListModel entry) {
         notificationService.createNotification(
                 entry.getUser(),

@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// Datos para ceder un ticket a otro usuario, identificado por su email.
 public class TicketTransferRequestDTO {
 
     @NotBlank(message = "Receiver email is required")

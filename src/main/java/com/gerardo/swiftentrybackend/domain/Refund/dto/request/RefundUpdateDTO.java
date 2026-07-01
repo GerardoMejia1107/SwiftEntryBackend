@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para actualizar parcialmente un reembolso (estado, motivo, fecha de reembolso).
 public class RefundUpdateDTO {
 
     private RefundStatus status;

@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+// Conversión entre ReservationSeatModel y su DTO de respuesta
 @Component
 public class ReservationSeatMapper {
 
+    // Construye un ReservationSeatModel nuevo con el precio congelado al momento de reservar
     public ReservationSeatModel toModel(
             ReservationModel reservation,
             LocalitySeatModel localitySeat,
@@ -23,6 +25,7 @@ public class ReservationSeatMapper {
                 .build();
     }
 
+    // Mapea el modelo a su DTO de respuesta, resolviendo asiento y localidad
     public ReservationSeatResponseDTO toResponse(ReservationSeatModel model) {
         LocalitySeatModel localitySeat = model.getLocalitySeat();
 

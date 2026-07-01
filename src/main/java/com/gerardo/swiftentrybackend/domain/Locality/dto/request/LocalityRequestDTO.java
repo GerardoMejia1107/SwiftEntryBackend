@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para crear una localidad como parte del payload de creación/actualización de un evento.
 public class LocalityRequestDTO {
 
     /*@NotNull(message = "Event id is required")

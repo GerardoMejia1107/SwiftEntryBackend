@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos requeridos para unirse a la lista de espera de una localidad
 public class WaitingListRequestDTO {
 
     @NotNull(message = "Locality ID is required")

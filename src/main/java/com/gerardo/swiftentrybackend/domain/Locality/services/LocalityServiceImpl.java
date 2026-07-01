@@ -18,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+// Implementación de LocalityService; la creación de localidades se hace a través de los endpoints de Event.
 public class LocalityServiceImpl implements LocalityService {
 
     private final LocalityRepository localityRepository;
@@ -26,6 +27,7 @@ public class LocalityServiceImpl implements LocalityService {
     private final LocalitySeatRepository localitySeatRepository;
     private final ReservationSeatRepository reservationSeatRepository;
 
+    // Lista todas las localidades mapeadas a DTO de respuesta.
     @Override
     public List<LocalityResponseDTO> getAllLocalities() {
         return localityRepository.findAll()
@@ -34,6 +36,7 @@ public class LocalityServiceImpl implements LocalityService {
                 .toList();
     }
 
+    // Obtiene una localidad por id; lanza ResourceNotFoundException si no existe.
     @Override
     public LocalityResponseDTO getLocalityById(Long id) {
         LocalityModel locality = localityRepository.findById(id)
@@ -41,6 +44,7 @@ public class LocalityServiceImpl implements LocalityService {
         return localityMapper.toResponse(locality);
     }
 
+    // Obtiene las localidades de un evento; valida primero que el evento exista.
     @Override
     public List<LocalityResponseDTO> getLocalitiesByEventId(Integer eventId) {
         if (!eventRepository.existsById(eventId)) {
@@ -52,6 +56,7 @@ public class LocalityServiceImpl implements LocalityService {
                 .toList();
     }
 
+    // Actualiza los campos no nulos de la localidad y persiste el cambio.
     @Override
     public LocalityResponseDTO updateLocality(Long id, LocalityUpdateDTO request) {
         LocalityModel locality = localityRepository.findById(id)
@@ -61,6 +66,7 @@ public class LocalityServiceImpl implements LocalityService {
         return localityMapper.toResponse(localityRepository.save(locality));
     }
 
+    // Elimina la localidad y sus LocalitySeat en una transacción; rechaza el borrado si existen reservas asociadas.
     @Override
     @Transactional
     public void deleteLocality(Long id) {

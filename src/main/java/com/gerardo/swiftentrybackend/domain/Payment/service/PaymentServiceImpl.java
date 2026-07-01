@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Valida y prepara el pago; la mutación atómica de éxito/fallo se delega a PaymentExecutor
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
@@ -72,6 +73,7 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentExecutor.execute(reservation.getId(), requestDTO, approved);
     }
 
+    // Devuelve el historial de pagos del usuario, con sus tickets asociados
     @Override
     public List<PaymentResponseDTO> getMyPayments(String userEmail) {
         List<PaymentModel> payments = paymentRepository.findByReservation_User_Email(userEmail);
@@ -83,6 +85,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .toList();
     }
 
+    // Simula la respuesta de una pasarela de pago externa (siempre aprueba)
     private boolean simulatePaymentProcessing() {
         return true;
     }

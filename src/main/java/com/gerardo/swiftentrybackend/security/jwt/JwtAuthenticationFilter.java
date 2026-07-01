@@ -22,6 +22,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+// Filtro que se ejecuta una vez por request: extrae y valida el JWT del header Authorization y puebla el SecurityContext
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -30,6 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService customUserDetailsService;
     private final ObjectMapper objectMapper;
 
+    // Lee el header Bearer, valida el token y autentica al usuario en el contexto de seguridad si es válido
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -79,6 +81,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    // Escribe una respuesta 401 en el formato estándar de la API cuando el token es inválido o expiró
     private void sendUnauthorizedResponse(
             HttpServletResponse response,
             HttpServletRequest request,

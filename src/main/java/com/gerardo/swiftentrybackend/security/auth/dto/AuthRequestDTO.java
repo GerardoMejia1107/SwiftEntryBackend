@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Credenciales de entrada para el login (email + password)
 @Builder
 public class AuthRequestDTO {
     @NotBlank

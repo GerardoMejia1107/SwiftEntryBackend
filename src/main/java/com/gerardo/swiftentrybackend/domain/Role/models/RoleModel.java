@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+// Entidad JPA de rol, referenciada por UserModel
 @Entity
 @Table(name = "role")
 public class RoleModel {
@@ -18,6 +19,7 @@ public class RoleModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    // Nombre único del rol (ej. ADMINISTRATOR)
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 

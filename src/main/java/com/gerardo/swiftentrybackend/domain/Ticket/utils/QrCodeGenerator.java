@@ -10,9 +10,11 @@ import org.springframework.stereotype.Component;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+// Genera imágenes de código QR (usando ZXing) a partir del código embebido en un ticket.
 @Component
 public class QrCodeGenerator {
 
+    // Codifica el contenido como QR y lo renderiza como PNG en memoria.
     public byte[] generate(String content, int width, int height) {
         try {
             BitMatrix matrix = new QRCodeWriter()

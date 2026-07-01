@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// Implementación de RoleService respaldada por RoleRepository
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService{
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
 
+    // Crea un rol tras validar que el nombre no esté ya en uso (ResourceConflictException si existe)
     @Override
     public RoleResponseDTO createRole(RoleRequestDTO roleRequestDTO) {
 
@@ -31,6 +33,7 @@ public class RoleServiceImpl implements RoleService{
         );
     }
 
+    // Devuelve todos los roles mapeados a DTO
     @Override
     public List<RoleResponseDTO> getAllRoles() {
         return roleRepository.findAll()

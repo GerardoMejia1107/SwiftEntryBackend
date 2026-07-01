@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+// Implementación de EventService.
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
@@ -43,6 +44,7 @@ public class EventServiceImpl implements EventService {
     private final LocalitySeatRepository localitySeatRepository;
     private final ReservationSeatRepository reservationSeatRepository;
 
+    // Crea el evento y guarda cada una de sus localidades asociadas (capacity/availableSlots inician en 0).
     @Override
     public EventResponseDTO createEvent(EventRequestDTO eventRequestDTO) {
         UserModel organizer = userRepository.findById(eventRequestDTO.getOrganizerId())
@@ -75,6 +77,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.toResponse(savedEvent, savedLocalities);
     }
 
+    // Lista todos los eventos junto con sus localidades.
     @Override
     public List<EventResponseDTO> getAllEvents() {
         return eventRepository.findAll()
@@ -86,6 +89,7 @@ public class EventServiceImpl implements EventService {
                 .toList();
     }
 
+    // Lista los eventos de un organizador; valida primero que el usuario exista.
     @Override
     public List<EventResponseDTO> getEventsByOrganizerId(Integer userId) {
         userRepository.findById(userId)
@@ -100,6 +104,7 @@ public class EventServiceImpl implements EventService {
                 .toList();
     }
 
+    // Obtiene el evento y sus localidades; lanza ResourceNotFoundException si no existe.
     @Override
     public EventResponseDTO getEventById(Integer id) {
         EventModel event = eventRepository.findById(id)
@@ -108,6 +113,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.toResponse(event, localities);
     }
 
+    // Actualiza campos no nulos del evento; si se envían localidades, delega la sincronización a processLocalityUpdates.
     @Override
     @Transactional
     public EventResponseDTO updateEvent(Integer id, EventUpdateDTO request) {
@@ -140,6 +146,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.toResponse(savedEvent, finalLocalities);
     }
 
+    // Elimina el evento con sus localidades y LocalitySeat; rechaza el borrado si ya existen reservas.
     @Override
     @Transactional
     public void deleteEvent(Integer id) {
@@ -158,6 +165,7 @@ public class EventServiceImpl implements EventService {
         eventRepository.deleteById(id);
     }
 
+    // Sincroniza las localidades de un evento: elimina las que ya no vienen en el request, actualiza las existentes y crea las nuevas.
     private List<LocalityModel> processLocalityUpdates(EventModel event, List<LocalityUpdateDTO> requestLocalities) {
         List<LocalityModel> existingLocalities = localityRepository.findAllByEvent_Id(event.getId());
 

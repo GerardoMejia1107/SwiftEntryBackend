@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos de una entrada de lista de espera devueltos al cliente, con información denormalizada de usuario/evento
 public class WaitingListResponseDTO {
 
     private Integer id;

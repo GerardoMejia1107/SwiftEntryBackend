@@ -7,8 +7,10 @@ import com.gerardo.swiftentrybackend.domain.Seat.dto.response.SeatResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component
+// Convierte entre SeatModel/LocalitySeatModel y sus DTOs de respuesta.
 public class SeatMapper {
 
+    // Convierte un asiento físico a su DTO de respuesta.
     public SeatResponseDTO toResponse(SeatModel seat) {
         return SeatResponseDTO.builder()
                 .id(seat.getId())
@@ -19,6 +21,7 @@ public class SeatMapper {
                 .build();
     }
 
+    // Convierte una asignación asiento-localidad (LocalitySeat) a su DTO de respuesta.
     public LocalitySeatResponseDTO toLocalitySeatResponse(LocalitySeatModel localitySeat) {
         return LocalitySeatResponseDTO.builder()
                 .localitySeatId(localitySeat.getId())

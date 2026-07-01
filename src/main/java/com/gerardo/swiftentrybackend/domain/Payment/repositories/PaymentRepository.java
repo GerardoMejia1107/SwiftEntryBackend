@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<PaymentModel, Integer> {
 
+    // Pagos asociados a una reserva (puede haber más de uno si hubo intentos fallidos)
     List<PaymentModel> findByReservationId(Integer reservationId);
 
     List<PaymentModel> findByStatus(PaymentStatus status);
@@ -24,8 +25,10 @@ public interface PaymentRepository extends JpaRepository<PaymentModel, Integer> 
             PaymentStatus status
     );
 
+    // Historial de pagos del usuario autenticado, vía la reserva
     List<PaymentModel> findByReservation_User_Email(String email);
 
+    // Carga el pago junto con toda la cadena de relaciones necesaria para construir la respuesta completa
     @Query("SELECT p FROM PaymentModel p " +
            "JOIN FETCH p.reservation r " +
            "JOIN FETCH r.user " +

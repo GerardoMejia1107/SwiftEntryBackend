@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Endpoints REST para creación y consulta de direcciones postales
 @Tag(name = "Direcciones", description = "Gestión de direcciones postales de usuarios y eventos")
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class AddressController {
     private final AddressService addressService;
     private final ResponseBuilder responseBuilder;
 
+    // Crea una nueva dirección
     @Operation(summary = "Crear dirección")
     @PostMapping
     public ResponseEntity<GeneralResponse> createAddress(@Valid @RequestBody AddressRequestDTO requestDTO) {
@@ -34,6 +36,7 @@ public class AddressController {
         );
     }
 
+    // Lista todas las direcciones registradas
     @Operation(summary = "Listar todas las direcciones")
     @GetMapping
     public ResponseEntity<GeneralResponse> getAddress(@Valid @RequestBody AddressRequestDTO requestDTO) {

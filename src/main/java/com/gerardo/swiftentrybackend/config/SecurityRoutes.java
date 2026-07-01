@@ -2,8 +2,10 @@ package com.gerardo.swiftentrybackend.config;
 
 import lombok.Data;
 
+// Listas de rutas usadas por SecurityConfig para definir reglas de acceso público/autenticado/admin
 @Data
 public final class SecurityRoutes {
+    // Rutas GET públicas (sin autenticación) más docs de Swagger
     public static final String[] PUBLIC_ENDPOINTS = {
             "/swift_entry/auth/**", "/swift_entry/events",
             "/swift_entry/localities", "/swift_entry/localities/**",
@@ -11,6 +13,7 @@ public final class SecurityRoutes {
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
     };
 
+    // Rutas POST públicas (registro de usuario y creación de evento)
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/swift_entry/users", "/swift_entry/events"
     };

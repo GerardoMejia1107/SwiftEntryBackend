@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Identifica el asiento físico a incluir en una reserva
 public class ReservationSeatRequestDTO {
 
     @NotNull(message = "Seat id is required")

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para actualizar parcialmente un ticket (estado, validación, uso).
 public class TicketUpdateDTO {
 
     private TicketStatus status;

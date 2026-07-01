@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Representación de una transferencia de ticket completada, con el ticket resultante embebido.
 public class TicketTransferResponseDTO {
 
     private Integer transferId;

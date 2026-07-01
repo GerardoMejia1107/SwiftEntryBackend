@@ -7,9 +7,11 @@ import com.gerardo.swiftentrybackend.domain.User.dto.response.UserResponseDTO;
 import com.gerardo.swiftentrybackend.domain.User.models.UserModel;
 import org.springframework.stereotype.Component;
 
+// Convierte entre UserModel y sus DTOs de request/response
 @Component
 public class UserMapper {
 
+    // Construye una nueva entidad UserModel a partir del DTO de request y las dependencias ya resueltas (address, role, hash)
     public UserModel toModel(
             UserRequestDTO request,
             AddressModel address,
@@ -30,6 +32,7 @@ public class UserMapper {
                 .build();
     }
 
+    // Convierte una entidad UserModel a su DTO de respuesta (excluye el password hash)
     public UserResponseDTO toResponse(UserModel user) {
         return UserResponseDTO.builder()
                 .id(user.getId())

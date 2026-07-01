@@ -29,6 +29,8 @@ public interface TicketRepository extends JpaRepository<TicketModel, Integer> {
 
     List<TicketModel> findByReservation_User_Email(String email);
 
+    // Devuelve los tickets "en poder" del usuario: si fueron transferidos, el poseedor
+    // actual; si no, el comprador original de la reserva.
     @Query("SELECT t FROM TicketModel t " +
            "LEFT JOIN t.currentHolder ch " +
            "WHERE (ch IS NOT NULL AND ch.email = :email) " +

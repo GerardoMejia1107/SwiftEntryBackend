@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+// Endpoints REST públicos de autenticación: login, refresh y logout
 @Tag(name = "Autenticación", description = "Login, refresh de token y logout")
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class AuthController {
     private final AuthService authService;
     private final ResponseBuilder responseBuilder;
 
+    // Autentica credenciales y emite access token + refresh token
     @Operation(summary = "Iniciar sesión", description = "Retorna un access token (15 min) y un refresh token (7 días)")
     @PostMapping("/login")
     public ResponseEntity<GeneralResponse> login(
@@ -35,6 +37,7 @@ public class AuthController {
         return responseBuilder.buildResponse("Login successful", HttpStatus.OK, authResponseDTO);
     }
 
+    // Renueva el access token; el refresh token usado se rota (se invalida y se emite uno nuevo)
     @Operation(summary = "Renovar token", description = "Renueva el access token usando el refresh token. El refresh token se rota en cada llamada")
     @PostMapping("/refresh")
     public ResponseEntity<GeneralResponse> refresh(
@@ -44,6 +47,7 @@ public class AuthController {
         return responseBuilder.buildResponse("Token refreshed successfully", HttpStatus.OK, authResponseDTO);
     }
 
+    // Elimina el refresh token de la base de datos, cerrando la sesión
     @Operation(summary = "Cerrar sesión", description = "Invalida el refresh token en base de datos")
     @PostMapping("/logout")
     public ResponseEntity<GeneralResponse> logout(

@@ -27,6 +27,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+// Configuración central de Spring Security: cadena de filtros, autenticación y CORS
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -37,6 +38,7 @@ public class SecurityConfig {
     private final AuthEntryPoint authEntryPoint;
     private final AppAccessDeniedHandler appAccessDeniedHandler;
 
+    // Define la cadena de filtros HTTP: CORS, CSRF/login deshabilitados, filtro JWT y reglas de autorización por ruta
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -71,11 +73,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // BCrypt con fuerza 12 para el hash de contraseñas
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 
+    // Proveedor DAO que valida credenciales usando CustomUserDetailsService y BCrypt
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider =
@@ -86,11 +90,13 @@ public class SecurityConfig {
         return provider;
     }
 
+    // Expone el AuthenticationManager por defecto para usarlo en el login
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
+    // Habilita CORS solo para el origen del frontend local
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();

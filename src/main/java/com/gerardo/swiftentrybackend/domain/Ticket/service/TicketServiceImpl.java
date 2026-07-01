@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+// Implementación de TicketService: emisión, consulta, validación (vía cadena de
+// responsabilidad) y transferencia de tickets.
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
@@ -126,6 +128,8 @@ public class TicketServiceImpl implements TicketService {
         return ticketMapper.toResponse(ticketRepository.save(ticket));
     }
 
+    // Sin ruta HTTP expuesta: ejecuta la cadena de validación (existencia, validador,
+    // pertenencia del evento, fecha del evento, estado del ticket) y marca el ticket como USED.
     @Override
     @Transactional
     public TicketResponseDTO validateTicketByQrCode(String qrCode, String validatorEmail) {
@@ -148,6 +152,7 @@ public class TicketServiceImpl implements TicketService {
         return ticketMapper.toResponse(ticket);
     }
 
+    // Resuelve el nombre de evento/localidad de cada ticket vía su reserva para enriquecer la respuesta.
     @Override
     @Transactional(readOnly = true)
     public List<TicketResponseDTO> getMyTickets(String userEmail) {

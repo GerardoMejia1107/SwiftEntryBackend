@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Entidad que representa una notificación enviada a un usuario (p. ej. aviso de asiento disponible en lista de espera)
 public class NotificationModel {
 
     @Id
@@ -42,6 +43,7 @@ public class NotificationModel {
     @Column(name = "is_read", nullable = false)
     private Boolean read = false;
 
+    // Momento en que el usuario marcó la notificación como leída
     @Column(name = "read_at")
     private LocalDateTime readAt;
 

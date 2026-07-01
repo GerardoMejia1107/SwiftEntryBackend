@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Entidad que representa un evento publicado por un organizador (usuario).
 public class EventModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

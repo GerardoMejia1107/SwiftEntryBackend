@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Entidad que registra el pago asociado a una reserva
 public class PaymentModel {
 
     @Id

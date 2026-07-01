@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// Implementación del ciclo de vida de reservas: crear (con locks pesimistas), cancelar, expirar y consultar
 @Service
 @RequiredArgsConstructor
 public class ReservationServiceImp implements ReservationService {
@@ -152,6 +153,7 @@ public class ReservationServiceImp implements ReservationService {
         return reservationMapper.toResponse(saved);
     }
 
+    // Lista todas las reservas (uso administrativo)
     @Override
     public List<ReservationResponseDTO> getAllReservations() {
         return reservationMapper.toResponseList(reservationRepository.findAll());
@@ -164,6 +166,7 @@ public class ReservationServiceImp implements ReservationService {
         return reservationMapper.toResponse(reservation);
     }
 
+    // Lista las reservas del usuario autenticado
     @Override
     public List<ReservationResponseDTO> getMyReservations(String userEmail) {
         UserModel user = userRepository.findByEmail(userEmail)
@@ -252,6 +255,7 @@ public class ReservationServiceImp implements ReservationService {
         return reservationMapper.toResponse(reservationRepository.save(reservation));
     }
 
+    // Lista las reservas de todos los eventos organizados por el usuario dado
     @Override
     public List<ReservationResponseDTO> getReservationsByOrganizer(String organizerEmail) {
         UserModel organizer = userRepository.findByEmail(organizerEmail)

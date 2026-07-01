@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Entidad JPA de dirección postal, reutilizada por User y Event
 @Builder
 public class AddressModel {
 

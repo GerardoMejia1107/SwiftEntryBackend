@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Datos de entrada para registrar un usuario, incluye su dirección anidada
 @Builder
 public class UserRequestDTO {
 

@@ -9,10 +9,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+// Job periódico que libera los cupos de notificaciones de lista de espera no confirmadas a tiempo
 public class WaitingListScheduler {
 
     private final WaitingListService waitingListService;
 
+    // Cada 60s (60_000ms desde el fin de la ejecución anterior): expira entradas NOTIFIED cuya ventana
+    // de reserva venció y, si quedan cupos, notifica al siguiente usuario en espera de cada localidad afectada
     @Scheduled(fixedDelay = 60_000)
     public void expireStaleNotifications() {
         int count = waitingListService.expireNotifiedEntries();

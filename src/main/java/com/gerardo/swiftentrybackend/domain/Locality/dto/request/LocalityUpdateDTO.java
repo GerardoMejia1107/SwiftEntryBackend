@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Datos para actualizar parcialmente una localidad (campos nulos se ignoran); id nulo indica una localidad nueva al sincronizar vía Event.
 public class LocalityUpdateDTO {
 
     private Long id;

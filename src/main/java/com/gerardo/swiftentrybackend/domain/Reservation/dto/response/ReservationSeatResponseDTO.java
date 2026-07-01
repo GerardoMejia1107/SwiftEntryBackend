@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Representación de un asiento dentro de una reserva, con su ubicación y precio congelado
 public class ReservationSeatResponseDTO {
 
     private Integer id;

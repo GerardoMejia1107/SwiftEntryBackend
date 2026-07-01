@@ -9,6 +9,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entidad de ticket: representa el comprobante de acceso emitido para un asiento
+ * dentro de una reserva confirmada (pagada).
+ */
 @Entity
 @Table(name = "ticket")
 @Getter
@@ -45,10 +49,12 @@ public class TicketModel {
     @Column(name = "used_at")
     private LocalDateTime usedAt;
 
+    // Poseedor actual del ticket; cambia si el ticket es transferido a otro usuario.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "current_holder_id")
     private UserModel currentHolder;
 
+    // Usuario (staff) que validó el ticket en el escaneo de acceso, si ya fue usado.
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "validated_by", nullable = true)
     private UserModel validatedBy;

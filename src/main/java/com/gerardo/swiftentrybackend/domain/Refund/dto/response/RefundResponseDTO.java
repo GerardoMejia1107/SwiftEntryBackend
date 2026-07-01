@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// Representación de un reembolso para respuestas de API.
 public class RefundResponseDTO {
 
     private Integer id;

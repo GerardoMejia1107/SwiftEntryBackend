@@ -5,6 +5,7 @@ import com.gerardo.swiftentrybackend.domain.Reservation.dto.request.ReservationS
 
 import java.util.List;
 
+// Contrato para consultar y actualizar asientos individuales de una reserva; sin implementación aún (WIP)
 public interface ReservationSeatService {
 
     List<ReservationSeatResponseDTO> getAllReservationSeats();

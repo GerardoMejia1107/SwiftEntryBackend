@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Datos de entrada para crear un rol
 @Builder
 public class RoleRequestDTO {
     @NotBlank(message = "Role name is required")
